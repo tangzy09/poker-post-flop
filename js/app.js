@@ -28,9 +28,6 @@ function render() {
     case "stats":
       root.innerHTML = renderStats();
       break;
-    case "table":
-      root.innerHTML = renderTablePreview();
-      break;
     default:
       root.innerHTML = renderCourses();
   }
@@ -47,11 +44,18 @@ function renderCourses() {
     const acc = Engine.accuracy(c.id);
     const badge = c.free ? t("course.free") : t("course.pro");
     const badgeCls = c.free ? "free" : "pro";
-    const btn = p.completed
-      ? t("course.continue")
-      : p.learnDone
-        ? t("course.continue")
-        : t("course.start");
+    let actions;
+    if (locked) {
+      actions = '<p class="cc-lock">' + t("course.locked") + "</p>";
+    } else if (p.learnDone) {
+      actions =
+        '<div class="cc-actions">' +
+        '<button class="btn secondary" data-action="start-learn" data-id="' + c.id + '">' + t("course.reviewLearn") + "</button>" +
+        '<button class="btn primary" data-action="start-drill" data-id="' + c.id + '">' + t("course.practice") + "</button>" +
+        "</div>";
+    } else {
+      actions = '<button class="btn primary" data-action="start-course" data-id="' + c.id + '">' + t("course.start") + "</button>";
+    }
 
     return (
       '<article class="course-card' + (locked ? " locked" : "") + (p.completed ? " done" : "") + '">' +
@@ -65,9 +69,7 @@ function renderCourses() {
       '<p class="cc-meta">' + t("course.questions", { n: qs }) +
       (acc != null ? " · " + t("course.accuracy", { pct: acc }) : "") +
       "</p>" +
-      (locked
-        ? '<p class="cc-lock">' + t("course.locked") + "</p>"
-        : '<button class="btn primary" data-action="start-course" data-id="' + c.id + '">' + btn + "</button>") +
+      actions +
       "</article>"
     );
   }).join("");
@@ -89,30 +91,11 @@ function bottomNav(active, reviewN) {
   const tab = (id, label, extra) =>
     '<button class="nav-btn' + (id === active ? " active" : "") + '" data-nav="' + id + '">' + label + (extra || "") + "</button>";
   return (
-    '<nav class="bottom-nav nav-4">' +
+    '<nav class="bottom-nav">' +
     tab("courses", t("nav.courses")) +
     tab("review", t("nav.review"), reviewN ? ' <span class="pill">' + reviewN + "</span>" : "") +
-    tab("table", t("nav.table")) +
     tab("stats", t("nav.stats")) +
     "</nav>"
-  );
-}
-
-let _tableN = 6;
-
-function renderTablePreview() {
-  const opts = [2, 3, 6, 9];
-  const seg = opts
-    .map((n) => '<button class="seg-btn' + (n === _tableN ? " active" : "") + '" data-table-n="' + n + '">' + t("table.players", { n }) + "</button>")
-    .join("");
-  return (
-    '<section class="screen table-screen">' +
-    '<header class="page-head"><h2>' + t("table.title") + '</h2><p class="muted">' + t("table.hint") + "</p></header>" +
-    '<div class="seg">' + seg + "</div>" +
-    '<div id="table-mount" class="spot-mount"></div>' +
-    '<p class="muted tbl-caption">' + t("table.caption") + "</p>" +
-    bottomNav("table", Engine.store.reviewPile.length) +
-    "</section>"
   );
 }
 
@@ -128,6 +111,7 @@ function renderLearn() {
     '<p class="eyebrow">' + t(course.titleKey) + " · " + t("learn.title") + "</p>" +
     "<h2>" + t(slide.titleKey) + "</h2>" +
     '<div class="learn-body' + (slide.summary ? " learn-summary" : "") + '">' + t(slide.bodyKey) + "</div>" +
+    (slide.rangeChart ? '<div id="range-chart-mount" class="range-chart-mount"></div>' : "") +
     '<p class="slide-pager">' + t("learn.slide", { n: Engine.learnIdx + 1, total: slides.length }) + "</p>" +
     '<button class="btn primary" data-action="' + (isLast ? "finish-learn" : "next-learn") + '">' +
     (isLast ? t("learn.startDrill") : t("learn.next")) +
@@ -145,14 +129,20 @@ function renderDrill() {
   }
 
   const course = courseById(Engine.courseId);
+  const p = Engine.getProgress(Engine.courseId);
   let body = "";
 
   if (q.spot) {
     body += '<div id="spot-mount" class="spot-mount"></div>';
+    if (Engine.courseId === "c3" && q.spot.board && q.spot.board.length >= 3) {
+      body += '<div id="range-chart-mount" class="range-chart-mount"></div>';
+    }
   }
 
   body += '<p class="q-stem">' + t(q.stemKey) + "</p>";
-  body += '<span class="conf-chip ' + q.confidence + '">' + t("drill.confidence." + q.confidence) + "</span>";
+  if (q.confidence && q.confidence !== "reference") {
+    body += '<span class="conf-chip ' + q.confidence + '">' + t("drill.confidence." + q.confidence) + "</span>";
+  }
 
   if (q.type === "choice") {
     body += '<div class="choice-grid">';
@@ -169,12 +159,18 @@ function renderDrill() {
     body += "</div>";
   }
 
+  const learnBtn =
+    !Engine.reviewMode && p.learnDone
+      ? '<button class="btn secondary drill-learn-btn" data-action="start-learn" data-id="' + Engine.courseId + '">' + t("learn.backToLearn") + "</button>"
+      : "";
+
   return (
     '<section class="screen drill-screen">' +
     '<button class="back-btn" data-action="back-courses">←</button>' +
     '<p class="eyebrow">' + t(course.titleKey) + " · " + t("drill.title") + "</p>" +
     '<p class="q-pager">' + t("drill.q", { n: Engine.qIdx + 1, total: qs.length }) + "</p>" +
     body +
+    learnBtn +
     "</section>"
   );
 }
@@ -218,6 +214,7 @@ function renderOver() {
     (mistakes
       ? '<button class="btn secondary" data-action="review-mistakes">' + t("over.review") + "</button>"
       : "") +
+    '<button class="btn secondary" data-action="start-learn" data-id="' + Engine.courseId + '">' + t("course.reviewLearn") + "</button>" +
     '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button></section>"
   );
 }
@@ -268,7 +265,6 @@ function bindEvents() {
       const nav = el.getAttribute("data-nav");
       if (nav === "review") Engine.startReview();
       else if (nav === "stats") Engine.screen = "stats";
-      else if (nav === "table") Engine.screen = "table";
       else Engine.screen = "courses";
       render();
     };
@@ -284,20 +280,30 @@ function bindEvents() {
     if (q && q.spot) renderSpot(q.spot, spotMount);
   }
 
-  const tableMount = $("#table-mount");
-  if (tableMount) renderDemoTable(_tableN, tableMount);
-  $$("[data-table-n]").forEach((el) => {
-    el.onclick = () => {
-      _tableN = +el.getAttribute("data-table-n");
-      render();
-    };
-  });
+  const rangeMount = $("#range-chart-mount");
+  if (rangeMount) {
+    let board = null;
+    if (Engine.screen === "learn") {
+      const slides = getLearn(Engine.courseId);
+      board = slides[Engine.learnIdx] && slides[Engine.learnIdx].rangeChart;
+    } else if (Engine.screen === "drill" && Engine.courseId === "c3") {
+      const q = Engine.currentQuestions()[Engine.qIdx];
+      board = q && q.spot && q.spot.board;
+    }
+    if (board) renderRangeChart(rangeMount, board);
+  }
 }
 
 function handleAction(action, el) {
   switch (action) {
     case "start-course":
       Engine.startCourse(el.getAttribute("data-id"));
+      break;
+    case "start-learn":
+      Engine.startCourse(el.getAttribute("data-id"), "learn");
+      break;
+    case "start-drill":
+      Engine.startCourse(el.getAttribute("data-id"), "drill");
       break;
     case "next-learn":
       Engine.learnIdx++;
@@ -340,17 +346,27 @@ function submitChoice(choice) {
   render();
 }
 
+function syncLangButtons() {
+  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
+  const enBtn = $("#lang-en");
+  const zhBtn = $("#lang-zh");
+  if (enBtn) {
+    enBtn.classList.toggle("active", LANG === "en");
+    enBtn.onclick = () => setLang("en");
+  }
+  if (zhBtn) {
+    zhBtn.classList.toggle("active", LANG === "zh");
+    zhBtn.onclick = () => setLang("zh");
+  }
+}
+
 function onLangChange() {
+  syncLangButtons();
   render();
 }
 
 function boot() {
-  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
-  const langBtn = $("#lang-btn");
-  if (langBtn) {
-    langBtn.textContent = LANG === "en" ? "中文" : "EN";
-    langBtn.onclick = () => setLang(LANG === "en" ? "zh" : "en");
-  }
+  syncLangButtons();
   render();
 }
 

@@ -5,6 +5,7 @@
   "description": "Poker post-flop course trainer — 12 lessons, web + Capacitor",
   "scripts": {
     "test": "node --test \"test/*.test.js\"",
+    "audit": "node tools/audit-all-questions.js",
     "build:www": "node tools/build-www.js",
     "app:sync": "node tools/build-www.js && cap copy",
     "app:android": "node tools/build-www.js && cap copy android && cap open android"

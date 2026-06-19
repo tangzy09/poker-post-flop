@@ -47,21 +47,24 @@ const Engine = {
     this.save();
   },
 
-  startCourse(courseId) {
+  startCourse(courseId, mode) {
     this.courseId = courseId;
     this.learnIdx = 0;
     this.qIdx = 0;
     this.answers = [];
     this.reviewMode = false;
     const p = this.getProgress(courseId);
-    if (p.learnDone && !p.completed) {
-      this.screen = "drill";
-      this.qIdx = p.qDone;
-    } else if (p.completed) {
+    if (mode === "learn") {
       this.screen = "learn";
-    } else {
-      this.screen = "learn";
+      return;
     }
+    if (mode === "drill") {
+      this.screen = "drill";
+      this.qIdx = p.completed ? 0 : p.qDone || 0;
+      return;
+    }
+    // First visit: start with lessons.
+    this.screen = "learn";
   },
 
   currentQuestions() {

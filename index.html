@@ -50,15 +50,27 @@
     }
     .topbar h1 { margin: 0; font-size: 1.15rem; font-weight: 700; }
     .topbar .sub { font-size: .75rem; color: var(--muted); }
-    #lang-btn {
+    .lang-switch {
+      display: flex;
       border: 1px solid var(--line);
-      background: rgba(0,0,0,.25);
-      color: var(--gold);
       border-radius: 8px;
+      overflow: hidden;
+      background: rgba(0,0,0,.25);
+    }
+    .lang-switch button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
       padding: 6px 10px;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
+      font-size: .8rem;
+    }
+    .lang-switch button + button { border-left: 1px solid var(--line); }
+    .lang-switch button.active {
+      background: rgba(232,198,106,.15);
+      color: var(--gold);
     }
     #screens { flex: 1; overflow-y: auto; padding-bottom: 80px; }
     .screen { padding: 12px 16px 24px; animation: fadeIn .2s ease; }
@@ -109,12 +121,13 @@
       margin-bottom: 10px;
     }
     .btn:active { transform: translateY(2px); }
+    .cc-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .cc-actions .btn { width: 100%; padding: 12px 10px; font-size: .88rem; }
+    .drill-learn-btn { margin-top: 16px; }
     .bottom-nav {
       position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
       width: 100%; max-width: 520px;
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
-    }
-    .bottom-nav.nav-4 { grid-template-columns: repeat(4, 1fr);
       padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
       background: rgba(10,20,16,.92);
       border-top: 1px solid var(--line);
@@ -262,16 +275,6 @@
     .card.mid .rk { font-size: 10px; top: 3px; left: 4px; }
     .card.mid .rk.br { bottom: 3px; right: 4px; top: auto; left: auto; }
     .card.sm { width: 22px; height: 31px; }
-
-    /* segmented control (Table view player-count switch) */
-    .seg { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
-    .seg-btn {
-      flex: 1; min-width: 64px; padding: 9px 6px; border-radius: 10px; cursor: pointer;
-      border: 1px solid var(--line); background: rgba(255,255,255,.04);
-      color: var(--ink); font-family: inherit; font-weight: 700; font-size: .82rem;
-    }
-    .seg-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(232,198,106,.1); }
-    .tbl-caption { margin-top: 6px; text-align: center; }
     .card {
       width: 52px; height: 74px; border-radius: var(--card-r); position: relative;
       transform-style: preserve-3d;
@@ -317,6 +320,52 @@
       font-size: .92rem;
     }
     .stat-list b { color: var(--gold); }
+
+    /* C3 range / equity chart */
+    .range-chart-mount { margin: 12px 0; }
+    .range-chart {
+      background: rgba(0,0,0,.22);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .range-chart-note { font-size: .72rem; color: var(--muted); margin: 0 0 10px; line-height: 1.4; }
+    .range-chart-loading { font-size: .85rem; color: var(--gold); text-align: center; padding: 12px 0; }
+    .eq-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+    .eq-bar-head { display: flex; justify-content: space-between; font-size: .78rem; margin-bottom: 4px; }
+    .eq-pct { color: var(--gold); font-weight: 700; }
+    .eq-track { height: 8px; background: rgba(255,255,255,.08); border-radius: 999px; overflow: hidden; }
+    .eq-track i { display: block; height: 100%; border-radius: 999px; transition: width .35s ease; }
+    .range-edge-lbl { text-align: center; font-size: .82rem; font-weight: 700; color: var(--gold); margin: 0 0 10px; }
+    .range-matrix {
+      display: grid;
+      grid-template-columns: 18px repeat(13, 1fr);
+      gap: 1px;
+      margin-bottom: 8px;
+    }
+    .rm-lbl { font-size: .5rem; color: var(--muted); display: flex; align-items: center; justify-content: center; }
+    .rm-row { justify-content: flex-end; padding-right: 2px; }
+    .rm-corner { }
+    .rm-cell {
+      aspect-ratio: 1;
+      border-radius: 2px;
+      background: rgba(255,255,255,.04);
+      font-size: .42rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 14px;
+    }
+    .rm-cell.btn { background: rgba(232,198,106,.35); color: #fff; }
+    .rm-cell.bb { background: rgba(52,176,116,.35); color: #fff; }
+    .rm-cell.both { background: rgba(200,160,255,.4); color: #fff; }
+    .range-legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; font-size: .65rem; color: var(--muted); }
+    .range-legend span { display: inline-flex; align-items: center; gap: 4px; }
+    .range-legend .lg { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+    .range-legend .lg.btn { background: rgba(232,198,106,.55); }
+    .range-legend .lg.bb { background: rgba(52,176,116,.55); }
+    .range-legend .lg.both { background: rgba(200,160,255,.55); }
   </style>
 </head>
 <body>
@@ -326,7 +375,10 @@
         <h1 data-i18n="app.title">Poker Post-Flop</h1>
         <div class="sub" data-i18n="app.subtitle">12-lesson HU post-flop trainer</div>
       </div>
-      <button id="lang-btn" type="button">中文</button>
+      <div class="lang-switch">
+        <button id="lang-en" type="button">EN</button>
+        <button id="lang-zh" type="button">中文</button>
+      </div>
     </header>
     <main id="screens"></main>
   </div>
@@ -335,6 +387,8 @@
   <script src="data/solved-spots.js"></script>
   <script src="js/courses.js"></script>
   <script src="js/content.js"></script>
+  <script src="js/equity.js"></script>
+  <script src="js/range-chart.js"></script>
   <script src="js/table.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/app.js"></script>

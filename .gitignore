@@ -3,3 +3,8 @@ www/
 android/
 ios/
 .DS_Store
+Thumbs.db
+*.log
+server-log.txt
+.cursor/
+tools/audit-report.json
