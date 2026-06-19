@@ -13,6 +13,7 @@ const copy = [
   "js/range-chart.js",
   "js/table.js",
   "js/engine.js",
+  "js/coach.js",
   "js/app.js",
   "data/solved-spots.js",
 ];

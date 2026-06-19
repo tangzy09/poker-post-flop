@@ -18,9 +18,19 @@ const Engine = {
       if (legacy && !localStorage.getItem(STORE_KEY)) localStorage.setItem(STORE_KEY, legacy);
       const raw = localStorage.getItem(STORE_KEY);
       this.store = raw ? JSON.parse(raw) : this._defaultStore();
+      this._migrateStore();
     } catch (e) {
       this.store = this._defaultStore();
     }
+  },
+
+  _migrateStore() {
+    if (!this.store.statsByCourse) this.store.statsByCourse = {};
+    if (!this.store.statsByStreet) this.store.statsByStreet = {};
+    if (!this.store.leaks) this.store.leaks = {};
+    (this.store.reviewPile || []).forEach((r) => {
+      if (!r.wrong) r.wrong = 1;
+    });
   },
 
   save() {
@@ -34,6 +44,8 @@ const Engine = {
       progress: {},
       reviewPile: [],
       stats: { totalQ: 0, correctQ: 0, coursesDone: 0 },
+      statsByCourse: {},
+      statsByStreet: {},
       leaks: {},
     };
   },
@@ -92,19 +104,33 @@ const Engine = {
     this.answers.push({ qid: question.id, choice, ok: result.ok });
     this.store.stats.totalQ++;
     if (result.ok) this.store.stats.correctQ++;
-    else {
+
+    const cid = this.courseId || question._courseId;
+    if (cid) {
+      if (!this.store.statsByCourse[cid]) this.store.statsByCourse[cid] = { h: 0, c: 0 };
+      this.store.statsByCourse[cid].h++;
+      if (result.ok) this.store.statsByCourse[cid].c++;
+    }
+    const street = question.spot?.street || (question.type === "choice" ? "concept" : "flop");
+    if (!this.store.statsByStreet[street]) this.store.statsByStreet[street] = { h: 0, c: 0 };
+    this.store.statsByStreet[street].h++;
+    if (result.ok) this.store.statsByStreet[street].c++;
+
+    if (!result.ok) {
       this.addMistake(question, choice);
       if (!this.reviewMode) {
-        const existing = this.store.reviewPile.find((r) => r.qid === question.id && r.courseId === this.courseId);
+        const existing = this.store.reviewPile.find((r) => r.qid === question.id && r.courseId === cid);
         if (existing) {
           existing.streak = 0;
           existing.choice = choice;
+          existing.wrong = (existing.wrong || 1) + 1;
         } else {
           this.store.reviewPile.push({
-            courseId: this.courseId,
+            courseId: cid,
             qid: question.id,
             choice,
             streak: 0,
+            wrong: 1,
             leak: question.leak,
           });
         }
@@ -145,8 +171,14 @@ const Engine = {
     this.save();
   },
 
-  startReview() {
-    this.reviewQueue = this.store.reviewPile
+  startReview(filter) {
+    this.reviewFilter = filter || null;
+    const pile = this.store.reviewPile.filter((r) => {
+      if (filter?.courseId && r.courseId !== filter.courseId) return false;
+      if (filter?.leak && r.leak !== filter.leak) return false;
+      return true;
+    });
+    this.reviewQueue = pile
       .map((r) => {
         const q = getQuestions(r.courseId).find((x) => x.id === r.qid);
         return q ? Object.assign({}, q, { _courseId: r.courseId, _rec: r }) : null;

@@ -220,30 +220,185 @@ function renderOver() {
 }
 
 function renderReviewEmpty() {
+  const msg = Engine.reviewFilter ? t("review.emptyFilter") : t("review.empty");
   return (
     '<section class="screen">' +
-    "<h2>" + t("review.empty") + "</h2>" +
+    "<h2>" + msg + "</h2>" +
     '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button></section>"
   );
 }
 
+function profRow(label, value, detail, color) {
+  return (
+    '<div class="prof-row">' +
+    '<span class="prof-k">' + label + "</span>" +
+    '<b' + (color ? ' style="color:' + color + '"' : "") + ">" + value + "</b>" +
+    (detail ? '<span class="prof-d">' + detail + "</span>" : "") +
+    "</div>"
+  );
+}
+
+function leakDrillBtn(courseId, leak) {
+  return (
+    '<button type="button" class="leak-drill" data-drill="1" data-drill-course="' +
+    courseId +
+    '" data-drill-leak="' +
+    (leak || "") +
+    '">' +
+    t("leak.drill") +
+    "</button>"
+  );
+}
+
+function renderProfileCard() {
+  const p = Coach.buildProfile(Engine.store);
+  if (!p.ready) {
+    return '<p class="coach-note">' + t("prof.empty", { need: p.need }) + "</p>";
+  }
+  let styleText = t("prof.balanced");
+  let styleColor = p.styleColor;
+  if (p.styleKey === "profTight") {
+    styleText = t("prof.tight", { p: p.tightPct });
+    styleColor = "#34b074";
+  } else if (p.styleKey === "profLoose") {
+    styleText = t("prof.loose", { p: p.loosePct });
+    styleColor = "#d23b46";
+  } else if (p.styleKey === "profPending") {
+    styleText = t("prof.pending");
+    styleColor = "var(--muted)";
+  }
+  let html = profRow(t("prof.style"), styleText, "", styleColor);
+  html += profRow(t("prof.acc"), p.acc + "%", t("prof.cum", { n: p.totalQ }));
+  if (p.best) html += profRow(t("prof.best"), t(p.best.titleKey), p.best.acc + "%", "var(--best)");
+  if (p.worst) html += profRow(t("prof.worst"), t(p.worst.titleKey), p.worst.acc + "%", "var(--wrong)");
+  if (p.weakStreet) html += profRow(t("prof.stWeak"), t("prof.st." + p.weakStreet.street), p.weakStreet.acc + "%", "var(--wrong)");
+  if (p.strongStreet) html += profRow(t("prof.stStrong"), t("prof.st." + p.strongStreet.street), p.strongStreet.acc + "%", "var(--best)");
+  html += '<p class="coach-note">' + t("prof.note") + "</p>";
+  return html;
+}
+
+function renderLeakCard() {
+  const agg = Coach.aggregateLeaks(Engine.store);
+  if (!agg.total) {
+    return '<p class="coach-note">' + t("leak.empty") + "</p>";
+  }
+  const topMeta = Coach.leakMeta(agg.topKey);
+  const topName = Coach.leakLabel(agg.topKey);
+  let html =
+    '<p class="coach-note">' +
+    t("leak.top", { c: topMeta.color, name: topName, n: agg.total }) +
+    "</p>";
+  const max = Math.max(...agg.order.map((k) => agg.counts[k]), 1);
+  html += agg.order
+    .map((k) => {
+      const meta = Coach.leakMeta(k);
+      const pct = Math.round((agg.counts[k] / max) * 100);
+      return (
+        '<div class="leak-row">' +
+        '<span class="leak-lab">' +
+        Coach.leakLabel(k) +
+        "</span>" +
+        '<span class="leak-trk"><i style="width:' +
+        pct +
+        "%;background:" +
+        meta.color +
+        '"></i></span>' +
+        '<span class="leak-n">' +
+        agg.counts[k] +
+        "</span></div>"
+      );
+    })
+    .join("");
+  const missed = Coach.topMissed(Engine.store, 5);
+  if (missed.length) {
+    html += '<div class="leak-sub">' + t("leak.worstQs") + "</div>";
+    html += missed
+      .map((r) => {
+        return (
+          '<div class="leak-hand">' +
+          '<span class="leak-qid">' +
+          Coach.questionTitle(r.courseId, r.qid) +
+          '</span><span class="leak-x">×' +
+          (r.wrong || 1) +
+          "</span>" +
+          leakDrillBtn(r.courseId, r.leak) +
+          "</div>"
+        );
+      })
+      .join("");
+  }
+  return html;
+}
+
+function renderPlanCard() {
+  const plan = Coach.buildPlan(Engine.store);
+  if (!plan.ready) {
+    return '<p class="coach-note">' + t("plan.empty") + "</p>";
+  }
+  let html = '<p class="coach-note">' + t("plan.head") + "</p>";
+  plan.items.forEach((item, i) => {
+    const course = courseById(item.courseId);
+    const accTxt = item.acc != null ? t("plan.acc", { p: item.acc }) : "";
+    html +=
+      '<div class="leak-hand">' +
+      '<span class="plan-rank">' +
+      (i + 1) +
+      "</span>" +
+      '<span class="plan-sp">' +
+      (course ? t(course.titleKey) : item.courseId) +
+      " · " +
+      Coach.leakLabel(item.leak) +
+      '<br><span class="plan-meta">' +
+      accTxt +
+      t("plan.errs", { n: item.items }) +
+      "</span></span>" +
+      leakDrillBtn(item.courseId, item.leak) +
+      "</div>";
+  });
+  return html;
+}
+
 function renderStats() {
   const s = Engine.store.stats;
-  const leaks = Object.entries(Engine.store.leaks || {})
-    .sort((a, b) => b[1] - a[1])
-    .map(([k, v]) => '<li><span>' + (t("leak." + k) || k) + "</span><b>" + v + "</b></li>")
-    .join("");
+  const reviewN = Engine.store.reviewPile.length;
 
   return (
     '<section class="screen stats-screen">' +
     "<h2>" + t("stats.title") + "</h2>" +
-    '<ul class="stat-list">' +
-    "<li><span>" + t("stats.coursesDone") + "</span><b>" + (s.coursesDone || 0) + " / 12</b></li>" +
-    "<li><span>" + t("stats.totalQ") + "</span><b>" + (s.totalQ || 0) + "</b></li>" +
-    "<li><span>" + t("stats.overallAcc") + "</span><b>" + Engine.overallAccuracy() + "%</b></li>" +
-    "</ul>" +
-    (leaks ? "<h3>Leaks</h3><ul class='stat-list'>" + leaks + "</ul>" : "") +
-    '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button></section>"
+    '<div class="stat-tiles">' +
+    '<div class="stat-tile"><div class="v">' +
+    (s.coursesDone || 0) +
+    '/12</div><div class="k">' +
+    t("stats.coursesDone") +
+    "</div></div>" +
+    '<div class="stat-tile"><div class="v">' +
+    (s.totalQ || 0) +
+    '</div><div class="k">' +
+    t("stats.totalQ") +
+    "</div></div>" +
+    '<div class="stat-tile"><div class="v">' +
+    Engine.overallAccuracy() +
+    '%</div><div class="k">' +
+    t("stats.overallAcc") +
+    "</div></div>" +
+    "</div>" +
+    '<article class="coach-card"><h3>' +
+    t("stats.profileTitle") +
+    "</h3>" +
+    renderProfileCard() +
+    "</article>" +
+    '<article class="coach-card"><h3>' +
+    t("stats.planTitle") +
+    "</h3>" +
+    renderPlanCard() +
+    "</article>" +
+    '<article class="coach-card"><h3>' +
+    t("stats.leaksTitle") +
+    "</h3>" +
+    renderLeakCard() +
+    "</article>" +
+    bottomNav("stats", reviewN) +
+    "</section>"
   );
 }
 
@@ -271,6 +426,14 @@ function bindEvents() {
   });
   $$("[data-choice]").forEach((el) => {
     el.onclick = () => submitChoice(el.getAttribute("data-choice"));
+  });
+  $$("[data-drill]").forEach((el) => {
+    el.onclick = () => {
+      const courseId = el.getAttribute("data-drill-course");
+      const leak = el.getAttribute("data-drill-leak");
+      Engine.startReview({ courseId, leak: leak || undefined });
+      render();
+    };
   });
 
   const spotMount = $("#spot-mount");
@@ -314,6 +477,7 @@ function handleAction(action, el) {
     case "back-courses":
       Engine.screen = "courses";
       Engine.reviewMode = false;
+      Engine.reviewFilter = null;
       _pendingFeedback = null;
       break;
     case "next-q":

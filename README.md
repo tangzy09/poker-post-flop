@@ -16,6 +16,7 @@ Bilingual (English / 中文) **heads-up post-flop trainer**: 12 lessons, theory 
 - Learn → drill flow with per-lesson summaries; **review lessons** anytime after the first pass
 - Poker table visualization (HU spots + multi-way table demo)
 - C3 range / equity chart (`js/range-chart.js` + `js/equity.js`)
+- **Profile, leak analysis, training plan** on Stats tab (`js/coach.js`)
 - Progress saved in browser `localStorage`
 - Automated content validation (`npm test`, `npm run audit`)
 
@@ -48,6 +49,7 @@ js/
   courses.js          12-lesson metadata
   content.js          Theory slides + all 288 questions  ← question bank
   engine.js           Progress, grading, review
+  coach.js            Profile, leaks, training plan
   table.js            Table / spot rendering
   equity.js           Hold'em equity engine (C3 chart)
   range-chart.js      C3 range visualization

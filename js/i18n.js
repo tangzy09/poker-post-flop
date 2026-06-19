@@ -137,6 +137,10 @@ reg("stats.title", "Your stats", "你的统计");
 reg("stats.coursesDone", "Courses completed", "已完成课程");
 reg("stats.totalQ", "Questions answered", "答题总数");
 reg("stats.overallAcc", "Overall accuracy", "总准确率");
+reg("stats.profileTitle", "Profile", "个人画像");
+reg("stats.planTitle", "Training plan", "训练计划");
+reg("stats.leaksTitle", "Your leaks", "你的漏洞");
+reg("stats.vsRef", "vs reference lines", "vs 参考线");
 
 reg("leak.too_tight", "Defending too tight", "防守过紧");
 reg("leak.too_loose", "Continuing too loose", "跟注/继续过松");
@@ -144,6 +148,54 @@ reg("leak.sizing", "Bet sizing", "下注尺寸");
 reg("leak.range_blind", "Missed range advantage", "忽视范围优势");
 reg("leak.street_plan", "Multi-street plan", "多街计划");
 reg("leak.concept_gap", "Concept gap", "概念缺口");
+reg("leak.texture", "Board texture", "牌面结构");
+reg("leak.cbet", "C-bet timing", "持续下注时机");
+reg("leak.indifference", "Indifference / mixing", "无差异 / 混合");
+reg("leak.mdf", "MDF / defense frequency", "MDF / 防守频率");
+reg("leak.other", "Other", "其他");
+
+reg("leakDesc.too_tight", "Folding or checking when you should continue", "该继续时弃牌或过牌");
+reg("leakDesc.too_loose", "Calling or betting when you should fold", "该弃牌时跟注或下注");
+reg("leakDesc.sizing", "Bet size too big or too small for the spot", "下注尺寸与局面不匹配");
+reg("leakDesc.range_blind", "Missing who has range or nut advantage", "没看清范围/坚果优势归属");
+reg("leakDesc.street_plan", "Turn/river plan breaks down", "转牌/河牌多街计划断裂");
+reg("leakDesc.concept_gap", "Core concept not yet solid", "核心概念尚未稳固");
+reg("leakDesc.texture", "Misread dry vs wet boards", "干燥/湿润牌面误读");
+reg("leakDesc.cbet", "Auto c-bet or give up at wrong times", "持续下注时机错误");
+reg("leakDesc.indifference", "Mixing / indifference mistakes", "混合 / 无差异决策失误");
+reg("leakDesc.mdf", "Defense frequency vs bet size", "防守频率与下注尺寸");
+reg("leakDesc.other", "Miscellaneous decision errors", "其他决策失误");
+
+reg("leak.top", "Biggest leak: <b style=\"color:{c}\">{name}</b> ({n} misses · vs reference lines)", "最大漏洞：<b style=\"color:{c}\">{name}</b>（{n} 次失误 · vs 参考线）");
+reg("leak.worstQs", "Most-missed questions", "最常错的题");
+reg("leak.empty", "No leak data yet — missed questions are collected here automatically.", "还没有漏洞数据——训练里答错的题会自动收进来。");
+reg("leak.drill", "Drill", "去练");
+
+reg("prof.empty", "Answer {need}+ questions to generate your profile.", "练够 {need} 题后这里生成你的画像。");
+reg("prof.style", "Defense style", "防守倾向");
+reg("prof.pending", "Need more data", "样本不足");
+reg("prof.balanced", "Fairly balanced", "较均衡");
+reg("prof.tight", "Tends tight ({p}% of defend leaks)", "偏紧（防守类失误 {p}%）");
+reg("prof.loose", "Tends loose ({p}% of defend leaks)", "偏松（继续类失误 {p}%）");
+reg("prof.acc", "Accuracy", "准确率");
+reg("prof.cum", "{n} questions total", "累计 {n} 题");
+reg("prof.best", "Strongest course", "最强课程");
+reg("prof.worst", "Weakest course", "最弱课程");
+reg("prof.stWeak", "Weakest street", "最弱街道");
+reg("prof.stStrong", "Strongest street", "最强街道");
+reg("prof.st.flop", "Flop", "翻牌");
+reg("prof.st.turn", "Turn", "转牌");
+reg("prof.st.river", "River", "河牌");
+reg("prof.st.concept", "Concept MCQ", "概念选择");
+reg("prof.note", "Based on reference training lines — not solver-exact.", "基于参考训练线 — 非 solver 精确解。");
+
+reg("plan.empty", "No items yet — mistakes build your plan automatically.", "还没有计划项——错题会自动生成训练计划。");
+reg("plan.head", "Ranked by misses + low course accuracy (top 5):", "按失误次数 + 课准确率低排序（前 5）：");
+reg("plan.acc", "{p}% acc · ", "{p}% 准确 · ");
+reg("plan.errs", "{n} in review pile", "复习堆 {n} 题");
+reg("plan.drill", "Drill", "去练");
+
+reg("review.emptyFilter", "No matching mistakes in your review pile.", "复习堆里没有符合条件的错题。");
 
 // —— 12 courses ——
 reg("c1.title", "Pot Odds & MDF", "底池赔率与 MDF");
