@@ -94,26 +94,97 @@ test("startReview matches missing leak as other", () => {
   assert.equal(Engine.reviewQueue[0].id, "c4-q1");
 });
 
-test("finishReview does not mark course completed", () => {
+test("finishReviewSession shows summary and keeps reviewReturnTo", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();
   Engine.courseId = "c1";
   Engine.reviewMode = true;
   Engine.reviewReturnTo = "stats";
-  Engine.finishReview();
+  Engine.answers = [
+    { qid: "c2-q1", ok: true },
+    { qid: "c2-q2", ok: false },
+    { qid: "c2-q3", ok: true },
+  ];
+  Engine.reviewSessionMastered = 1;
+  Engine.finishReviewSession();
   assert.equal(Engine.getProgress("c1").completed, false);
+  assert.equal(Engine.screen, "review-over");
+  assert.equal(Engine.reviewReturnTo, "stats");
+  assert.equal(Engine.reviewSummary.correct, 2);
+  assert.equal(Engine.reviewSummary.total, 3);
+  assert.equal(Engine.reviewSummary.pct, 67);
+  assert.equal(Engine.reviewSummary.mastered, 1);
+  Engine.exitReviewFlow();
   assert.equal(Engine.screen, "stats");
-  assert.equal(Engine.reviewMode, false);
+  assert.equal(Engine.reviewSummary, null);
+});
+
+test("onReviewCorrect counts session mastered", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  const rec = { courseId: "c2", qid: "c2-q1", streak: 1, wrong: 1 };
+  Engine.store.reviewPile = [rec];
+  Engine.reviewSessionMastered = 0;
+  Engine.onReviewCorrect(rec);
+  assert.equal(rec.streak, 2);
+  assert.equal(Engine.store.reviewPile.length, 0);
+  assert.equal(Engine.reviewSessionMastered, 1);
 });
 
 test("startReview returns to review screen when launched from review", () => {
-  const { Engine, getQuestions } = loadEngine();
+  const { Engine } = loadEngine();
   Engine.store = freshStore();
   Engine.store.reviewPile = [{ courseId: "c2", qid: "c2-q1", wrong: 1, streak: 0, leak: "too_tight" }];
   Engine.screen = "review";
   Engine.startReview({ courseId: "c2" });
   assert.equal(Engine.reviewReturnTo, "review");
   assert.equal(Engine.reviewMode, true);
+});
+
+test("startReview empty filter keeps reviewReturnTo for review-empty back", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.store.reviewPile = [{ courseId: "c2", qid: "c2-q1", wrong: 1, streak: 0, leak: "too_tight" }];
+  Engine.screen = "stats";
+  Engine.startReview({ courseId: "c99" });
+  assert.equal(Engine.screen, "review-empty");
+  assert.equal(Engine.reviewReturnTo, "stats");
+  assert.equal(Engine.reviewMode, false);
+});
+
+test("exitReviewFlow returns to reviewReturnTo from review-empty", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.screen = "review-empty";
+  Engine.reviewReturnTo = "stats";
+  Engine.reviewFilter = { courseId: "c1" };
+  Engine.exitReviewFlow();
+  assert.equal(Engine.screen, "stats");
+  assert.equal(Engine.reviewReturnTo, null);
+  assert.equal(Engine.reviewFilter, null);
+});
+
+test("exitReviewFlow returns to review when cancelled mid review drill", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.reviewMode = true;
+  Engine.screen = "drill";
+  Engine.reviewReturnTo = "review";
+  Engine.reviewQueue = [{}];
+  Engine.exitReviewFlow();
+  assert.equal(Engine.screen, "review");
+  assert.equal(Engine.reviewMode, false);
+  assert.equal(Engine.reviewQueue.length, 0);
+});
+
+test("removeFromPile removes matching record", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  const rec = { courseId: "c2", qid: "c2-q1", wrong: 1 };
+  Engine.store.reviewPile = [rec, { courseId: "c5", qid: "c5-q1", wrong: 1 }];
+  Engine.removeFromPile(rec);
+  assert.equal(Engine.store.reviewPile.length, 1);
+  assert.equal(Engine.store.reviewPile[0].courseId, "c5");
 });
 
 test("_migrateStore backfills statsByCourse from completed progress", () => {

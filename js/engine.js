@@ -208,19 +208,45 @@ const Engine = {
     this.courseId = this.reviewQueue[0]._courseId;
     this.qIdx = 0;
     this.answers = [];
+    this.reviewSummary = null;
+    this.reviewSessionMastered = 0;
     this.screen = "drill";
   },
 
-  finishReview() {
+  finishReviewSession() {
+    const correct = this.answers.filter((a) => a.ok).length;
+    const total = this.answers.length;
+    this.reviewSummary = {
+      correct,
+      total,
+      pct: total ? Math.round((correct / total) * 100) : 0,
+      remaining: this.store.reviewPile.length,
+      mastered: this.reviewSessionMastered || 0,
+    };
+    this.reviewMode = false;
+    this.reviewQueue = [];
+    this.qIdx = 0;
+    this.answers = [];
+    this.screen = "review-over";
+    this.save();
+  },
+
+  exitReviewFlow() {
     const returnTo = this.reviewReturnTo || "courses";
     this.reviewMode = false;
     this.reviewQueue = [];
     this.reviewFilter = null;
     this.reviewReturnTo = null;
+    this.reviewSummary = null;
+    this.reviewSessionMastered = 0;
     this.qIdx = 0;
     this.answers = [];
     this.screen = returnTo;
     this.save();
+  },
+
+  finishReview() {
+    this.finishReviewSession();
   },
 
   removeFromPile(rec) {
@@ -234,6 +260,7 @@ const Engine = {
     rec.streak = (rec.streak || 0) + 1;
     if (rec.streak >= MASTER_STREAK) {
       this.store.reviewPile = this.store.reviewPile.filter((r) => !(r.qid === rec.qid && r.courseId === rec.courseId));
+      this.reviewSessionMastered = (this.reviewSessionMastered || 0) + 1;
     }
     this.save();
   },

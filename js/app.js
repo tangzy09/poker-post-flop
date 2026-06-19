@@ -28,6 +28,9 @@ function render() {
     case "review":
       root.innerHTML = renderReviewDetail();
       break;
+    case "review-over":
+      root.innerHTML = renderReviewOver();
+      break;
     case "stats":
       root.innerHTML = renderStats();
       break;
@@ -126,7 +129,7 @@ function renderDrill() {
   const qs = Engine.currentQuestions();
   const q = qs[Engine.qIdx];
   if (!q) {
-    if (Engine.reviewMode) Engine.finishReview();
+    if (Engine.reviewMode) Engine.finishReviewSession();
     else Engine.finishDrill();
     render();
     return "";
@@ -221,6 +224,27 @@ function renderOver() {
       : "") +
     '<button class="btn secondary" data-action="start-learn" data-id="' + Engine.courseId + '">' + t("course.reviewLearn") + "</button>" +
     '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button></section>"
+  );
+}
+
+function renderReviewOver() {
+  const s = Engine.reviewSummary || { correct: 0, total: 0, pct: 0, remaining: 0, mastered: 0 };
+  const remainingLine = s.remaining
+    ? '<p class="muted">' + t("review.over.remaining", { n: s.remaining }) + "</p>"
+    : '<p class="muted review-cleared">' + t("review.over.cleared") + "</p>";
+  const masteredLine =
+    s.mastered > 0
+      ? '<p class="muted">' + t("review.over.mastered", { n: s.mastered, m: MASTER_STREAK }) + "</p>"
+      : "";
+
+  return (
+    '<section class="screen over-screen">' +
+    "<h2>" + t("review.over.title") + "</h2>" +
+    '<p class="big-score">' + t("over.accuracy", { pct: s.pct }) + "</p>" +
+    '<p class="muted">' + t("review.over.score", { n: s.correct, total: s.total }) + "</p>" +
+    masteredLine +
+    remainingLine +
+    '<button class="btn primary" data-action="review-done">' + t("review.over.done") + "</button></section>"
   );
 }
 
@@ -574,19 +598,26 @@ function handleAction(action, el) {
       Engine.finishLearn();
       break;
     case "back-courses":
-      Engine.screen = "courses";
-      Engine.reviewMode = false;
-      Engine.reviewFilter = null;
-      Engine.reviewReturnTo = null;
       _pendingFeedback = null;
+      if (Engine.reviewMode || Engine.screen === "review-empty") {
+        Engine.exitReviewFlow();
+      } else {
+        Engine.screen = "courses";
+        Engine.reviewMode = false;
+        Engine.reviewFilter = null;
+        Engine.reviewReturnTo = null;
+      }
       break;
     case "next-q":
       _pendingFeedback = null;
       Engine.qIdx++;
       if (Engine.qIdx >= Engine.currentQuestions().length) {
-        if (Engine.reviewMode) Engine.finishReview();
+        if (Engine.reviewMode) Engine.finishReviewSession();
         else Engine.finishDrill();
       } else Engine.screen = "drill";
+      break;
+    case "review-done":
+      Engine.exitReviewFlow();
       break;
     case "review-mistakes":
       Engine.startReview({ courseId: Engine.courseId });
@@ -602,9 +633,6 @@ function handleAction(action, el) {
       const qid = el.getAttribute("data-qid");
       const rec = Engine.store.reviewPile.find((r) => r.courseId === courseId && r.qid === qid);
       if (rec) Engine.removeFromPile(rec);
-      if (!Engine.store.reviewPile.length && Engine.screen === "review") {
-        /* stay on review screen with empty state */
-      }
       break;
     }
   }

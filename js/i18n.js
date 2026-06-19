@@ -208,6 +208,12 @@ reg("review.chipMaster", "streak {s}/{m}", "连对 {s}/{m}");
 reg("review.remove", "Remove from pile", "从复习堆移除");
 reg("review.openPile", "Open review pile", "打开复习堆");
 reg("review.emptyFilter", "No matching mistakes in your review pile.", "复习堆里没有符合条件的错题。");
+reg("review.over.title", "Review session complete", "复习完成");
+reg("review.over.score", "This session: {n} / {total} correct", "本次 {n} / {total} 答对");
+reg("review.over.remaining", "{n} left in review pile", "复习堆还剩 {n} 题");
+reg("review.over.cleared", "Review pile cleared — nice work!", "复习堆已清空，干得漂亮！");
+reg("review.over.mastered", "{n} mastered ({m} correct in a row)", "{n} 题已掌握（连对 {m} 次）");
+reg("review.over.done", "Done", "完成");
 
 // —— 12 courses ——
 reg("c1.title", "Pot Odds & MDF", "底池赔率与 MDF");
