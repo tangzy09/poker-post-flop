@@ -346,7 +346,8 @@
     .prof-k { font-size: .78rem; color: var(--muted); }
     .prof-d { grid-column: 2; font-size: .72rem; color: var(--muted); }
     .leak-row { display: flex; align-items: center; gap: 9px; margin: 7px 0; }
-    .leak-lab { font-size: .78rem; min-width: 96px; color: var(--ink, #e8ecf0); flex-shrink: 0; }
+    .leak-lab { font-size: .78rem; min-width: 96px; color: var(--ink, #e8ecf0); flex-shrink: 0; display: flex; flex-direction: column; gap: 2px; }
+    .leak-desc { font-size: .65rem; color: var(--muted); line-height: 1.25; font-weight: 400; }
     .leak-trk { flex: 1; height: 10px; border-radius: 6px; background: rgba(255,255,255,.06); overflow: hidden; }
     .leak-trk i { display: block; height: 100%; border-radius: 6px; }
     .leak-n { font-variant-numeric: tabular-nums; font-weight: 700; font-size: .78rem; min-width: 22px; text-align: right; color: var(--gold); }

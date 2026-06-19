@@ -123,18 +123,20 @@ function renderDrill() {
   const qs = Engine.currentQuestions();
   const q = qs[Engine.qIdx];
   if (!q) {
-    Engine.finishDrill();
+    if (Engine.reviewMode) Engine.finishReview();
+    else Engine.finishDrill();
     render();
     return "";
   }
 
-  const course = courseById(Engine.courseId);
-  const p = Engine.getProgress(Engine.courseId);
+  const drillCourseId = q._courseId || Engine.courseId;
+  const course = courseById(drillCourseId);
+  const p = Engine.getProgress(drillCourseId);
   let body = "";
 
   if (q.spot) {
     body += '<div id="spot-mount" class="spot-mount"></div>';
-    if (Engine.courseId === "c3" && q.spot.board && q.spot.board.length >= 3) {
+    if (drillCourseId === "c3" && q.spot.board && q.spot.board.length >= 3) {
       body += '<div id="range-chart-mount" class="range-chart-mount"></div>';
     }
   }
@@ -161,7 +163,7 @@ function renderDrill() {
 
   const learnBtn =
     !Engine.reviewMode && p.learnDone
-      ? '<button class="btn secondary drill-learn-btn" data-action="start-learn" data-id="' + Engine.courseId + '">' + t("learn.backToLearn") + "</button>"
+      ? '<button class="btn secondary drill-learn-btn" data-action="start-learn" data-id="' + drillCourseId + '">' + t("learn.backToLearn") + "</button>"
       : "";
 
   return (
@@ -293,10 +295,12 @@ function renderLeakCard() {
     .map((k) => {
       const meta = Coach.leakMeta(k);
       const pct = Math.round((agg.counts[k] / max) * 100);
+      const desc = t(meta.descKey);
       return (
         '<div class="leak-row">' +
         '<span class="leak-lab">' +
         Coach.leakLabel(k) +
+        (desc ? '<span class="leak-desc">' + desc + "</span>" : "") +
         "</span>" +
         '<span class="leak-trk"><i style="width:' +
         pct +
@@ -478,13 +482,14 @@ function handleAction(action, el) {
       Engine.screen = "courses";
       Engine.reviewMode = false;
       Engine.reviewFilter = null;
+      Engine.reviewReturnTo = null;
       _pendingFeedback = null;
       break;
     case "next-q":
       _pendingFeedback = null;
       Engine.qIdx++;
       if (Engine.qIdx >= Engine.currentQuestions().length) {
-        if (Engine.reviewMode) Engine.screen = "courses";
+        if (Engine.reviewMode) Engine.finishReview();
         else Engine.finishDrill();
       } else Engine.screen = "drill";
       break;

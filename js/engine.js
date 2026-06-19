@@ -3,6 +3,10 @@ const STORE_KEY = "pokerPostFlop_v1";
 const STORE_KEY_LEGACY = "postflopCoach_v1";
 const MASTER_STREAK = 2;
 
+function normalizeLeak(leak) {
+  return leak || "other";
+}
+
 const Engine = {
   screen: "courses",
   courseId: null,
@@ -27,10 +31,17 @@ const Engine = {
   _migrateStore() {
     if (!this.store.statsByCourse) this.store.statsByCourse = {};
     if (!this.store.statsByStreet) this.store.statsByStreet = {};
-    if (!this.store.leaks) this.store.leaks = {};
     (this.store.reviewPile || []).forEach((r) => {
       if (!r.wrong) r.wrong = 1;
+      r.leak = normalizeLeak(r.leak);
     });
+    delete this.store.leaks;
+    for (const c of COURSES) {
+      const p = this.store.progress[c.id];
+      if (p && p.total && !(this.store.statsByCourse[c.id] && this.store.statsByCourse[c.id].h)) {
+        this.store.statsByCourse[c.id] = { h: p.total, c: p.correct || 0 };
+      }
+    }
   },
 
   save() {
@@ -46,8 +57,11 @@ const Engine = {
       stats: { totalQ: 0, correctQ: 0, coursesDone: 0 },
       statsByCourse: {},
       statsByStreet: {},
-      leaks: {},
     };
+  },
+
+  questionCourseId(question) {
+    return question._courseId || this.courseId;
   },
 
   getProgress(courseId) {
@@ -102,28 +116,34 @@ const Engine = {
 
   recordAnswer(question, choice, result) {
     this.answers.push({ qid: question.id, choice, ok: result.ok });
-    this.store.stats.totalQ++;
-    if (result.ok) this.store.stats.correctQ++;
+    const cid = this.questionCourseId(question);
 
-    const cid = this.courseId || question._courseId;
-    if (cid) {
-      if (!this.store.statsByCourse[cid]) this.store.statsByCourse[cid] = { h: 0, c: 0 };
-      this.store.statsByCourse[cid].h++;
-      if (result.ok) this.store.statsByCourse[cid].c++;
+    if (!this.reviewMode) {
+      this.store.stats.totalQ++;
+      if (result.ok) this.store.stats.correctQ++;
+      if (cid) {
+        if (!this.store.statsByCourse[cid]) this.store.statsByCourse[cid] = { h: 0, c: 0 };
+        this.store.statsByCourse[cid].h++;
+        if (result.ok) this.store.statsByCourse[cid].c++;
+      }
+      const street = question.spot?.street || (question.type === "choice" ? "concept" : "flop");
+      if (!this.store.statsByStreet[street]) this.store.statsByStreet[street] = { h: 0, c: 0 };
+      this.store.statsByStreet[street].h++;
+      if (result.ok) this.store.statsByStreet[street].c++;
     }
-    const street = question.spot?.street || (question.type === "choice" ? "concept" : "flop");
-    if (!this.store.statsByStreet[street]) this.store.statsByStreet[street] = { h: 0, c: 0 };
-    this.store.statsByStreet[street].h++;
-    if (result.ok) this.store.statsByStreet[street].c++;
 
     if (!result.ok) {
-      this.addMistake(question, choice);
-      if (!this.reviewMode) {
+      if (this.reviewMode && question._rec) {
+        question._rec.streak = 0;
+        question._rec.choice = choice;
+        question._rec.wrong = (question._rec.wrong || 1) + 1;
+      } else if (!this.reviewMode && cid) {
         const existing = this.store.reviewPile.find((r) => r.qid === question.id && r.courseId === cid);
         if (existing) {
           existing.streak = 0;
           existing.choice = choice;
           existing.wrong = (existing.wrong || 1) + 1;
+          existing.leak = normalizeLeak(question.leak || existing.leak);
         } else {
           this.store.reviewPile.push({
             courseId: cid,
@@ -131,20 +151,12 @@ const Engine = {
             choice,
             streak: 0,
             wrong: 1,
-            leak: question.leak,
+            leak: normalizeLeak(question.leak),
           });
         }
       }
     }
-    const leak = question.leak || "other";
-    if (!result.ok) {
-      this.store.leaks[leak] = (this.store.leaks[leak] || 0) + 1;
-    }
     this.save();
-  },
-
-  addMistake(question, choice) {
-    /* recorded in reviewPile */
   },
 
   finishLearn() {
@@ -173,9 +185,11 @@ const Engine = {
 
   startReview(filter) {
     this.reviewFilter = filter || null;
+    this.reviewReturnTo = filter ? "stats" : "courses";
+    const wantLeak = filter?.leak ? normalizeLeak(filter.leak) : null;
     const pile = this.store.reviewPile.filter((r) => {
       if (filter?.courseId && r.courseId !== filter.courseId) return false;
-      if (filter?.leak && r.leak !== filter.leak) return false;
+      if (wantLeak && normalizeLeak(r.leak) !== wantLeak) return false;
       return true;
     });
     this.reviewQueue = pile
@@ -193,6 +207,18 @@ const Engine = {
     this.qIdx = 0;
     this.answers = [];
     this.screen = "drill";
+  },
+
+  finishReview() {
+    const returnTo = this.reviewReturnTo || "courses";
+    this.reviewMode = false;
+    this.reviewQueue = [];
+    this.reviewFilter = null;
+    this.reviewReturnTo = null;
+    this.qIdx = 0;
+    this.answers = [];
+    this.screen = returnTo;
+    this.save();
   },
 
   onReviewCorrect(rec) {
