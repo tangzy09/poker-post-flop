@@ -370,6 +370,45 @@
     }
     .leak-drill:hover { background: rgba(232,198,106,.12); }
 
+    .sbar { display: flex; align-items: center; gap: 9px; font-size: .78rem; margin: 6px 0; }
+    .sbar-nm {
+      flex: none; width: 108px; color: var(--ink, #e8ecf0);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .sbar-trk { flex: 1; height: 12px; background: rgba(255,255,255,.07); border-radius: 7px; overflow: hidden; }
+    .sbar-fil { display: block; height: 100%; border-radius: 7px; background: linear-gradient(90deg, var(--gold), var(--best)); }
+    .sbar-pct { flex: none; width: 72px; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; font-size: .72rem; }
+
+    .review-screen { padding-bottom: 72px; }
+    .review-sub { margin: 0 0 14px; font-size: .85rem; }
+    .review-actions { margin: 16px 0 8px; }
+    .review-all-btn { width: 100%; }
+    .review-all-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .rv-group {
+      background: rgba(0,0,0,.22); border: 1px solid var(--line); border-radius: 13px;
+      padding: 11px 13px; margin-bottom: 12px;
+    }
+    .rv-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .rv-head b { font-size: .88rem; }
+    .rv-mini {
+      flex: none; background: var(--best); color: #1a1410; border: none; border-radius: 8px;
+      padding: 5px 10px; font-weight: 700; font-size: .72rem; cursor: pointer;
+    }
+    .rv-mini:hover { filter: brightness(1.05); }
+    .rv-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .rv-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 8px;
+      padding: 5px 8px; font-size: .78rem; font-variant-numeric: tabular-nums;
+    }
+    .rv-wn { color: var(--wrong); font-size: .68rem; font-weight: 700; }
+    .rv-st { color: var(--best); font-size: .68rem; }
+    .rv-del {
+      appearance: none; border: none; background: transparent; cursor: pointer;
+      color: var(--muted); font-weight: 700; padding: 0 2px; line-height: 1;
+    }
+    .rv-del:hover { color: var(--wrong); }
+
     /* C3 range / equity chart */
     .range-chart-mount { margin: 12px 0; }
     .range-chart {

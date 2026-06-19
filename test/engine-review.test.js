@@ -106,6 +106,16 @@ test("finishReview does not mark course completed", () => {
   assert.equal(Engine.reviewMode, false);
 });
 
+test("startReview returns to review screen when launched from review", () => {
+  const { Engine, getQuestions } = loadEngine();
+  Engine.store = freshStore();
+  Engine.store.reviewPile = [{ courseId: "c2", qid: "c2-q1", wrong: 1, streak: 0, leak: "too_tight" }];
+  Engine.screen = "review";
+  Engine.startReview({ courseId: "c2" });
+  assert.equal(Engine.reviewReturnTo, "review");
+  assert.equal(Engine.reviewMode, true);
+});
+
 test("_migrateStore backfills statsByCourse from completed progress", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();

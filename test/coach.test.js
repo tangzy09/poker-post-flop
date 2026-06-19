@@ -85,3 +85,31 @@ test("Coach.aggregateLeaks weights wrong count", () => {
   assert.equal(agg.counts.sizing, 5);
   assert.equal(agg.topKey, "sizing");
 });
+
+test("Coach.courseBarRows sorts by accuracy", () => {
+  const { Coach } = loadCoach();
+  const rows = Coach.courseBarRows({
+    statsByCourse: {
+      c1: { h: 10, c: 8 },
+      c5: { h: 10, c: 5 },
+    },
+  });
+  assert.equal(rows.length, 2);
+  assert.equal(rows[0].courseId, "c1");
+  assert.equal(rows[0].pct, 80);
+});
+
+test("Coach.reviewByCourse groups pile items", () => {
+  const { Coach } = loadCoach();
+  const groups = Coach.reviewByCourse({
+    reviewPile: [
+      { courseId: "c9", qid: "c9-q1", wrong: 2 },
+      { courseId: "c5", qid: "c5-q1", wrong: 1 },
+      { courseId: "c9", qid: "c9-q2", wrong: 1 },
+    ],
+  });
+  assert.equal(groups.length, 2);
+  assert.equal(groups[0].courseId, "c9");
+  assert.equal(groups[0].items.length, 2);
+  assert.equal(groups[1].courseId, "c5");
+});

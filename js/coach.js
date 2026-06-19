@@ -160,4 +160,40 @@ const Coach = {
     items.sort((a, b) => b.score - a.score);
     return { ready: true, items: items.slice(0, 5) };
   },
+
+  reviewByCourse(store) {
+    const groups = {};
+    (store.reviewPile || []).forEach((r) => {
+      if (!groups[r.courseId]) groups[r.courseId] = [];
+      groups[r.courseId].push(r);
+    });
+    return COURSES.filter((c) => groups[c.id])
+      .map((c) => ({
+        courseId: c.id,
+        titleKey: c.titleKey,
+        order: c.order,
+        items: groups[c.id].sort((a, b) => (b.wrong || 1) - (a.wrong || 1)),
+      }))
+      .sort((a, b) => {
+        const sum = (items) => items.reduce((s, r) => s + (r.wrong || 1), 0);
+        return sum(b.items) - sum(a.items) || a.order - b.order;
+      });
+  },
+
+  courseBarRows(store) {
+    const by = store.statsByCourse || {};
+    return COURSES.map((c) => {
+      const s = by[c.id];
+      if (!s || !s.h) return null;
+      return {
+        courseId: c.id,
+        titleKey: c.titleKey,
+        order: c.order,
+        pct: Math.round((s.c / s.h) * 100),
+        h: s.h,
+      };
+    })
+      .filter(Boolean)
+      .sort((a, b) => b.pct - a.pct || a.order - b.order);
+  },
 };

@@ -195,6 +195,18 @@ reg("plan.acc", "{p}% acc · ", "{p}% 准确 · ");
 reg("plan.errs", "{n} in review pile", "复习堆 {n} 题");
 reg("plan.drill", "Drill", "去练");
 
+reg("stats.courseAccTitle", "Accuracy by course", "各课准确率");
+reg("stats.noCourseData", "No per-course stats yet — answer questions in any lesson.", "还没有按课统计数据——先做任意课的题目。");
+reg("stats.barPct", "{p}% · {h} Q", "{p}% · {h} 题");
+
+reg("review.title", "Review pile", "复习堆");
+reg("review.subtitle", "Grouped by course — drill a group or remove mastered items.", "按课程分组 — 可分组练习或移除已掌握的题。");
+reg("review.all", "Review all ({n})", "全部复习 ({n})");
+reg("review.drillGroup", "Drill ({n})", "练本课 ({n})");
+reg("review.pileEmpty", "Your review pile is empty — missed questions land here automatically.", "错题堆是空的——训练里答错的题会自动收进来。");
+reg("review.chipMaster", "streak {s}/{m}", "连对 {s}/{m}");
+reg("review.remove", "Remove from pile", "从复习堆移除");
+reg("review.openPile", "Open review pile", "打开复习堆");
 reg("review.emptyFilter", "No matching mistakes in your review pile.", "复习堆里没有符合条件的错题。");
 
 // —— 12 courses ——

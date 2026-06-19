@@ -185,7 +185,9 @@ const Engine = {
 
   startReview(filter) {
     this.reviewFilter = filter || null;
-    this.reviewReturnTo = filter ? "stats" : "courses";
+    if (this.screen === "stats") this.reviewReturnTo = "stats";
+    else if (this.screen === "review") this.reviewReturnTo = "review";
+    else this.reviewReturnTo = "courses";
     const wantLeak = filter?.leak ? normalizeLeak(filter.leak) : null;
     const pile = this.store.reviewPile.filter((r) => {
       if (filter?.courseId && r.courseId !== filter.courseId) return false;
@@ -218,6 +220,13 @@ const Engine = {
     this.qIdx = 0;
     this.answers = [];
     this.screen = returnTo;
+    this.save();
+  },
+
+  removeFromPile(rec) {
+    this.store.reviewPile = this.store.reviewPile.filter(
+      (r) => !(r.qid === rec.qid && r.courseId === rec.courseId)
+    );
     this.save();
   },
 

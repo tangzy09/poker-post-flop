@@ -25,6 +25,9 @@ function render() {
     case "review-empty":
       root.innerHTML = renderReviewEmpty();
       break;
+    case "review":
+      root.innerHTML = renderReviewDetail();
+      break;
     case "stats":
       root.innerHTML = renderStats();
       break;
@@ -362,6 +365,91 @@ function renderPlanCard() {
   return html;
 }
 
+function renderCourseBars() {
+  const rows = Coach.courseBarRows(Engine.store);
+  if (!rows.length) {
+    return '<p class="coach-note">' + t("stats.noCourseData") + "</p>";
+  }
+  return rows
+    .map((r) => {
+      const label = t(r.titleKey);
+      return (
+        '<div class="sbar">' +
+        '<span class="sbar-nm" title="' + label + '">' + label + "</span>" +
+        '<span class="sbar-trk"><span class="sbar-fil" style="width:' + r.pct + '%"></span></span>' +
+        '<span class="sbar-pct">' + t("stats.barPct", { p: r.pct, h: r.h }) + "</span>" +
+        "</div>"
+      );
+    })
+    .join("");
+}
+
+function renderReviewDetail() {
+  const pile = Engine.store.reviewPile;
+  const reviewN = pile.length;
+  let body = "";
+
+  if (!reviewN) {
+    body = '<p class="coach-note">' + t("review.pileEmpty") + "</p>";
+  } else {
+    body = Coach.reviewByCourse(Engine.store)
+      .map((g) => {
+        const title = t(g.titleKey);
+        const chips = g.items
+          .map((r) => {
+            const qLabel = Coach.questionTitle(r.courseId, r.qid).split(" · ").pop() || r.qid;
+            const streak =
+              r.streak > 0
+                ? ' <span class="rv-st">' + t("review.chipMaster", { s: r.streak, m: MASTER_STREAK }) + "</span>"
+                : "";
+            return (
+              '<span class="rv-chip">' +
+              qLabel +
+              (r.wrong > 1 ? ' <span class="rv-wn">×' + r.wrong + "</span>" : "") +
+              streak +
+              ' <button type="button" class="rv-del" data-action="review-remove" data-course="' +
+              r.courseId +
+              '" data-qid="' +
+              r.qid +
+              '" aria-label="' + t("review.remove") + '">✕</button></span>'
+            );
+          })
+          .join("");
+        return (
+          '<div class="rv-group">' +
+          '<div class="rv-head"><b>' +
+          title +
+          '</b><button type="button" class="rv-mini" data-action="review-drill-course" data-id="' +
+          g.courseId +
+          '">' +
+          t("review.drillGroup", { n: g.items.length }) +
+          "</button></div>" +
+          '<div class="rv-chips">' +
+          chips +
+          "</div></div>"
+        );
+      })
+      .join("");
+  }
+
+  const allBtn =
+    '<button type="button" class="btn secondary review-all-btn"' +
+    (reviewN ? "" : " disabled") +
+    ' data-action="review-all">' +
+    t("review.all", { n: reviewN }) +
+    "</button>";
+
+  return (
+    '<section class="screen review-screen">' +
+    "<h2>" + t("review.title") + "</h2>" +
+    '<p class="muted review-sub">' + t("review.subtitle") + "</p>" +
+    body +
+    '<div class="review-actions">' + allBtn + "</div>" +
+    bottomNav("review", reviewN) +
+    "</section>"
+  );
+}
+
 function renderStats() {
   const s = Engine.store.stats;
   const reviewN = Engine.store.reviewPile.length;
@@ -386,6 +474,11 @@ function renderStats() {
     t("stats.overallAcc") +
     "</div></div>" +
     "</div>" +
+    '<article class="coach-card"><h3>' +
+    t("stats.courseAccTitle") +
+    "</h3>" +
+    renderCourseBars() +
+    "</article>" +
     '<article class="coach-card"><h3>' +
     t("stats.profileTitle") +
     "</h3>" +
@@ -422,7 +515,7 @@ function bindEvents() {
   $$("[data-nav]").forEach((el) => {
     el.onclick = () => {
       const nav = el.getAttribute("data-nav");
-      if (nav === "review") Engine.startReview();
+      if (nav === "review") Engine.screen = "review";
       else if (nav === "stats") Engine.screen = "stats";
       else Engine.screen = "courses";
       render();
@@ -453,9 +546,11 @@ function bindEvents() {
     if (Engine.screen === "learn") {
       const slides = getLearn(Engine.courseId);
       board = slides[Engine.learnIdx] && slides[Engine.learnIdx].rangeChart;
-    } else if (Engine.screen === "drill" && Engine.courseId === "c3") {
+    } else if (Engine.screen === "drill") {
       const q = Engine.currentQuestions()[Engine.qIdx];
+      const drillCourseId = (q && q._courseId) || Engine.courseId;
       board = q && q.spot && q.spot.board;
+      if (drillCourseId !== "c3") board = null;
     }
     if (board) renderRangeChart(rangeMount, board);
   }
@@ -494,8 +589,24 @@ function handleAction(action, el) {
       } else Engine.screen = "drill";
       break;
     case "review-mistakes":
-      Engine.startReview();
+      Engine.startReview({ courseId: Engine.courseId });
       break;
+    case "review-all":
+      if (Engine.store.reviewPile.length) Engine.startReview();
+      break;
+    case "review-drill-course":
+      Engine.startReview({ courseId: el.getAttribute("data-id") });
+      break;
+    case "review-remove": {
+      const courseId = el.getAttribute("data-course");
+      const qid = el.getAttribute("data-qid");
+      const rec = Engine.store.reviewPile.find((r) => r.courseId === courseId && r.qid === qid);
+      if (rec) Engine.removeFromPile(rec);
+      if (!Engine.store.reviewPile.length && Engine.screen === "review") {
+        /* stay on review screen with empty state */
+      }
+      break;
+    }
   }
   render();
 }
