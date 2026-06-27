@@ -50,7 +50,7 @@ function setLang(lang) {
 
 // —— App shell ——
 reg("app.title", "Poker Post-Flop", "扑克翻后");
-reg("app.subtitle", "12-lesson HU post-flop trainer", "12 课单挑翻后训练");
+reg("app.subtitle", "30-lesson HU post-flop trainer", "30 课单挑翻后训练");
 reg("nav.courses", "Courses", "课程");
 reg("nav.review", "Review", "复习");
 reg("nav.stats", "Stats", "统计");

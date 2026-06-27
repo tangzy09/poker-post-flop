@@ -9,6 +9,7 @@ const copy = [
   "js/i18n.js",
   "js/courses.js",
   "js/content.js",
+  "js/content-ext.js",
   "js/equity.js",
   "js/range-chart.js",
   "js/table.js",

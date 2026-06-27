@@ -7,6 +7,9 @@ $Dest = "/var/www/post-flop-coach"
 
 if (-not (Test-Path $Key)) { throw "SSH key not found: $Key" }
 
+Write-Host "Stamping cache-bust version in index.html ..."
+node "$Root\tools\stamp-version.js"
+
 Write-Host "Uploading to ${Remote}:${Dest} ..."
 scp -i $Key -o StrictHostKeyChecking=no "$Root\index.html" "${Remote}:${Dest}/"
 scp -i $Key -o StrictHostKeyChecking=no -r "$Root\js" "$Root\data" "${Remote}:${Dest}/"
