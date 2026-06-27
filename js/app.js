@@ -2,6 +2,39 @@
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
+let _choiceOrderKey = null;
+let _choiceOrderOpts = null;
+let _choiceShuffleEpoch = 0;
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function resetChoiceShuffle() {
+  _choiceShuffleEpoch++;
+  _choiceOrderKey = null;
+}
+
+function displayChoiceOptions(q) {
+  const key =
+    _choiceShuffleEpoch +
+    "|" +
+    (Engine.reviewMode ? "r" : Engine.courseId || "") +
+    "|" +
+    Engine.qIdx +
+    "|" +
+    q.id;
+  if (_choiceOrderKey !== key) {
+    _choiceOrderKey = key;
+    _choiceOrderOpts = shuffleArray(q.options.slice());
+  }
+  return _choiceOrderOpts;
+}
+
 function render() {
   const root = $("#screens");
   if (!root) return;
@@ -154,12 +187,12 @@ function renderDrill() {
 
   if (q.type === "choice") {
     body += '<div class="choice-grid">';
-    q.options.forEach((opt) => {
+    displayChoiceOptions(q).forEach((opt) => {
       body += '<button class="choice-btn" data-choice="' + opt.id + '">' + t(opt.labelKey) + "</button>";
     });
     body += "</div>";
   } else {
-    const acts = q.actions && q.actions.length ? q.actions : ["fold", "check", "call", "bet"];
+    const acts = drillActionsForQuestion(q);
     body += '<div class="action-grid">';
     acts.forEach((act) => {
       body += '<button class="act-btn a-' + act + '" data-choice="' + act + '">' + t("action." + act) + "</button>";
@@ -552,6 +585,7 @@ function bindEvents() {
     el.onclick = () => {
       const courseId = el.getAttribute("data-drill-course");
       const leak = el.getAttribute("data-drill-leak");
+      resetChoiceShuffle();
       Engine.startReview({ courseId, leak: leak || undefined });
       render();
     };
@@ -589,12 +623,14 @@ function handleAction(action, el) {
       Engine.startCourse(el.getAttribute("data-id"), "learn");
       break;
     case "start-drill":
+      resetChoiceShuffle();
       Engine.startCourse(el.getAttribute("data-id"), "drill");
       break;
     case "next-learn":
       Engine.learnIdx++;
       break;
     case "finish-learn":
+      resetChoiceShuffle();
       Engine.finishLearn();
       break;
     case "back-courses":
@@ -620,12 +656,17 @@ function handleAction(action, el) {
       Engine.exitReviewFlow();
       break;
     case "review-mistakes":
+      resetChoiceShuffle();
       Engine.startReview({ courseId: Engine.courseId });
       break;
     case "review-all":
-      if (Engine.store.reviewPile.length) Engine.startReview();
+      if (Engine.store.reviewPile.length) {
+        resetChoiceShuffle();
+        Engine.startReview();
+      }
       break;
     case "review-drill-course":
+      resetChoiceShuffle();
       Engine.startReview({ courseId: el.getAttribute("data-id") });
       break;
     case "review-remove": {

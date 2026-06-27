@@ -187,6 +187,22 @@ test("removeFromPile removes matching record", () => {
   assert.equal(Engine.store.reviewPile[0].courseId, "c5");
 });
 
+test("_migrateStore trims c1 progress and review pile to 8 questions", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.store.progress.c1 = { learnDone: true, qDone: 20, correct: 15, total: 24, completed: true };
+  Engine.store.reviewPile = [
+    { courseId: "c1", qid: "c1-q1", wrong: 1 },
+    { courseId: "c1", qid: "c1-q20", wrong: 1 },
+    { courseId: "c2", qid: "c2-q1", wrong: 1 },
+  ];
+  Engine._migrateStore();
+  assert.equal(Engine.store.progress.c1.total, 8);
+  assert.equal(Engine.store.progress.c1.qDone, 8);
+  assert.equal(Engine.store.reviewPile.length, 2);
+  assert.ok(Engine.store.reviewPile.every((r) => r.qid !== "c1-q20"));
+});
+
 test("_migrateStore backfills statsByCourse from completed progress", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();

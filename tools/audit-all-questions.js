@@ -4,7 +4,7 @@ const path = require("path");
 const vm = require("vm");
 
 const root = path.join(__dirname, "..");
-const files = ["js/i18n.js", "data/solved-spots.js", "js/courses.js", "js/content.js", "js/table.js", "js/engine.js"];
+const files = ["js/i18n.js", "data/solved-spots.js", "js/courses.js", "js/content.js", "js/content-ext.js", "js/table.js", "js/engine.js"];
 let code = "";
 for (const f of files) code += fs.readFileSync(path.join(root, f), "utf8") + "\n";
 code += "globalThis.__out = { STR, COURSES, QUESTIONS, getQuestions, getLearn, SOLVED_SPOTS };";
@@ -198,7 +198,7 @@ function auditAction(q) {
 }
 
 const learnBodyKeys = new Set();
-for (let c = 1; c <= 12; c++) for (let l = 1; l <= 3; l++) learnBodyKeys.add(`c${c}.l${l}.b`);
+for (let c = 1; c <= 30; c++) for (let l = 1; l <= 3; l++) learnBodyKeys.add(`c${c}.l${l}.b`);
 
 const report = { ok: [], warn: [], fail: [], byCourse: {} };
 

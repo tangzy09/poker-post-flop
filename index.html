@@ -275,6 +275,9 @@
     .card.mid .rk { font-size: 10px; top: 3px; left: 4px; }
     .card.mid .rk.br { bottom: 3px; right: 4px; top: auto; left: auto; }
     .card.sm { width: 22px; height: 31px; }
+    .card.sm .pip-c { font-size: 11px; }
+    .card.sm .rk { font-size: 7px; top: 1px; left: 2px; }
+    .card.sm .rk.br { bottom: 1px; right: 2px; top: auto; left: auto; }
     .card {
       width: 52px; height: 74px; border-radius: var(--card-r); position: relative;
       transform-style: preserve-3d;
@@ -411,40 +414,46 @@
     .rv-del:hover { color: var(--wrong); }
 
     /* C3 range / equity chart */
-    .range-chart-mount { margin: 12px 0; }
+    .range-chart-mount { margin: 12px 0; max-width: 100%; }
     .range-chart {
       background: rgba(0,0,0,.22);
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 12px;
+      max-width: 100%;
+      overflow: hidden;
     }
     .range-chart-note { font-size: .72rem; color: var(--muted); margin: 0 0 10px; line-height: 1.4; }
     .range-chart-loading { font-size: .85rem; color: var(--gold); text-align: center; padding: 12px 0; }
     .eq-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
-    .eq-bar-head { display: flex; justify-content: space-between; font-size: .78rem; margin-bottom: 4px; }
-    .eq-pct { color: var(--gold); font-weight: 700; }
+    .eq-bar-head { display: flex; justify-content: space-between; gap: 8px; font-size: .78rem; margin-bottom: 4px; }
+    .eq-pct { color: var(--gold); font-weight: 700; flex: none; }
     .eq-track { height: 8px; background: rgba(255,255,255,.08); border-radius: 999px; overflow: hidden; }
     .eq-track i { display: block; height: 100%; border-radius: 999px; transition: width .35s ease; }
-    .range-edge-lbl { text-align: center; font-size: .82rem; font-weight: 700; color: var(--gold); margin: 0 0 10px; }
+    .range-edge-lbl { text-align: center; font-size: .82rem; font-weight: 700; color: var(--gold); margin: 0 0 10px; line-height: 1.35; }
     .range-matrix {
       display: grid;
-      grid-template-columns: 18px repeat(13, 1fr);
+      grid-template-columns: 14px repeat(13, minmax(0, 1fr));
       gap: 1px;
       margin-bottom: 8px;
+      width: 100%;
+      max-width: 100%;
     }
-    .rm-lbl { font-size: .5rem; color: var(--muted); display: flex; align-items: center; justify-content: center; }
-    .rm-row { justify-content: flex-end; padding-right: 2px; }
+    .rm-lbl { font-size: .48rem; color: var(--muted); display: flex; align-items: center; justify-content: center; min-width: 0; }
+    .rm-row { justify-content: flex-end; padding-right: 1px; }
     .rm-corner { }
     .rm-cell {
       aspect-ratio: 1;
       border-radius: 2px;
       background: rgba(255,255,255,.04);
-      font-size: .42rem;
+      font-size: clamp(0.28rem, 2.1vw, 0.4rem);
       color: var(--muted);
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 14px;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
     }
     .rm-cell.btn { background: rgba(232,198,106,.35); color: #fff; }
     .rm-cell.bb { background: rgba(52,176,116,.35); color: #fff; }
@@ -476,6 +485,7 @@
   <script src="data/solved-spots.js"></script>
   <script src="js/courses.js"></script>
   <script src="js/content.js"></script>
+  <script src="js/content-ext.js"></script>
   <script src="js/equity.js"></script>
   <script src="js/range-chart.js"></script>
   <script src="js/table.js"></script>

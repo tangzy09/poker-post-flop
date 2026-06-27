@@ -123,18 +123,20 @@ function renderRangeMatrix(btnSet, bbSet) {
 }
 
 function boardTextureHint(board) {
-  const ranks = (board || []).map((c) => RC_RIDX[c[0].toUpperCase()]).sort((a, b) => b - a);
+  const ranks = (board || []).map((c) => RC_RIDX[c[0].toUpperCase()]).sort((a, b) => a - b);
   if (ranks.length < 3) return t("range.hintNeutral");
   const hi = ranks[0];
   const lo = ranks[ranks.length - 1];
-  const span = hi - lo;
+  const span = lo - hi;
   const suits = board.map((c) => c[1].toLowerCase());
   const flushDraw = new Set(suits).size < suits.length;
   const paired = ranks[0] === ranks[1] || ranks[1] === ranks[2];
-  const lowBoard = hi <= 8;
-  const connected = span <= 4 && (ranks[0] - ranks[1] <= 2 || ranks[1] - ranks[2] <= 2);
+  const lowBoard = hi >= RC_RIDX["8"];
+  const connected =
+    span <= 4 &&
+    ((ranks[1] - ranks[0] <= 2) || (ranks[2] - ranks[1] <= 2));
 
-  if ((hi >= 11 || ranks[0] >= 11) && span >= 4 && !flushDraw && !paired) return t("range.hintDryHigh");
+  if (hi <= RC_RIDX["T"] && span >= 4 && !flushDraw && !paired) return t("range.hintDryHigh");
   if (paired && span >= 4) return t("range.hintPairedDry");
   if (lowBoard && connected) return t("range.hintLowConnected");
   if (connected && flushDraw) return t("range.hintWet");

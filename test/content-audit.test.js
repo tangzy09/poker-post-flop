@@ -15,6 +15,7 @@ function load() {
     "data/solved-spots.js",
     "js/courses.js",
     "js/content.js",
+    "js/content-ext.js",
     "js/table.js",
     "js/engine.js",
   ];
@@ -381,4 +382,16 @@ test("every choice question has feedback key registered", () => {
     }
   }
   assert.deepEqual(issues, [], "\n  - " + issues.join("\n  - ") + "\n");
+});
+
+test("pair-rank and set/trips labels match board", () => {
+  const { execSync } = require("child_process");
+  const out = execSync("node scripts/audit-hand-strength.js", { cwd: root, encoding: "utf8" });
+  assert.match(out, /Hand-strength audit: OK/);
+});
+
+test("stem and label terminology is consistent (c1–c30)", () => {
+  const { execSync } = require("child_process");
+  const out = execSync("node scripts/audit-terminology.js", { cwd: root, encoding: "utf8" });
+  assert.match(out, /terminology: OK/);
 });

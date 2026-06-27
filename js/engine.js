@@ -42,6 +42,16 @@ const Engine = {
         this.store.statsByCourse[c.id] = { h: p.total, c: p.correct || 0 };
       }
     }
+    const c1Len = getQuestions("c1").length;
+    const c1Ids = new Set(getQuestions("c1").map((q) => q.id));
+    this.store.reviewPile = (this.store.reviewPile || []).filter((r) => r.courseId !== "c1" || c1Ids.has(r.qid));
+    const p1 = this.store.progress.c1;
+    if (p1 && ((p1.total || 0) > c1Len || (p1.qDone || 0) > c1Len)) {
+      p1.qDone = Math.min(p1.qDone || 0, c1Len);
+      p1.correct = Math.min(p1.correct || 0, p1.qDone);
+      p1.total = c1Len;
+      p1.completed = !!p1.completed || p1.qDone >= c1Len;
+    }
   },
 
   save() {

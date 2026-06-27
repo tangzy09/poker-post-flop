@@ -12,6 +12,7 @@ function loadScripts(extra) {
     "data/solved-spots.js",
     "js/courses.js",
     "js/content.js",
+    "js/content-ext.js",
     "js/table.js",
     "js/engine.js",
   ];
@@ -25,25 +26,25 @@ function loadScripts(extra) {
   return ctx;
 }
 
-test("12 courses defined", () => {
+test("30 courses defined", () => {
   const ctx = loadScripts("globalThis.__out = { COURSES, LEARN, QUESTIONS };");
-  assert.equal(ctx.__out.COURSES.length, 12);
+  assert.equal(ctx.__out.COURSES.length, 30);
 });
 
-test("each course has 4 learn slides (incl. summary) and 24 questions", () => {
-  const ctx = loadScripts("globalThis.__out = { COURSES, LEARN, QUESTIONS, getLearn, getQuestions };");
+test("each course has 4 learn slides (incl. summary) and expected drill count", () => {
+  const ctx = loadScripts("globalThis.__out = { COURSES, LEARN, QUESTIONS, getLearn, getQuestions, courseDrillCount };");
   for (const c of ctx.__out.COURSES) {
     const slides = ctx.__out.getLearn(c.id);
     assert.equal(slides.length, 4, c.id + " learn");
     assert.equal(slides[slides.length - 1].summary, true, c.id + " last slide is summary");
-    assert.equal(ctx.__out.getQuestions(c.id).length, 24, c.id + " questions");
+    assert.equal(ctx.__out.getQuestions(c.id).length, ctx.__out.courseDrillCount(c), c.id + " questions");
   }
 });
 
 test("all courses are free", () => {
   const ctx = loadScripts("globalThis.__out = { COURSES };");
   const free = ctx.__out.COURSES.filter((c) => c.free);
-  assert.equal(free.length, 12);
+  assert.equal(free.length, 30);
 });
 
 test("solver spots present", () => {

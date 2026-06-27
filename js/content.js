@@ -1,4 +1,4 @@
-/* content.js — learn slides + drill questions for all 12 courses */
+/* content.js — learn slides + drill questions (courses c1–c12) */
 
 function _r(key, en, zh) {
   reg(key, en, zh);
@@ -332,7 +332,7 @@ function registerContentStrings() {
   _r("c7.q22.b", "Always fold to any bet", "对任何下注总是弃牌");
   _r("c7.q22.c", "Never bet yourself", "自己从不下注");
   _r("c7.q22.d", "Only ever check", "只会过牌");
-  _r("c7.q22.fb", "Because a capped villain can't have the nuts, you can bluff and value-bet bigger profitably.", "由于封顶对手不可能有坚果，你可以更大地诈唬与价值下注。");
+  _r("c7.q22.fb", "Because a capped villain can't have the nuts, you can bluff and value-bet bigger profitably.", "由于对手（封顶）不可能有坚果，你可以更大地诈唬与价值下注。");
 
   _r("c7.q23.s", "On the river many of villain's draws complete. You should…", "河牌对手大量听牌命中。你应该…");
   _r("c7.q23.a", "Bluff-catch less — fewer missed bluffs remain", "少抓诈 — 落空的诈唬变少");
@@ -472,119 +472,6 @@ function registerContentStrings() {
   _r("c8.q24.d", "Understanding ranges", "理解范围");
   _r("c8.q24.fb", "Frequencies are indifference results \u2014 learn the why, not the exact number.", "频率是无差异的结果 \u2014 要学其原因，而非确切数字。");
 
-  // —— C1 extra drill questions (q9–q24): pot odds, MDF, equity. Answer is always "a". ——
-  _r("c1.q9.s", "Pot is 50, villain bets 50 (pot-sized). What pot odds are you getting on a call?", "底池 50，对手底池下注 50。跟注的底池赔率是多少？");
-  _r("c1.q9.a", "2:1 (call 50 to win 100)", "2:1（跟注 50 赢 100）");
-  _r("c1.q9.b", "3:1", "3:1");
-  _r("c1.q9.c", "1:1", "1:1");
-  _r("c1.q9.d", "4:1", "4:1");
-  _r("c1.q9.fb", "After the bet the pot is 50+50=100; you call 50 → 100:50 = 2:1.", "下注后底池 50+50=100；跟注 50 → 100:50 = 2:1。");
-
-  _r("c1.q10.s", "Pot is 100, villain bets 25 (quarter pot). What is MDF?", "底池 100，对手下注 25（1/4 池）。MDF 是多少？");
-  _r("c1.q10.a", "80%", "80%");
-  _r("c1.q10.b", "75%", "75%");
-  _r("c1.q10.c", "67%", "67%");
-  _r("c1.q10.d", "50%", "50%");
-  _r("c1.q10.fb", "MDF = 1 − 25/(100+25) = 1 − 0.2 = 80%.", "MDF = 1 − 25/125 = 80%。");
-
-  _r("c1.q11.s", "Pot is 100, villain bets 75 (three-quarter pot). Approximate MDF?", "底池 100，对手下注 75（3/4 池）。MDF 约多少？");
-  _r("c1.q11.a", "57%", "57%");
-  _r("c1.q11.b", "50%", "50%");
-  _r("c1.q11.c", "43%", "43%");
-  _r("c1.q11.d", "67%", "67%");
-  _r("c1.q11.fb", "MDF = 1 − 75/(100+75) = 1 − 0.43 ≈ 57%.", "MDF = 1 − 75/175 ≈ 57%。");
-
-  _r("c1.q12.s", "Pot is 100, villain overbets 200 (2× pot). What is MDF?", "底池 100，对手超池下注 200（2 倍池）。MDF 是多少？");
-  _r("c1.q12.a", "33%", "33%");
-  _r("c1.q12.b", "50%", "50%");
-  _r("c1.q12.c", "25%", "25%");
-  _r("c1.q12.d", "67%", "67%");
-  _r("c1.q12.fb", "MDF = 1 − 200/(100+200) = 1 − 0.67 ≈ 33%. Bigger bets → defend less.", "MDF = 1 − 200/300 ≈ 33%。下注越大，防守越少。");
-
-  _r("c1.q13.s", "Pot is 100, villain bets 50. Break-even equity needed to call?", "底池 100，对手下注 50。跟注盈亏平衡胜率？");
-  _r("c1.q13.a", "25%", "25%");
-  _r("c1.q13.b", "33%", "33%");
-  _r("c1.q13.c", "20%", "20%");
-  _r("c1.q13.d", "40%", "40%");
-  _r("c1.q13.fb", "You risk 50 to win a final pot of 100+50+50=200 → 50/200 = 25%.", "以 50 博取最终底池 100+50+50=200 → 50/200 = 25%。");
-
-  _r("c1.q14.s", "Facing a pot-sized bet, what break-even equity do you need to call?", "面对底池下注，跟注需要多少盈亏平衡胜率？");
-  _r("c1.q14.a", "33%", "33%");
-  _r("c1.q14.b", "25%", "25%");
-  _r("c1.q14.c", "50%", "50%");
-  _r("c1.q14.d", "40%", "40%");
-  _r("c1.q14.fb", "Pot 100, bet 100: risk 100 to win 300 → 100/300 ≈ 33%.", "底池 100、下注 100：以 100 博 300 → 100/300 ≈ 33%。");
-
-  _r("c1.q15.s", "You need 33% equity to call and you estimate 40% equity. Call or fold?", "你需要 33% 胜率才能跟注，估算自己有 40% 胜率。跟还是弃？");
-  _r("c1.q15.a", "Call — your equity exceeds the price", "跟注 — 胜率高于所需价格");
-  _r("c1.q15.b", "Fold — draws should always fold", "弃牌 — 听牌总该弃");
-  _r("c1.q15.c", "Fold regardless of equity", "无论胜率都弃");
-  _r("c1.q15.d", "It depends on the suit of your cards", "取决于你手牌的花色");
-  _r("c1.q15.fb", "When your equity (40%) beats the required break-even (33%), calling is +EV.", "当胜率(40%)高于盈亏平衡(33%)，跟注为正期望。");
-
-  _r("c1.q16.s", "You have a flush draw (9 outs) with one card to come. Rough equity? (rule of 2)", "你有同花听（9 个补牌），还剩一张牌。粗略胜率？（×2 法则）");
-  _r("c1.q16.a", "~18%", "~18%");
-  _r("c1.q16.b", "~36%", "~36%");
-  _r("c1.q16.c", "~9%", "~9%");
-  _r("c1.q16.d", "~50%", "~50%");
-  _r("c1.q16.fb", "One card to come: outs × 2 → 9 × 2 ≈ 18% (true ≈ 19.6%).", "还一张牌：补牌 ×2 → 9×2 ≈ 18%（实际约 19.6%）。");
-
-  _r("c1.q17.s", "You flop an open-ended straight draw (8 outs) with two cards to come. Rough equity? (rule of 4)", "翻牌两头顺听（8 个补牌），还剩两张牌。粗略胜率？（×4 法则）");
-  _r("c1.q17.a", "~32%", "~32%");
-  _r("c1.q17.b", "~16%", "~16%");
-  _r("c1.q17.c", "~8%", "~8%");
-  _r("c1.q17.d", "~50%", "~50%");
-  _r("c1.q17.fb", "Two cards to come: outs × 4 → 8 × 4 ≈ 32% (true ≈ 31.5%).", "还两张牌：补牌 ×4 → 8×4 ≈ 32%（实际约 31.5%）。");
-
-  _r("c1.q18.s", "Why does a defender use MDF?", "防守方为何使用 MDF？");
-  _r("c1.q18.a", "To stop villain from profiting automatically by bluffing any two cards", "防止对手用任意两张牌诈唬就自动盈利");
-  _r("c1.q18.b", "To always hold the best hand", "为了总是握有最好牌");
-  _r("c1.q18.c", "To bluff more often", "为了更频繁诈唬");
-  _r("c1.q18.d", "To maximize fold equity", "为了最大化弃牌率");
-  _r("c1.q18.fb", "MDF defends just enough so a pure bluff (any two cards) is no longer automatically profitable.", "MDF 防守到恰好让纯诈唬（任意两张）不再自动盈利。");
-
-  _r("c1.q19.s", "Compared to a pot-sized bet, facing a SMALL bet you must defend…", "相比底池下注，面对更小的下注你需要防守…");
-  _r("c1.q19.a", "More combos — MDF is higher", "更多组合 — MDF 更高");
-  _r("c1.q19.b", "Fewer combos — MDF is lower", "更少组合 — MDF 更低");
-  _r("c1.q19.c", "The same amount", "数量相同");
-  _r("c1.q19.d", "Nothing — never defend small bets", "不防守 — 小注从不防");
-  _r("c1.q19.fb", "Smaller bets risk less, so villain needs fewer folds; you must defend a larger fraction (higher MDF).", "下注越小风险越低，对手所需弃牌越少；你需防守更大比例（MDF 更高）。");
-
-  _r("c1.q20.s", "Compared to a pot-sized bet, facing a LARGE overbet you must defend…", "相比底池下注，面对更大的超池下注你需要防守…");
-  _r("c1.q20.a", "Fewer combos — MDF is lower", "更少组合 — MDF 更低");
-  _r("c1.q20.b", "More combos — MDF is higher", "更多组合 — MDF 更高");
-  _r("c1.q20.c", "The same amount", "数量相同");
-  _r("c1.q20.d", "All of your range", "你的全部范围");
-  _r("c1.q20.fb", "Larger bets risk more, so fewer folds make a bluff profitable; you defend a smaller fraction (lower MDF).", "下注越大风险越高，更少弃牌就能让诈唬盈利；你防守更小比例（MDF 更低）。");
-
-  _r("c1.q21.s", "Implied odds let you call slightly BELOW raw pot odds because…", "隐含赔率让你能以略低于直接底池赔率跟注，因为…");
-  _r("c1.q21.a", "You can win extra money on later streets when you hit", "命中后能在后续街道多赢筹码");
-  _r("c1.q21.b", "You always have the best hand", "你总是握有最好牌");
-  _r("c1.q21.c", "Villain always folds", "对手总会弃牌");
-  _r("c1.q21.d", "Pot odds don't matter", "底池赔率无关紧要");
-  _r("c1.q21.fb", "Future bets you can win when your draw completes add to the price you're effectively getting.", "命中听牌后能赢到的后续下注，提高了你实际得到的赔率。");
-
-  _r("c1.q22.s", "Reverse implied odds describe situations where…", "反向隐含赔率描述的情形是…");
-  _r("c1.q22.a", "You may lose extra when you make a second-best hand", "当你做成第二好的牌时可能多输");
-  _r("c1.q22.b", "You always win the pot", "你总能赢下底池");
-  _r("c1.q22.c", "You get free cards every street", "每条街都免费看牌");
-  _r("c1.q22.d", "Odds reverse only preflop", "赔率只在翻前反转");
-  _r("c1.q22.fb", "Dominated draws (e.g. low flush draws) can complete yet still lose a big pot — that's reverse implied odds.", "被压制的听牌（如小同花听）即使命中也可能输大池 — 这就是反向隐含赔率。");
-
-  _r("c1.q23.s", "Pot is 60, villain bets 60 (pot-sized). What is MDF?", "底池 60，对手底池下注 60。MDF 是多少？");
-  _r("c1.q23.a", "50%", "50%");
-  _r("c1.q23.b", "67%", "67%");
-  _r("c1.q23.c", "33%", "33%");
-  _r("c1.q23.d", "75%", "75%");
-  _r("c1.q23.fb", "MDF = 1 − 60/(60+60) = 50%. Any pot-sized bet → 50%.", "MDF = 1 − 60/120 = 50%。任意底池下注都是 50%。");
-
-  _r("c1.q24.s", "Pot is 120, villain bets 40 (one-third pot). Approximate MDF?", "底池 120，对手下注 40（1/3 池）。MDF 约多少？");
-  _r("c1.q24.a", "75%", "75%");
-  _r("c1.q24.b", "67%", "67%");
-  _r("c1.q24.c", "80%", "80%");
-  _r("c1.q24.d", "50%", "50%");
-  _r("c1.q24.fb", "MDF = 1 − 40/(120+40) = 1 − 0.25 = 75%.", "MDF = 1 − 40/160 = 75%。");
-
   // —— Per-course summary slides (key takeaways) ——
   const SUM_T_EN = "Key takeaways";
   const SUM_T_ZH = "本课小结";
@@ -722,7 +609,18 @@ function _choice(id, stemKey, options, correct, confidence, leak, fbKey) {
 }
 
 function _action(id, stemKey, spot, correct, confidence, leak, feedback, ctxKey) {
-  return { id, type: "action", stemKey, spot, correct, confidence, leak, feedback, ctxKey };
+  return {
+    id,
+    type: "action",
+    stemKey,
+    spot,
+    actions: facingAllIn(spot) ? FACE_CALL : facingBet(spot) ? FACE : ACT,
+    correct,
+    confidence,
+    leak,
+    feedback,
+    ctxKey,
+  };
 }
 
 /* buildSpots — generate action questions with a concrete board from compact specs.
@@ -750,7 +648,8 @@ function buildSpots(courseId, concept, specs) {
         pot: spec.pot,
         bet: spec.bet || 0,
         hero: { pos: spec.pos, hand: spec.hand || [], labelKey: spec.lbl ? base + ".lbl" : null },
-        facing: spec.bet ? "bet" : "action",
+        allIn: !!spec.allIn,
+        facing: spec.allIn ? "allin" : spec.bet ? "bet" : "action",
       },
       actions: spec.actions,
       correct: spec.correct,
@@ -763,14 +662,26 @@ function buildSpots(courseId, concept, specs) {
 }
 
 const FACE = ["fold", "call", "raise"];
+const FACE_CALL = ["fold", "call"];
 const ACT = ["check", "bet"];
 
-// Leak tag per added C1 math question (used for the feedback "Concept" label).
-const C1_LEAK = {
-  9: "sizing", 10: "sizing", 11: "sizing", 12: "sizing", 13: "sizing", 14: "sizing",
-  15: "concept_gap", 16: "sizing", 17: "sizing", 18: "concept_gap", 19: "concept_gap",
-  20: "concept_gap", 21: "concept_gap", 22: "concept_gap", 23: "sizing", 24: "sizing",
-};
+function facingBet(spot) {
+  return !!spot && ((spot.bet || 0) > 0 || spot.facing === "bet" || facingAllIn(spot));
+}
+
+function facingAllIn(spot) {
+  return !!spot && (spot.allIn === true || spot.facing === "allin" || spot.facing === "all-in");
+}
+
+function drillActionsForQuestion(q) {
+  const spot = q.spot || {};
+  const allowed = !facingBet(spot) ? ACT : facingAllIn(spot) ? FACE_CALL : FACE;
+  if (q.actions && q.actions.length) {
+    const filtered = q.actions.filter((a) => allowed.includes(a));
+    if (filtered.length) return filtered;
+  }
+  return allowed;
+}
 
 const QUESTIONS = {
   c1: [
@@ -825,15 +736,6 @@ const QUESTIONS = {
       { id: "c", labelKey: "c1.q8.c" },
       { id: "d", labelKey: "c1.q8.d" },
     ], "a", "conceptual", "concept_gap", "c1.q8.fb.b"),
-    ...Array.from({ length: 16 }, (_, i) => {
-      const n = i + 9;
-      return _choice("c1-q" + n, "c1.q" + n + ".s", [
-        { id: "a", labelKey: "c1.q" + n + ".a" },
-        { id: "b", labelKey: "c1.q" + n + ".b" },
-        { id: "c", labelKey: "c1.q" + n + ".c" },
-        { id: "d", labelKey: "c1.q" + n + ".d" },
-      ], "a", "conceptual", C1_LEAK[n] || "concept_gap", "c1.q" + n + ".fb");
-    }),
   ],
 
   c2: buildSpots("c2", "concept.implied", [
@@ -2078,9 +1980,9 @@ const QUESTIONS = {
       fb: { bet: { en: "Betting middle pair only folds out worse and gets called by better \u2014 check to realize your showdown value.", zh: "用中对下注只赶走更差牌、被更好牌跟注 \u2014 应过牌实现摊牌价值。" } },
     },
     {
-      s: { en: "River. Your flush draw missed and you have only queen-high. Villain is a calling station who never folds. Best action?", zh: "河牌。你的同花听落空，仅有 Q 高。对手是从不弃牌的跟注站。最佳行动？" },
+      s: { en: "River. Your missed draw — only queen-high. Villain is a calling station who never folds. Best action?", zh: "河牌。同花听牌破产，仅有 Q 高。对手是从不弃牌的跟注站。最佳行动？" },
       ctx: { en: "Exploitative read: villain calls rivers far too often.", zh: "剥削性读牌：对手河牌跟注过于频繁。" },
-      lbl: { en: "Q\u2665J\u2665 missed FD", zh: "Q\u2665J\u2665 落空花听" },
+      lbl: { en: "Q\u2665J\u2665 missed draw", zh: "Q\u2665J\u2665 破产听牌" },
       board: ["8h", "5h", "2c", "Kd", "3s"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["Qh", "Jh"], street: "river",
       actions: ACT, correct: ["check"], leak: "too_loose",
       fb: { bet: { en: "Bluffing requires fold equity \u2014 against a station who never folds, a missed-draw bluff just lights money on fire. Check.", zh: "诈唬需要弃牌率 \u2014 面对从不弃牌的跟注站，落空诈唬只会浪费筹码。应过牌。" } },
@@ -2130,11 +2032,11 @@ const QUESTIONS = {
       fb: { check: { en: "You have a straight \u2014 value bet when checked to; checking forfeits a clear river street.", zh: "你成顺 \u2014 对手过牌时应价值下注；过牌放弃明确的河牌价值。" } },
     },
     {
-      s: { en: "River. You hold top pair good kicker on a dry runout. Villain checks. Best action?", zh: "河牌。在干燥发牌上你持顶对好踢，对手过牌。最佳行动？" },
+      s: { en: "River. You hold top pair on a dry runout. Villain checks. Best action?", zh: "河牌。在干燥发牌上你持顶对，对手过牌。最佳行动？" },
       lbl: { en: "K\u2665Q\u2663 top pair", zh: "K\u2665Q\u2663 顶对" },
       board: ["Kd", "9s", "6c", "3h", "2d"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["Kh", "Qc"], street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
-      fb: { check: { en: "Top pair good kicker bets thin value on a blank river \u2014 worse Kx and pairs call. Don't check it back.", zh: "顶对好踢在空白河牌薄价值下注 \u2014 更差的 Kx 与对子会跟。别过牌让牌。" } },
+      fb: { check: { en: "Top pair bets thin value on a blank river \u2014 worse Kx and pairs call. Don't check it back.", zh: "顶对在空白河牌薄价值下注 \u2014 更差的 Kx 与对子会跟。别过牌让牌。" } },
     },
     {
       s: { en: "River. Dry runout. You hold top pair facing a pot-sized bet from a polarized range. Best action?", zh: "河牌。干燥发牌。你持顶对面对极化范围的底池下注。最佳行动？" },
@@ -2427,7 +2329,7 @@ const QUESTIONS = {
       },
     },
     {
-      s: { en: "BB vs BTN. Villain checked back the flop. Turn K is an overcard; you hold a gutshot (any J makes a straight). Best action?", zh: "BB 对 BTN。对手翻牌让牌。转牌 K 是高张；你持卡顺听（任意 J 成顺）。最佳行动？" },
+      s: { en: "BB vs BTN. Villain checked back the flop. Turn K is an overcard; you hold a gutshot (needs a J). Best action?", zh: "BB 对 BTN。对手翻牌让牌。转牌 K 是高张；你持卡顺听（需 J 补牌）。最佳行动？" },
       ctx: { en: "Villain is capped and the K favors your range.", zh: "对手范围封顶且 K 利于你的范围。" },
       lbl: { en: "Q\u2666J\u2663 gutshot", zh: "Q\u2666J\u2663 卡顺听" },
       board: ["Tc", "7s", "2d", "Kh"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["Qd", "Jc"], street: "turn",
@@ -2528,8 +2430,8 @@ const QUESTIONS = {
       s: { en: "Low SPR ~3 (3-bet pot). You hold an overpair on K-Q-5 and villain jams. Best action?", zh: "低 SPR ~3（3-bet 底池）。你在 K-Q-5 持超对，对手全下。最佳行动？" },
       ctx: { en: "SPR 3 in a 3-bet pot: an overpair is at the top of your range.", zh: "3-bet 底池 SPR 3：超对位于你范围顶端。" },
       lbl: { en: "A\u2665A\u2663 overpair, SPR 3", zh: "A\u2665A\u2663 超对，SPR 3" },
-      board: ["Kc", "Qd", "5h"], pot: 18, bet: 27, pos: "BTN (IP)", hand: ["Ah", "Ad"],
-      actions: FACE, correct: ["call"], leak: "too_tight",
+      board: ["Kc", "Qd", "5h"], pot: 18, bet: 27, pos: "BTN (IP)", hand: ["Ah", "Ad"], allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "too_tight",
       fb: {
         fold: { en: "In a low-SPR 3-bet pot, aces are at the top of your range \u2014 folding to a jam over-folds badly.", zh: "低 SPR 的 3-bet 底池里，AA 在你范围顶端 \u2014 面对全下弃牌是严重过弃。" },
         raise: { en: "It's already all-in \u2014 calling is the action; there's nothing extra to raise.", zh: "已经全下 \u2014 跟注即可，没有可再加注的部分。" },
@@ -2547,13 +2449,13 @@ const QUESTIONS = {
       },
     },
     {
-      s: { en: "High SPR ~12. You hold top pair weak kicker on J-T-4 and face a big bet. Best action?", zh: "高 SPR ~12。你在 J-T-4 持顶对弱踢，面对大注。最佳行动？" },
+      s: { en: "High SPR ~12. You hold weak top pair on J-T-4 and face a big bet. Best action?", zh: "高 SPR ~12。你在 J-T-4 持弱顶对，面对大注。最佳行动？" },
       ctx: { en: "Deep SPR: a weak top pair can't profitably stack off.", zh: "深 SPR：弱顶对无法盈利地全下。" },
       lbl: { en: "J\u26659\u2663 weak top pair, SPR 12", zh: "J\u26659\u2663 弱顶对，SPR 12" },
       board: ["Jd", "Ts", "4c"], pot: 12, bet: 11, pos: "BTN (IP)", hand: ["Jh", "9c"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
-        call: { en: "Top pair with a weak kicker deep is dominated by better top pairs and pays off on later streets \u2014 fold to the big bet.", zh: "深筹顶对弱踢被更好顶对压制且后续街道要付钱 \u2014 面对大注应弃牌。" },
+        call: { en: "Weak top pair deep is dominated by better top pairs and pays off on later streets \u2014 fold to the big bet.", zh: "深筹弱顶对被更好顶对压制且后续街道要付钱 \u2014 面对大注应弃牌。" },
         raise: { en: "Raising a weak top pair deep just isolates yourself against better hands.", zh: "深筹用弱顶对加注只会把自己孤立在更好牌面前。" },
       },
     },
@@ -2567,8 +2469,8 @@ const QUESTIONS = {
     {
       s: { en: "Deep (SPR ~12). Q-J-9-8 four-to-a-straight, a tight villain jams the turn. You hold an underpair (TT). Best action?", zh: "深筹（SPR 约 12）。Q-J-9-8 四张顺子，紧凶对手转牌全压。你持垫底对（TT）。最佳行动？" },
       lbl: { en: "T\u2665T\u2663 underpair", zh: "T\u2665T\u2663 垫底对" },
-      board: ["Qs", "Jd", "9h", "8c"], pot: 20, bet: 20, pos: "BB (OOP)", hand: ["Th", "Tc"], street: "turn",
-      actions: FACE, correct: ["fold"], leak: "too_loose",
+      board: ["Qs", "Jd", "9h", "8c"], pot: 20, bet: 20, pos: "BB (OOP)", hand: ["Th", "Tc"], street: "turn", allIn: true,
+      actions: FACE_CALL, correct: ["fold"], leak: "too_loose",
       fb: {
         call: { en: "Deep, a jam into a four-straight board crushes an underpair \u2014 fold.", zh: "深筹时对四张顺子面的全压压制垫底对 \u2014 应弃。" },
         raise: { en: "Re-jamming an underpair into a made straight is spew.", zh: "用垫底对再全压对已成顺子是乱送。" },
@@ -2596,7 +2498,7 @@ const QUESTIONS = {
       fb: { fold: { en: "At low SPR top pair top kicker is committed \u2014 don't fold; call or get it in.", zh: "低 SPR 顶对顶踢已投入 \u2014 别弃；应跟注或投入。" } },
     },
     {
-      s: { en: "Deep (SPR ~13). J-9-4 rainbow, you hold top pair with a weak kicker facing a big bet. Best action?", zh: "深筹（SPR 约 13）。J-9-4 彩虹，你持顶对弱踢面对大注。最佳行动？" },
+      s: { en: "Deep (SPR ~13). J-9-4 rainbow, you hold weak top pair facing a big bet. Best action?", zh: "深筹（SPR 约 13）。J-9-4 彩虹，你持弱顶对面对大注。最佳行动？" },
       lbl: { en: "J\u2665 8\u2665 weak top pair", zh: "J\u2665 8\u2665 弱顶对" },
       board: ["Jd", "9s", "4c"], pot: 12, bet: 11, pos: "BB (OOP)", hand: ["Jh", "8h"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -2608,8 +2510,8 @@ const QUESTIONS = {
     {
       s: { en: "Low-SPR 3-bet pot. K-Q-5 flop, you hold aces and villain jams. Best action?", zh: "低 SPR 的 3bet 底池。K-Q-5 翻牌，你持 AA，对手全压。最佳行动？" },
       lbl: { en: "A\u2665A\u2666 overpair", zh: "A\u2665A\u2666 超对" },
-      board: ["Kc", "Qd", "5h"], pot: 24, bet: 18, pos: "BB (OOP)", hand: ["Ah", "Ad"],
-      actions: FACE, correct: ["call"], leak: "too_tight",
+      board: ["Kc", "Qd", "5h"], pot: 24, bet: 18, pos: "BB (OOP)", hand: ["Ah", "Ad"], allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "too_tight",
       fb: { fold: { en: "In a low-SPR 3-bet pot, aces are committed vs a single pair / draw jam \u2014 call.", zh: "低 SPR 的 3bet 底池里，AA 对单对/听牌的全压已投入 \u2014 应跟注。" } },
     },
     {
@@ -2620,12 +2522,12 @@ const QUESTIONS = {
       fb: { fold: { en: "A low SPR overpair on a dry board is committed \u2014 never fold.", zh: "干燥面低 SPR 超对已投入 \u2014 绝不弃。" } },
     },
     {
-      s: { en: "River, deep (SPR was high). A-9-6-4-2. You hold top pair with a weak kicker facing a big bet. Best action?", zh: "河牌，深筹（SPR 曾很高）。A-9-6-4-2。你持顶对弱踢面对大注。最佳行动？" },
+      s: { en: "River, deep (SPR was high). A-9-6-4-2. You hold weak top pair facing a big bet. Best action?", zh: "河牌，深筹（SPR 曾很高）。A-9-6-4-2。你持弱顶对面对大注。最佳行动？" },
       lbl: { en: "A\u2663 7\u2666 weak top pair", zh: "A\u2663 7\u2666 弱顶对" },
       board: ["Ah", "9d", "6c", "4s", "2h"], pot: 24, bet: 22, pos: "BB (OOP)", hand: ["Ac", "7d"], street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
-        call: { en: "Top pair with a weak kicker is dominated by better aces \u2014 fold to big river pressure.", zh: "顶对弱踢被更好的 A 压制 \u2014 面对河牌大注应弃。" },
+        call: { en: "Weak top pair is dominated by better aces \u2014 fold to big river pressure.", zh: "弱顶对被更好的 A 压制 \u2014 面对河牌大注应弃。" },
         raise: { en: "Raising a weak ace turns a bluff-catcher into a bluff that only worse folds to.", zh: "用弱 A 加注把抓诈牌变成只有更差牌会弃的诈唬。" },
       },
     },
@@ -2666,8 +2568,8 @@ const QUESTIONS = {
     {
       s: { en: "SPR ~2. T-6-2 rainbow, you hold an overpair (KK) and villain jams. Best action?", zh: "SPR 约 2。T-6-2 彩虹，你持超对（KK），对手全压。最佳行动？" },
       lbl: { en: "K\u2660K\u2663 overpair", zh: "K\u2660K\u2663 超对" },
-      board: ["Td", "6c", "2s"], pot: 20, bet: 18, pos: "BB (OOP)", hand: ["Ks", "Kc"],
-      actions: FACE, correct: ["call"], leak: "too_tight",
+      board: ["Td", "6c", "2s"], pot: 20, bet: 18, pos: "BB (OOP)", hand: ["Ks", "Kc"], allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "too_tight",
       fb: { fold: { en: "At SPR 2 an overpair on a dry board calls a jam \u2014 folding is too tight here.", zh: "SPR 2 时干燥面超对应跟全压 \u2014 防守过紧。" } },
     },
     {

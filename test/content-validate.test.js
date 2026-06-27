@@ -22,12 +22,13 @@ function load() {
     "data/solved-spots.js",
     "js/courses.js",
     "js/content.js",
+    "js/content-ext.js",
     "js/table.js",
     "js/engine.js",
   ];
   let code = "";
   for (const f of files) code += fs.readFileSync(path.join(root, f), "utf8") + "\n";
-  code += "globalThis.__out = { STR, COURSES, QUESTIONS, getQuestions, getLearn, SOLVED_SPOTS };";
+  code += "globalThis.__out = { STR, COURSES, QUESTIONS, getQuestions, getLearn, SOLVED_SPOTS, courseDrillCount, drillActionsForQuestion, facingBet, facingAllIn, FACE, FACE_CALL, ACT };";
   const ctx = {
     window: {},
     localStorage: { _m: {}, getItem(k) { return this._m[k] || null; }, setItem(k, v) { this._m[k] = v; } },
@@ -51,14 +52,14 @@ function keyExists(STR, key) {
 
 // Walk every question and accumulate human-readable problems.
 function collectIssues(out) {
-  const { STR, COURSES, getQuestions, SOLVED_SPOTS } = out;
+  const { STR, COURSES, getQuestions, SOLVED_SPOTS, courseDrillCount } = out;
   const issues = [];
   const solverIds = new Set((SOLVED_SPOTS || []).map((s) => s.id));
   const seenIds = new Set();
 
   for (const course of COURSES) {
     const qs = getQuestions(course.id);
-    if (qs.length !== 24) issues.push(`${course.id}: expected 24 questions, got ${qs.length}`);
+    if (qs.length !== courseDrillCount(course)) issues.push(`${course.id}: expected ${courseDrillCount(course)} questions, got ${qs.length}`);
 
     for (const q of qs) {
       const at = `${q.id || course.id + "?"}`;
@@ -82,12 +83,24 @@ function collectIssues(out) {
         if (dk && !keyExists(STR, dk)) issues.push(`${at}: feedback reasonKey "${dk}" not registered`);
       } else if (q.type === "action") {
         const spot = q.spot || {};
-        const actions = q.actions && q.actions.length ? q.actions : DEFAULT_ACTIONS;
+        const actions = out.drillActionsForQuestion(q);
         for (const a of actions) {
           if (!ALL_ACTIONS.includes(a)) issues.push(`${at}: unknown action "${a}"`);
         }
         for (const c of q.correct || []) {
           if (!actions.includes(c)) issues.push(`${at}: correct "${c}" not selectable in [${actions}]`);
+        }
+        if (out.facingBet(spot) && actions.includes("check")) {
+          issues.push(`${at}: check offered while facing a bet`);
+        }
+        if (!out.facingBet(spot) && (actions.includes("fold") || actions.includes("call") || actions.includes("raise"))) {
+          issues.push(`${at}: fold/call/raise offered without a bet to face`);
+        }
+        if (out.facingAllIn(spot) && actions.includes("raise")) {
+          issues.push(`${at}: raise offered while facing all-in`);
+        }
+        if (out.facingAllIn(spot) && (!actions.includes("fold") || !actions.includes("call"))) {
+          issues.push(`${at}: facing all-in must offer fold and call only`);
         }
 
         // Card validity + duplicate detection across board and hero hand.
