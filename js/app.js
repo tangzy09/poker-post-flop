@@ -517,7 +517,9 @@ function renderStats() {
     '<div class="stat-tiles">' +
     '<div class="stat-tile"><div class="v">' +
     (s.coursesDone || 0) +
-    '/12</div><div class="k">' +
+    "/" +
+    COURSES.length +
+    '</div><div class="k">' +
     t("stats.coursesDone") +
     "</div></div>" +
     '<div class="stat-tile"><div class="v">' +

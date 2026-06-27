@@ -51,6 +51,17 @@ const Engine = {
       p1.correct = Math.min(p1.correct || 0, p1.qDone);
       p1.total = c1Len;
       p1.completed = !!p1.completed || p1.qDone >= c1Len;
+      const s1 = this.store.statsByCourse.c1;
+      if (s1 && (s1.h || 0) > c1Len) {
+        const oldH = s1.h || 0;
+        const oldC = s1.c || 0;
+        const newH = Math.min(oldH, c1Len);
+        const newC = Math.min(oldC, newH);
+        this.store.stats.totalQ = Math.max(0, (this.store.stats.totalQ || 0) - (oldH - newH));
+        this.store.stats.correctQ = Math.max(0, (this.store.stats.correctQ || 0) - (oldC - newC));
+        s1.h = newH;
+        s1.c = newC;
+      }
     }
   },
 

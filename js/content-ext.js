@@ -546,9 +546,9 @@
       },
     },
     {
-      s: { en: "Turn, you bet and villain raises. You hold 9♥8♥ combo draw on T-9-4-2. Best action?", zh: "转牌，你下注后对手加注。你在 T-9-4-2 持 9♥8♥ 组合听牌。最佳行动？" },
-      lbl: { en: "T♥7♥ FD + OESD", zh: "T♥7♥ 花听+顺听" },
-      board: ["9h","8h","4c","2s"], pot: 24, bet: 18, pos: "BB (OOP)", hand: ["Th","7h"],
+      s: { en: "Turn, you bet and villain raises. You hold 8♥7♥ combo draw on T-9-4-2. Best action?", zh: "转牌，你下注后对手加注。你在 T-9-4-2 持 8♥7♥ 组合听牌。最佳行动？" },
+      lbl: { en: "8♥7♥ FD + OESD", zh: "8♥7♥ 花听+顺听" },
+      board: ["Td","9c","4h","2s"], pot: 24, bet: 18, pos: "BB (OOP)", hand: ["8h","7h"],
       street: "turn",
       actions: FACE, correct: ["call","raise"], leak: "too_tight",
       fb: {
@@ -1008,9 +1008,9 @@
       },
     },
     {
-      s: { en: "Turn, villain barrels. You hold 7♥6♥ combo draw on Q-J-T-2. Best action?", zh: "转牌，对手开火。你在 Q-J-T-2 持 7♥6♥ 组合听牌。最佳行动？" },
-      lbl: { en: "6♥5♥ FD + OESD", zh: "6♥5♥ 花听+顺听" },
-      board: ["9s","8d","7c","2h"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["6h","5h"],
+      s: { en: "Turn, villain barrels. You hold 9♥8♥ combo draw on Q-J-T-2. Best action?", zh: "转牌，对手开火。你在 Q-J-T-2 持 9♥8♥ 组合听牌。最佳行动？" },
+      lbl: { en: "9♥8♥ FD + OESD", zh: "9♥8♥ 花听+顺听" },
+      board: ["Qh","Jh","Td","2c"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["9h","8h"],
       street: "turn",
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -1540,7 +1540,7 @@
     {
       s: { en: "Turn, you bet and villain raises. You hold flush draw on T-9-4-2. Best action?", zh: "转牌，你下注后对手加注。你在 T-9-4-2 持花听。最佳行动？" },
       lbl: { en: "A♠K♠ nut FD", zh: "A♠K♠ 坚果花听" },
-      board: ["9h","8h","4c","2d"], pot: 18, bet: 12, pos: "BB (OOP)", hand: ["Ah","Kh"],
+      board: ["Th","9h","4c","2d"], pot: 18, bet: 12, pos: "BB (OOP)", hand: ["Ah","Kh"],
       street: "turn",
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -2137,7 +2137,7 @@
     {
       s: { en: "Flop, you hold set on 9-6-3. Plan three streets. Villain checks. Best action?", zh: "翻牌，你在 9-6-3 持三条。规划三街。对手过牌。最佳行动？" },
       lbl: { en: "6♥6♣ set", zh: "6♥6♣ 三条" },
-      board: ["9h","6d","2c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["6s","6h"],
+      board: ["9h","6d","3c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["6s","6h"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
         check: { en: "Set — bet flop for value. Plan to barrel turn and river.", zh: "三条 — 翻牌价值下注。规划转牌与河牌继续。" },

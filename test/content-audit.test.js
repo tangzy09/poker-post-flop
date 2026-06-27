@@ -395,3 +395,9 @@ test("stem and label terminology is consistent (c1–c30)", () => {
   const out = execSync("node scripts/audit-terminology.js", { cwd: root, encoding: "utf8" });
   assert.match(out, /terminology: OK/);
 });
+
+test("action question stems match spot board and hero hand", () => {
+  const { execSync } = require("child_process");
+  const out = execSync("node scripts/audit-stem-spot.js", { cwd: root, encoding: "utf8" });
+  assert.match(out, /Stem\/spot audit: OK/);
+});

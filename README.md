@@ -1,6 +1,6 @@
 # Poker Post-Flop
 
-Bilingual (English / 中文) **heads-up post-flop trainer**: 12 lessons, theory slides, 288 drill questions, wrong-answer feedback, review pile, and an interactive table view.
+Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons, theory slides, 488 drill questions, wrong-answer feedback, review pile, and an interactive table view.
 
 **Live:**
 
@@ -12,7 +12,7 @@ Bilingual (English / 中文) **heads-up post-flop trainer**: 12 lessons, theory 
 
 ## Features
 
-- 12 courses — pot odds, MDF, implied odds, range advantage, board texture, c-betting, defense, polarization, mixing, turn/river play, check-raises, SPR
+- 30 courses — fundamentals (C1–C12) plus advanced topics (C13–C30): sizing, blockers, 3-bet pots, turn/river lines, tournaments, capstone review
 - Learn → drill flow with per-lesson summaries; **review lessons** anytime after the first pass
 - Poker table visualization (HU spots + multi-way table demo)
 - C3 range / equity chart (`js/range-chart.js` + `js/equity.js`)
@@ -66,16 +66,18 @@ tools/
 
 ## Content & quality checks
 
-**Question bank** lives in `js/content.js` (`QUESTIONS`, `LEARN`, `buildSpots()`).
+**Question bank** lives in `js/content.js` (C1–C12) and generated `js/content-ext.js` (C13–C30 from `scripts/courses-ext-data.js`).
 
 Before shipping content changes:
 
 ```bash
-npm test          # must pass (9 tests)
-npm run audit     # 288/288 expected; see tools/audit-report.json
+node scripts/gen-content-ext.js   # after editing courses-ext-data.js
+npm test                          # must pass
+npm run audit                     # 488/488 expected; see tools/audit-report.json
+node scripts/audit-stem-spot.js   # stem text vs rendered board/hand
 ```
 
-The audit verifies: C1 math, no duplicate cards, draw/flush claims vs board, hand-strength labels, solver-linked boards, i18n keys, and feedback registration.
+The audit verifies: C1 math, no duplicate cards, draw/flush claims vs board, hand-strength labels, stem vs spot consistency, solver-linked boards, i18n keys, and feedback registration.
 
 ## Deploy
 

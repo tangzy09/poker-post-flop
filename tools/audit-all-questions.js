@@ -261,6 +261,6 @@ if (report.fail.length) {
     for (const i of f.issues) console.log(`  - ${i}`);
   }
 } else {
-  console.log("\n全部 288 题结构/数学/牌面描述校验通过。");
+  console.log(`\n全部 ${report.ok.length + report.fail.length} 题结构/数学/牌面描述校验通过。`);
 }
 console.log(`\n完整 JSON: ${outPath}`);
