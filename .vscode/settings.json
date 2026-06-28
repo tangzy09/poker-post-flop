@@ -1,0 +1,14 @@
+{
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "[javascript]": {
+    "editor.defaultFormatter": null,
+    "editor.tabSize": 2
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/www": true,
+    "**/tools/audit-report.json": true
+  }
+}

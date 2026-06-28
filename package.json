@@ -2,7 +2,7 @@
   "name": "poker-post-flop",
   "version": "0.1.0",
   "private": true,
-  "description": "Poker post-flop course trainer — 12 lessons, web + Capacitor",
+  "description": "HU post-flop trainer — 30 lessons, 488 questions, web + Capacitor",
   "scripts": {
     "test": "node --test \"test/*.test.js\"",
     "audit": "node tools/audit-all-questions.js",

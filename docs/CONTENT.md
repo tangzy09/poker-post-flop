@@ -1,0 +1,138 @@
+# 题库与 i18n 指南
+
+## 规模
+
+| 范围 | 课数 | 每课 drill | 合计 |
+|------|------|------------|------|
+| C1 | 1 | 8 | 8 |
+| C2–C12 | 11 | 24 | 264 |
+| C13–C30 | 18 | 12 | 216 |
+| **合计** | **30** | — | **488** |
+
+每课 **4 页 Learn**（3 原理 + 1 summary）→ 再进入 Drill。
+
+## 两套内容文件
+
+### C1–C12：`js/content.js`
+
+- 顶部 `registerContentStrings()`：`_r(key, en, zh)` 注册所有字符串
+- `LEARN`：原理 slide 的 `titleKey` / `bodyKey`
+- `QUESTIONS`：选择题 `_choice()` 或行动题 `_action()` / `buildSpots()`
+
+**直接编辑此文件**，改完跑 `npm test`。
+
+### C13–C30：`scripts/courses-ext-data.js` → `js/content-ext.js`
+
+1. 编辑 `scripts/courses-ext-data.js`（learn 四段 + 12 个 spot）
+2. 运行：
+
+```bash
+node scripts/gen-content-ext.js
+npm test
+npm run audit
+```
+
+**不要**手改 `content-ext.js` 大段（会被生成覆盖）。
+
+## 添加一道 action spot（C1–C12 示例）
+
+在对应课程的 `buildSpots("c5", "concept.cbet", [ ... ])` 里加 spec：
+
+```javascript
+{
+  s: { en: "English stem…", zh: "中文题干…" },
+  lbl: { en: "AhKd TPTK", zh: "AhKd 顶对顶踢" },
+  board: ["Td", "9c", "4h"],
+  pot: 12,
+  bet: 0,
+  pos: "BTN (IP)",
+  hand: ["Ah", "Kd"],
+  actions: ACT,           // 或 FACE / FACE_CALL
+  correct: ["bet"],
+  leak: "street_plan",
+  fb: {
+    check: { en: "…", zh: "…" },
+    fold: { en: "…", zh: "…" },
+  },
+},
+```
+
+`buildSpots` 会自动 `reg()` 双语 key 并生成 `stemKey`、`feedback`、`spot`。
+
+### Spot 字段
+
+| 字段 | 说明 |
+|------|------|
+| `board` | 3/4/5 张，与 `street` 一致 |
+| `hand` | Hero 两张，不得与 board 重复 |
+| `pos` | 含 `IP` / `OOP`，牌桌会解析 BTN/BB |
+| `bet` | 0 = 无人下注，用 `ACT`；>0 用 `FACE` |
+| `allIn` | true 时仅 fold/call |
+| `leak` | 统计漏洞分类，见 `i18n.js` 的 `leak.*` |
+| `correct` | 可多个合法答案，如 `["call","raise"]` |
+
+## 添加选择题
+
+```javascript
+_choice("c1-q9", "c1.q9.s", [
+  { id: "a", labelKey: "c1.q9.a" },
+  { id: "b", labelKey: "c1.q9.b" },
+  // ...
+], "a", "conceptual", "concept_gap", "c1.q9.fb.b"),
+```
+
+并在 `registerContentStrings()` 里注册 `c1.q9.s`、`c1.q9.a`… 及 feedback key。
+
+## i18n 规则
+
+### UI 壳：`js/i18n.js`
+
+```javascript
+reg("key.name", "English", "中文");
+// 使用
+t("key.name");
+t("course.questions", { n: 24 });
+```
+
+### 课程内容：`content.js` 里 `_r()` 或 `buildSpots` 内联 `{ en, zh }`
+
+### 静态 HTML：`index.html`
+
+```html
+<h1 data-i18n="app.title">…</h1>
+```
+
+由 `applyI18n(document)` 在 `render()` 时刷新（含 `document.title`）。
+
+### 注意
+
+- 范围图、图例类名 **不要用** `btn`（与全局 `.btn` 冲突）
+- 手牌标签用 `labelKey`，不要硬编码 `label: "AA bluff-catcher"`
+- 扑克缩写可保留：BTN、BB、MDF、SPR、Solver
+- 中文术语统一：
+  - weak top pair → **弱顶对**
+  - missed draw → **破产听牌**
+  - capped villain → **对手（封顶）**
+
+## 质量检查清单
+
+改内容后按顺序：
+
+```bash
+node scripts/gen-content-ext.js   # 仅当改了 C13–C30 源数据
+npm test                          # 必须全绿（当前 39 tests）
+npm run audit                     # 期望 488/488
+node scripts/audit-stem-spot.js   # 题干 vs 牌面
+```
+
+测试覆盖：重复牌、听牌类型、label 与牌力、solver 牌面、learn key 注册、stem 与 spot 一致等。
+
+## C3 范围图
+
+Learn slide 加 `rangeChart: ["Ah", "7d", "2c"]`（至少 3 张牌）。
+
+渲染：`js/range-chart.js` + `js/equity.js`，样式在 `index.html` 的 `.range-*`。
+
+## Solver 参考
+
+`data/solved-spots.js` — C7/C8 等题可设 `solverRef`，审计会核对 board 一致。
