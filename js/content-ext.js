@@ -1220,9 +1220,9 @@
       s: { en: "Flop, you hold set, villain checks. Dry board. Best action?", zh: "翻牌，你持三条，对手过牌。干燥面。最佳行动？" },
       lbl: { en: "5♣5♠ set", zh: "5♣5♠ 三条" },
       board: ["Kc","8d","5h"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["5c","5s"],
-      actions: ACT, correct: ["check"], leak: "street_plan",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
-        bet: { en: "Don't overbet the flop with a set on a dry board — bet small/medium and build the pot over streets.", zh: "干燥面别用三条翻牌超池 — 小/中注下注并在后续街道建池。" },
+        check: { en: "When checked to on a dry board, a set wants a small value bet — checking slow-plays and forfeits value.", zh: "干燥面三条被过牌时应小注价值下注 — 过牌是慢打且放弃价值。" },
       },
     },
     {
@@ -1529,7 +1529,7 @@
     },
     {
       s: { en: "Flop, villain c-bets small. You hold gutshot only on K-Q-J. Best action?", zh: "翻牌，对手小持续下注。你在 K-Q-J 仅持卡顺。最佳行动？" },
-      lbl: { en: "T♥9♥ gutshot", zh: "T♥9♥ 卡顺" },
+      lbl: { en: "9♥8♠ gutshot", zh: "9♥8♠ 卡顺" },
       board: ["Kh","Qd","Jc"], pot: 6, bet: 2, pos: "BB (OOP)", hand: ["9h","8s"],
       actions: FACE, correct: ["call"], leak: "too_loose",
       fb: {
@@ -1598,7 +1598,7 @@
       },
     },
     {
-      s: { en: "Flop, villain c-bets. You hold flush draw + pair on 8-5-2 two-tone. Best action?", zh: "翻牌，对手持续下注。你在 8-5-2 双花面持花听+对子。最佳行动？" },
+      s: { en: "Flop, villain c-bets. You hold flush draw + pair on 8-5-2 monotone (three hearts). Best action?", zh: "翻牌，对手持续下注。你在 8-5-2 三红心同色面持花听+对子。最佳行动？" },
       lbl: { en: "8♣7♥ pair + FD", zh: "8♣7♥ 对子+花听" },
       board: ["8h","5h","2h"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["8c","7h"],
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -2052,12 +2052,12 @@
       },
     },
     {
-      s: { en: "Tournament, 15bb. Flop 9-8-7, you hold TT, villain bets. Best action?", zh: "锦标赛，15bb。翻牌 9-8-7，你持 TT，对手下注。最佳行动？" },
-      lbl: { en: "T♥T♣ underpair, 15bb", zh: "T♥T♣ 垫底对，15bb" },
-      board: ["9h","8d","7c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Th","Tc"],
+      s: { en: "Tournament, 15bb. Flop 9-8-7, you hold 66, villain bets. Best action?", zh: "锦标赛，15bb。翻牌 9-8-7，你持 66，对手下注。最佳行动？" },
+      lbl: { en: "6♥6♣ underpair, 15bb", zh: "6♥6♣ 垫底对，15bb" },
+      board: ["9h","8d","7c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["6h","6c"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
-        call: { en: "TT on 9-8-7 is an underpair — fold vs bet at 15bb.", zh: "9-8-7 上 TT 是垫底对 — 15bb 对下注应弃。" },
+        call: { en: "66 on 9-8-7 is an underpair — fold vs bet at 15bb.", zh: "9-8-7 上 66 是垫底对 — 15bb 对下注应弃。" },
         raise: { en: "Raising underpair is spew.", zh: "用垫底对加注是乱送。" },
       },
     },

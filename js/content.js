@@ -1601,7 +1601,7 @@ const QUESTIONS = {
     {
       s: { en: "BB vs BTN. J-8-5 two-tone, villain c-bets. You flopped two pair (J8). Best action?", zh: "BB 对 BTN。J-8-5 双花，对手持续下注。你翻牌成两对（J8）。最佳行动？" },
       lbl: { en: "J\u26658\u2665 two pair", zh: "J\u26658\u2665 两对" },
-      board: ["Jc", "8d", "5s"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Jh", "8h"],
+      board: ["Jc", "8c", "5s"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Jh", "8h"],
       actions: FACE, correct: ["raise", "call"], leak: "too_tight",
       fb: { fold: { en: "Two pair is far too strong to fold \u2014 raise for value/protection on a draw-heavy board.", zh: "两对远不够弃牌 \u2014 在听牌多的面上加注取价值并保护。" } },
     },
@@ -2275,7 +2275,7 @@ const QUESTIONS = {
     {
       s: { en: "BB vs BTN. J-9-5 two-tone, villain c-bets. You flopped two pair (J9). Best action?", zh: "BB 对 BTN。J-9-5 双花，对手持续下注。你翻牌成两对（J9）。最佳行动？" },
       lbl: { en: "J\u26659\u2665 two pair", zh: "J\u26659\u2665 两对" },
-      board: ["Js", "9d", "5c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Jh", "9h"],
+      board: ["Js", "9s", "5c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Jh", "9h"],
       actions: FACE, correct: ["raise", "call"], leak: "too_tight",
       fb: { fold: { en: "Two pair is far too strong to fold \u2014 check-raise for value/protection on a wet board.", zh: "两对远不够弃牌 \u2014 湿润面应过牌加注取价值并保护。" } },
     },
