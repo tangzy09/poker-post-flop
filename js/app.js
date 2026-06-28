@@ -71,7 +71,7 @@ function render() {
       root.innerHTML = renderCourses();
   }
 
-  applyI18n(root);
+  applyI18n(document);
   bindEvents();
 }
 

@@ -130,7 +130,7 @@ const Engine = {
     const conceptRaw = fb.concept || question.leak || "concept";
     return {
       reason: fb.reasonKey ? t(fb.reasonKey) : t("fb.generic.call_loose"),
-      concept: t(conceptRaw),
+      concept: tConcept(conceptRaw),
       ctx: question.ctxKey ? t(question.ctxKey) : "",
     };
   },

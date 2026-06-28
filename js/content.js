@@ -185,6 +185,10 @@ function registerContentStrings() {
   _r("range_blind", "Range advantage", "范围优势");
   _r("indifference", "Indifference & mixing", "无差异与混合");
 
+  _r("spot.lbl.aa_bc", "AA bluff-catcher", "AA 抓诈牌");
+  _r("spot.lbl.jj_over", "JJ overpair", "JJ 超对");
+  _r("spot.lbl.set_jacks", "Set of Jacks", "J 三条");
+
   // —— C8 drill questions (indifference & mixed strategies) ——
   _r("c8.q2.s", "What does it mean when two actions are 'indifferent' in GTO?", "在 GTO 中两种行动「无差异」是什么意思？");
   _r("c8.q2.a", "They have equal EV, so any mix between them is fine", "它们 EV 相同，任意混合都可以");
@@ -705,7 +709,7 @@ const QUESTIONS = {
     ], "a", "conceptual", "sizing", "c1.q3.fb.a"),
     _action("c1-q4", "c1.q4.s", {
       street: "river", board: ["2c", "7d", "9h", "Js", "4s"], pot: 100, bet: 100,
-      hero: { pos: "IP", hand: ["Ad", "Ac"], label: "AA bluff-catcher" },
+      hero: { pos: "IP", hand: ["Ad", "Ac"], labelKey: "spot.lbl.aa_bc" },
       villain: { pos: "OOP", label: "Polarized" },
       facing: "bet",
     }, ["call"], "reference", "too_tight", {
@@ -1684,7 +1688,7 @@ const QUESTIONS = {
   c7: [
     _action("c7-q1", "c7.q1.s", {
       street: "river", board: ["2c", "7d", "9h", "Js", "4s"], pot: 100, bet: 100,
-      hero: { pos: "IP", hand: ["Ad", "Ac"], label: "AA bluff-catcher" },
+      hero: { pos: "IP", hand: ["Ad", "Ac"], labelKey: "spot.lbl.aa_bc" },
       villain: { pos: "OOP", label: "Polarized" },
       facing: "bet", solverRef: "polar-pot",
     }, ["call"], "precise", "too_tight", {
@@ -1693,14 +1697,14 @@ const QUESTIONS = {
     }),
     _action("c7-q2", "c7.q2.s", {
       street: "river", board: ["2c", "7d", "9h", "Js", "4s"], pot: 100, bet: 50,
-      hero: { pos: "IP", hand: ["Ad", "Ac"], label: "AA bluff-catcher" },
+      hero: { pos: "IP", hand: ["Ad", "Ac"], labelKey: "spot.lbl.aa_bc" },
       facing: "bet", solverRef: "polar-half",
     }, ["call"], "precise", "too_tight", {
       fold: { reasonKey: "c1.q3.fb.a", concept: "mdf" },
     }),
     _action("c7-q3", "c7.q3.s", {
       street: "river", board: ["8c", "7d", "5h", "3s", "2c"], pot: 100, bet: 100,
-      hero: { pos: "IP", hand: ["Jd", "Jc"], label: "JJ overpair" },
+      hero: { pos: "IP", hand: ["Jd", "Jc"], labelKey: "spot.lbl.jj_over" },
       facing: "bet", solverRef: "range-mdf",
     }, ["call"], "precise", "too_tight", {
       fold: { reasonKey: "c1.q4.fb.fold", concept: "mdf" },
@@ -1708,7 +1712,7 @@ const QUESTIONS = {
     ...Array.from({ length: 5 }, (_, i) =>
       _action("c7-q" + (i + 4), "c7.q" + (i + 4) + ".s", {
         street: "river", board: ["2c", "7d", "9h", "Js", "4s"], pot: 100, bet: 100,
-        hero: { pos: "IP", hand: ["Ad", "Ac"], label: "AA bluff-catcher" },
+        hero: { pos: "IP", hand: ["Ad", "Ac"], labelKey: "spot.lbl.aa_bc" },
         facing: "bet", solverRef: "polar-pot",
       }, ["call"], "precise", "too_tight", {
         fold: { reasonKey: "c1.q4.fb.fold", concept: "mdf" },
@@ -1728,7 +1732,7 @@ const QUESTIONS = {
   c8: [
     _action("c8-q1", "c8.q1.s", {
       street: "river", board: ["2c", "7d", "9h", "Js", "4s"], pot: 100, bet: 0,
-      hero: { pos: "OOP", hand: ["Jh", "Jc"], label: "Set of Jacks" },
+      hero: { pos: "OOP", hand: ["Jh", "Jc"], labelKey: "spot.lbl.set_jacks" },
       facing: "action", solverRef: "nuts-air",
     }, ["check", "bet"], "precise", "indifference", {
       fold: { reasonKey: "fb.generic.bet_bad", concept: "indifference" },

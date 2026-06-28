@@ -35,7 +35,7 @@ const Coach = {
   questionTitle(courseId, qid) {
     const course = courseById(courseId);
     const num = qid.replace(courseId + "-q", "");
-    return course ? t(course.titleKey) + " · Q" + num : qid;
+    return course ? t(course.titleKey) + " · " + t("coach.qNum", { n: num }) : qid;
   },
 
   courseAccuracy(store, courseId) {

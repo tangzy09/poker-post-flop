@@ -38,6 +38,18 @@ function t(key, vars) {
   return s;
 }
 
+function hasKey(key) {
+  return !!(STR[LANG] && STR[LANG][key]) || !!STR.en[key];
+}
+
+function tConcept(key) {
+  if (!key) return "";
+  if (hasKey(key)) return t(key);
+  if (hasKey("concept." + key)) return t("concept." + key);
+  if (hasKey("leak." + key)) return t("leak." + key);
+  return key;
+}
+
 function setLang(lang) {
   if (lang !== "en" && lang !== "zh") return;
   LANG = lang;
@@ -111,6 +123,14 @@ reg("felt.pot", "Pot", "底池");
 reg("felt.toAct", "To act", "行动方");
 reg("felt.you", "YOU", "你");
 reg("felt.villain", "Villain", "对手");
+reg("felt.ip", "IP", "有位置");
+reg("felt.oop", "OOP", "无位置");
+reg("felt.street.flop", "Flop", "翻牌");
+reg("felt.street.turn", "Turn", "转牌");
+reg("felt.street.river", "River", "河牌");
+reg("felt.street.preflop", "Preflop", "翻前");
+reg("felt.street.concept", "Concept", "概念");
+reg("coach.qNum", "Q{n}", "第 {n} 题");
 
 reg("grade.best", "Correct", "答对了");
 reg("grade.good", "Acceptable", "可接受");
@@ -282,4 +302,7 @@ function applyI18n(root) {
   root.querySelectorAll("[data-i18n]").forEach((el) => {
     el.textContent = t(el.getAttribute("data-i18n"));
   });
+  if (typeof document !== "undefined" && document) {
+    document.title = t("app.title");
+  }
 }

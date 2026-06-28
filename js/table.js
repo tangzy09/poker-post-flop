@@ -43,6 +43,12 @@ function chipStackHtml(amount, side) {
 }
 
 // Derive a short position name from a raw label like "BTN (IP)", "BB (OOP)", "IP".
+function streetLabel(raw) {
+  const s = String(raw || "flop").toLowerCase();
+  const key = "felt.street." + s;
+  return hasKey(key) ? t(key) : String(raw || "").toUpperCase();
+}
+
 function posName(raw, isIP) {
   const s = (raw || "").toUpperCase();
   if (s.indexOf("BTN") >= 0) return "BTN";
@@ -58,7 +64,7 @@ function seatBadge(posLabel, isIP, withDealer) {
   return (
     '<span class="seat-badge ' + (isIP ? "ip" : "oop") + '">' +
     '<span class="pos-name">' + posLabel + "</span>" +
-    (isIP != null ? '<span class="pos-rel">' + (isIP ? "IP" : "OOP") + "</span>" : "") +
+    (isIP != null ? '<span class="pos-rel">' + (isIP ? t("felt.ip") : t("felt.oop")) + "</span>" : "") +
     (withDealer ? '<span class="dealer">D</span>' : "") +
     "</span>"
   );
@@ -128,7 +134,7 @@ function renderTable(m, container) {
     '<div class="tbl-center">' +
     potHtml +
     (board ? '<div class="tbl-board">' + board + "</div>" : "") +
-    (m.street ? '<div class="street-tag">' + m.street + "</div>" : "") +
+    (m.street ? '<div class="street-tag">' + streetLabel(m.street) + "</div>" : "") +
     "</div></div>";
 }
 
