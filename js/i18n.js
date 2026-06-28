@@ -293,7 +293,7 @@ reg("c27.sub", "Short stacks, bubbles, and ICM pressure", "短筹、bubble 与 I
 reg("c28.title", "Multi-Street Planning", "多街计划");
 reg("c28.sub", "Plan flop through river before you bet", "下注前先规划到河牌");
 reg("c29.title", "Special Boards", "特殊牌面");
-reg("c29.sub", "Paired, monotone, and four-straight textures", "配对、单色、四顺纹理");
+reg("c29.sub", "Paired, monotone, and four-straight textures", "配对、同色、四顺纹理");
 reg("c30.title", "Capstone Drills", "综合实战");
 reg("c30.sub", "Mixed advanced spots across concepts", "跨概念混合进阶局面");
 

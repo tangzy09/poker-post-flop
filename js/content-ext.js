@@ -274,8 +274,8 @@
 
   QUESTIONS.c13 = buildSpots("c13", "concept.sizing_adv", [
     {
-      s: { en: "River, villain bets 1/3 pot into 40. You hold Q♥T♣ — second pair, no draw. Best action?", zh: "河牌，对手对 40 的底池下注 1/3。你持 Q♥T♣ 第二对、无听牌。最佳行动？" },
-      lbl: { en: "Q♥T♣ second pair", zh: "Q♥T♣ 第二对" },
+      s: { en: "River, villain bets 1/3 pot into 40. You hold Q♣T♦ — second pair, no draw. Best action?", zh: "河牌，对手对 40 的底池下注 1/3。你持 Q♣T♦ 第二对、无听牌。最佳行动？" },
+      lbl: { en: "Q♣T♦ second pair", zh: "Q♣T♦ 第二对" },
       board: ["Qs","Jd","4c","2h","Ah"], pot: 40, bet: 13, pos: "BTN (IP)", hand: ["Qc","Td"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -295,8 +295,8 @@
       },
     },
     {
-      s: { en: "Flop, villain c-bets 1/3 pot. You hold 9♥8♥ flush draw + gutshot. Best action?", zh: "翻牌，对手 1/3 池持续下注。你持 9♥8♥ 花听+卡顺。最佳行动？" },
-      lbl: { en: "9♥8♥ FD + gut", zh: "9♥8♥ 花听+卡顺" },
+      s: { en: "Flop, villain c-bets 1/3 pot. You hold 8♥7♥ flush draw + gutshot. Best action?", zh: "翻牌，对手 1/3 池持续下注。你持 8♥7♥ 花听+卡顺。最佳行动？" },
+      lbl: { en: "8♥7♥ FD + gut", zh: "8♥7♥ 花听+卡顺" },
       board: ["Th","9h","2c"], pot: 6, bet: 2, pos: "BB (OOP)", hand: ["8h","7h"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -306,7 +306,7 @@
     },
     {
       s: { en: "Dry A-7-2 rainbow. You hold TPTK as IP raiser; villain checks. Best action?", zh: "干燥 A-7-2 彩虹。你是有位置加注者持顶对顶踢，对手过牌。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","7d","2c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["Ah","Kd"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -325,8 +325,8 @@
       },
     },
     {
-      s: { en: "Flop, villain bets 2/3 pot. You hold 6♥6♣ bottom set on 9-8-6. Best action?", zh: "翻牌，对手 2/3 池下注。你在 9-8-6 持 6♥6♣ 底三条。最佳行动？" },
-      lbl: { en: "6♥6♣ bottom set", zh: "6♥6♣ 底三条" },
+      s: { en: "Flop, villain bets 2/3 pot. You hold 6♣6♠ bottom set on 9-8-6. Best action?", zh: "翻牌，对手 2/3 池下注。你在 9-8-6 持 6♣6♠ 底三条。最佳行动？" },
+      lbl: { en: "6♣6♠ bottom set", zh: "6♣6♠ 底三条" },
       board: ["9s","8d","6h"], pot: 12, bet: 8, pos: "BB (OOP)", hand: ["6c","6s"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -346,8 +346,8 @@
       },
     },
     {
-      s: { en: "Flop, villain c-bets small. You hold 5♣4♣ pure air on K-Q-J. Best action?", zh: "翻牌，对手小持续下注。你在 K-Q-J 持 5♣4♣ 纯空气。最佳行动？" },
-      lbl: { en: "5♣4♣ air", zh: "5♣4♣ 空气" },
+      s: { en: "Flop, villain c-bets small. You hold 5♠4♦ pure air on K-Q-J. Best action?", zh: "翻牌，对手小持续下注。你在 K-Q-J 持 5♠4♦ 纯空气。最佳行动？" },
+      lbl: { en: "5♠4♦ air", zh: "5♠4♦ 空气" },
       board: ["Kh","Qd","Jc"], pot: 6, bet: 2, pos: "BB (OOP)", hand: ["5s","4d"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -356,8 +356,8 @@
       },
     },
     {
-      s: { en: "River, villain bets 1/2 pot. You hold A♥A♣ on A-9-6-4-2 — top set. Best action?", zh: "河牌，对手 1/2 池下注。你在 A-9-6-4-2 持 A♥A♣ 顶三条。最佳行动？" },
-      lbl: { en: "A♥A♣ top set", zh: "A♥A♣ 顶三条" },
+      s: { en: "River, villain bets 1/2 pot. You hold A♣A♦ on A-9-6-4-2 — top set. Best action?", zh: "河牌，对手 1/2 池下注。你在 A-9-6-4-2 持 A♣A♦ 顶三条。最佳行动？" },
+      lbl: { en: "A♣A♦ top set", zh: "A♣A♦ 顶三条" },
       board: ["Ah","9d","6c","4s","2h"], pot: 24, bet: 12, pos: "BTN (IP)", hand: ["Ac","Ad"],
       street: "river",
       actions: FACE, correct: ["raise"], leak: "street_plan",
@@ -387,8 +387,8 @@
       },
     },
     {
-      s: { en: "River, villain bets 1/3 pot. You hold 9♥3♦ — third pair on K-J-9-4-8. Best action?", zh: "河牌，对手 1/3 池下注。你在 K-J-9-4-8 持 9♥3♦ 第三对。最佳行动？" },
-      lbl: { en: "9♥3♦ third pair", zh: "9♥3♦ 第三对" },
+      s: { en: "River, villain bets 1/3 pot. You hold 9♣3♦ — third pair on K-J-9-4-8. Best action?", zh: "河牌，对手 1/3 池下注。你在 K-J-9-4-8 持 9♣3♦ 第三对。最佳行动？" },
+      lbl: { en: "9♣3♦ third pair", zh: "9♣3♦ 第三对" },
       board: ["Kh","Jd","9s","4c","8h"], pot: 30, bet: 10, pos: "BB (OOP)", hand: ["9c","3d"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -432,9 +432,9 @@
       },
     },
     {
-      s: { en: "Turn, flush completes. You hold Qh on Q-J-9-T with one heart. Villain bets. Best action?", zh: "转牌，同花完成。你在 Q-J-9-T 一红心面持 Qh。对手下注。最佳行动？" },
-      lbl: { en: "Q♥T♣ top pair, Qh blocker", zh: "Q♥T♣ 顶对，Qh 阻断" },
-      board: ["Qd","Jh","9h","Tc"], pot: 16, bet: 10, pos: "BB (OOP)", hand: ["Qh","Td"],
+      s: { en: "Turn, a third heart completes the flush. You hold top pair Qh with the Qh flush blocker. Villain bets. Best action?", zh: "转牌第三张红心使同花完成。你持顶对 Qh 兼 Qh 同花阻断。对手下注。最佳行动？" },
+      lbl: { en: "Q♥T♦ top pair, Qh blocker", zh: "Q♥T♦ 顶对，Qh 阻断" },
+      board: ["Qs","8h","3h","2h"], pot: 16, bet: 10, pos: "BB (OOP)", hand: ["Qh","Td"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -443,8 +443,8 @@
       },
     },
     {
-      s: { en: "River, you hold 7♥7♣ on A-7-5-3-2. Villain checks. Best action?", zh: "河牌，你在 A-7-5-3-2 持 7♥7♣ 中三条。对手过牌。最佳行动？" },
-      lbl: { en: "7♥7♣ middle set", zh: "7♥7♣ 中三条" },
+      s: { en: "River, you hold 7♣7♠ on A-7-5-3-2. Villain checks. Best action?", zh: "河牌，你在 A-7-5-3-2 持 7♣7♠ 中三条。对手过牌。最佳行动？" },
+      lbl: { en: "7♣7♠ middle set", zh: "7♣7♠ 中三条" },
       board: ["Ah","7d","5c","3s","2h"], pot: 16, bet: 0, pos: "BTN (IP)", hand: ["7c","7s"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -473,8 +473,8 @@
       },
     },
     {
-      s: { en: "River, board A-K-Q-J-T (broadway). You hold 9♥8♣ — missed straight. Villain checks. Best action?", zh: "河牌，牌面 A-K-Q-J-T（大牌面）。你持 9♥8♣ 破产顺子。对手过牌。最佳行动？" },
-      lbl: { en: "9♥8♣ missed straight", zh: "9♥8♣ 破产顺子" },
+      s: { en: "River, board A-K-Q-J-T (broadway). You hold 9♦8♥ — missed straight. Villain checks. Best action?", zh: "河牌，牌面 A-K-Q-J-T（大牌面）。你持 9♦8♥ 破产顺子。对手过牌。最佳行动？" },
+      lbl: { en: "9♦8♥ missed straight", zh: "9♦8♥ 破产顺子" },
       board: ["Ah","Kd","Qc","Js","Th"], pot: 20, bet: 0, pos: "BB (OOP)", hand: ["9d","8h"],
       street: "river",
       actions: ACT, correct: ["check"], leak: "too_loose",
@@ -493,8 +493,8 @@
       },
     },
     {
-      s: { en: "River, paired board 9-9-5-3-2. You hold A♥Q♣ — ace-high with an ace blocker. Villain bets 1/3 pot. Best action?", zh: "河牌，配对面 9-9-5-3-2。你持 A♥Q♣ A 高带 A 阻断。对手 1/3 池下注。最佳行动？" },
-      lbl: { en: "A♥Q♣ ace-high", zh: "A♥Q♣ A 高" },
+      s: { en: "River, paired board 9-9-5-3-2. You hold A♥Q♦ — ace-high with an ace blocker. Villain bets 1/3 pot. Best action?", zh: "河牌，配对面 9-9-5-3-2。你持 A♥Q♦ A 高带 A 阻断。对手 1/3 池下注。最佳行动？" },
+      lbl: { en: "A♥Q♦ ace-high", zh: "A♥Q♦ A 高" },
       board: ["9h","9d","5c","3s","2h"], pot: 18, bet: 6, pos: "BB (OOP)", hand: ["Ah","Qd"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -527,7 +527,7 @@
   QUESTIONS.c15 = buildSpots("c15", "concept.facing_raise", [
     {
       s: { en: "Flop, you bet and villain raises. You hold TPTK on A-8-3. Best action?", zh: "翻牌，你下注后对手加注。你在 A-8-3 持顶对顶踢。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","8d","3c"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Ah","Kd"],
       actions: FACE, correct: ["call"], leak: "too_loose",
       fb: {
@@ -556,8 +556,8 @@
       },
     },
     {
-      s: { en: "Flop, villain check-raises. You hold 6♥6♣ bottom set on 9-8-6. Best action?", zh: "翻牌，对手过牌加注。你在 9-8-6 持 6♥6♣ 底三条。最佳行动？" },
-      lbl: { en: "6♥6♣ bottom set", zh: "6♥6♣ 底三条" },
+      s: { en: "Flop, villain check-raises. You hold 6♣6♠ bottom set on 9-8-6. Best action?", zh: "翻牌，对手过牌加注。你在 9-8-6 持 6♣6♠ 底三条。最佳行动？" },
+      lbl: { en: "6♣6♠ bottom set", zh: "6♣6♠ 底三条" },
       board: ["9s","8d","6h"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["6c","6s"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -567,18 +567,18 @@
     },
     {
       s: { en: "River, you bet and villain raises. You hold two pair (KJ on K-J-9-4-2). Best action?", zh: "河牌，你下注后对手加注。你在 K-J-9-4-2 持两对。最佳行动？" },
-      lbl: { en: "K♥J♣ two pair", zh: "K♥J♣ 两对" },
+      lbl: { en: "K♣J♠ two pair", zh: "K♣J♠ 两对" },
       board: ["Kh","Jd","9s","4c","2h"], pot: 36, bet: 28, pos: "BTN (IP)", hand: ["Kc","Js"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_loose",
       fb: {
-        fold: { en: "Two pair is strong but a river raise is very polarized — calling is OK but folding is not crazy vs a tight player.", zh: "两对很强但河牌加注极极化 — 跟注可以但对紧凶弃牌也不离谱。" },
+        fold: { en: "Two pair is strong but a river raise is very polarized — calling is OK but folding is not crazy vs a tight player.", zh: "两对很强但河牌加注非常极化 — 跟注可以但对紧凶弃牌也不离谱。" },
         raise: { en: "Calling is correct — raising two pair into a river raise only gets called by better.", zh: "跟注正确 — 用两对对河牌加注只有更好牌会跟。" },
       },
     },
     {
       s: { en: "Flop, you bet and villain min-raises. You hold weak top pair on A-K-7. Best action?", zh: "翻牌，你下注后对手最小加注。你在 A-K-7 持弱顶对。最佳行动？" },
-      lbl: { en: "A♥J♣ weak top pair", zh: "A♥J♣ 弱顶对" },
+      lbl: { en: "A♣J♥ weak top pair", zh: "A♣J♥ 弱顶对" },
       board: ["Ah","Kd","7c"], pot: 14, bet: 8, pos: "BTN (IP)", hand: ["Ac","Jh"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -588,7 +588,7 @@
     },
     {
       s: { en: "Turn, you bet and villain raises. You hold weak top pair on Q-J-9-5. Best action?", zh: "转牌，你下注后对手加注。你在 Q-J-9-5 持弱顶对。最佳行动？" },
-      lbl: { en: "Q♥9♣ weak top pair", zh: "Q♥9♣ 弱顶对" },
+      lbl: { en: "Q♠9♦ weak top pair", zh: "Q♠9♦ 弱顶对" },
       board: ["Qh","Jd","9s","5c"], pot: 22, bet: 16, pos: "BB (OOP)", hand: ["Qs","9d"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -600,15 +600,15 @@
     {
       s: { en: "Flop, villain raises your c-bet. You hold nut flush draw on J-T-4 two-tone. Best action?", zh: "翻牌，对手加注你的持续下注。你在 J-T-4 双花面持坚果花听。最佳行动？" },
       lbl: { en: "A♠K♠ nut FD", zh: "A♠K♠ 坚果花听" },
-      board: ["Js","Ts","4s"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["As","Ks"],
+      board: ["Js","Ts","4d"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["As","Ks"],
       actions: FACE, correct: ["call","raise"], leak: "too_tight",
       fb: {
         fold: { en: "Nut flush draw vs a raise has huge equity and fold equity — never fold.", zh: "坚果花听对加注有巨大胜率与弃牌率 — 绝不弃。" },
       },
     },
     {
-      s: { en: "River, you bet thin and villain raises. You hold third pair on K-9-6-3-2. Best action?", zh: "河牌，你薄价值下注后对手加注。你在 K-9-6-3-2 持 6♥4♣ 第三对。最佳行动？" },
-      lbl: { en: "6♥4♣ third pair", zh: "6♥4♣ 第三对" },
+      s: { en: "River, you bet thin and villain raises. You hold third pair on K-9-6-3-2. Best action?", zh: "河牌，你薄价值下注后对手加注。你在 K-9-6-3-2 持 6♥4♦ 第三对。最佳行动？" },
+      lbl: { en: "6♥4♦ third pair", zh: "6♥4♦ 第三对" },
       board: ["Kh","9d","6c","3s","2h"], pot: 20, bet: 16, pos: "BTN (IP)", hand: ["6h","4d"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -630,7 +630,7 @@
     },
     {
       s: { en: "Flop, you bet and villain raises all-in. You hold middle pair on 8-7-2. Best action?", zh: "翻牌，你下注后对手全压。你在 8-7-2 持中对。最佳行动？" },
-      lbl: { en: "7♥6♣ middle pair", zh: "7♥6♣ 中对" },
+      lbl: { en: "7♠6♣ middle pair", zh: "7♠6♣ 中对" },
       board: ["8h","7d","2c"], pot: 20, bet: 30, pos: "BB (OOP)", hand: ["7s","6c"],
       allIn: true,
       actions: FACE_CALL, correct: ["fold"], leak: "too_loose",
@@ -653,8 +653,8 @@
   ]);
   QUESTIONS.c16 = buildSpots("c16", "concept.three_bet", [
     {
-      s: { en: "3-bet pot, SPR ~4. Flop A-K-5, you hold A♥Q♣ TPTK, villain bets 1/2 pot. Best action?", zh: "3-bet 底池，SPR 约 4。翻牌 A-K-5，你持 A♥Q♣ 顶对顶踢，对手 1/2 池下注。最佳行动？" },
-      lbl: { en: "A♥Q♣ TPTK, 3bp", zh: "A♥Q♣ 顶对顶踢，3bp" },
+      s: { en: "3-bet pot, SPR ~4. Flop A-K-5, you hold A♣Q♥ TPTK, villain bets 1/2 pot. Best action?", zh: "3-bet 底池，SPR 约 4。翻牌 A-K-5，你持 A♣Q♥ 顶对顶踢，对手 1/2 池下注。最佳行动？" },
+      lbl: { en: "A♣Q♥ TPTK, 3bp", zh: "A♣Q♥ 顶对顶踢，3bp" },
       board: ["Ah","Kd","5c"], pot: 18, bet: 9, pos: "BTN (IP)", hand: ["Ac","Qh"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -663,8 +663,8 @@
       },
     },
     {
-      s: { en: "3-bet pot, SPR ~3. Flop 8-7-6 two-tone, you hold A♥A♣ overpair, villain bets. Best action?", zh: "3-bet 底池，SPR 约 3。翻牌 8-7-6 双花，你持 A♥A♣ 超对，对手下注。最佳行动？" },
-      lbl: { en: "A♥A♣ overpair, 3bp", zh: "A♥A♣ 超对，3bp" },
+      s: { en: "3-bet pot, SPR ~3. Flop 8-7-6 two-tone, you hold A♦A♠ overpair, villain bets. Best action?", zh: "3-bet 底池，SPR 约 3。翻牌 8-7-6 双花，你持 A♦A♠ 超对，对手下注。最佳行动？" },
+      lbl: { en: "A♦A♠ overpair, 3bp", zh: "A♦A♠ 超对，3bp" },
       board: ["8h","7h","6c"], pot: 20, bet: 12, pos: "BB (OOP)", hand: ["Ad","As"],
       actions: FACE, correct: ["call"], leak: "too_loose",
       fb: {
@@ -693,8 +693,8 @@
       },
     },
     {
-      s: { en: "3-bet pot. Turn K-8-3-2, you hold 8♥8♣ middle set, villain bets 2/3 pot. Best action?", zh: "3-bet 底池。转牌 K-8-3-2，你持 8♥8♣ 中三条，对手 2/3 池下注。最佳行动？" },
-      lbl: { en: "8♥8♣ middle set, 3bp", zh: "8♥8♣ 中三条，3bp" },
+      s: { en: "3-bet pot. Turn K-8-3-2, you hold 8♠8♣ middle set, villain bets 2/3 pot. Best action?", zh: "3-bet 底池。转牌 K-8-3-2，你持 8♠8♣ 中三条，对手 2/3 池下注。最佳行动？" },
+      lbl: { en: "8♠8♣ middle set, 3bp", zh: "8♠8♣ 中三条，3bp" },
       board: ["Kh","8d","3c","2h"], pot: 24, bet: 16, pos: "BTN (IP)", hand: ["8s","8c"],
       street: "turn",
       actions: FACE, correct: ["raise"], leak: "street_plan",
@@ -704,8 +704,8 @@
       },
     },
     {
-      s: { en: "3-bet pot. Flop 9-5-3, you hold A♥K♣ (two overs), villain c-bets small. Best action?", zh: "3-bet 底池。翻牌 9-5-3，你持 A♥K♣（两高张），对手小持续下注。最佳行动？" },
-      lbl: { en: "A♥K♣ two overs, 3bp", zh: "A♥K♣ 两高张，3bp" },
+      s: { en: "3-bet pot. Flop 9-5-3, you hold A♥K♦ (two overs), villain c-bets small. Best action?", zh: "3-bet 底池。翻牌 9-5-3，你持 A♥K♦（两高张），对手小持续下注。最佳行动？" },
+      lbl: { en: "A♥K♦ two overs, 3bp", zh: "A♥K♦ 两高张，3bp" },
       board: ["9s","5d","3c"], pot: 14, bet: 4, pos: "BB (OOP)", hand: ["Ah","Kd"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -714,8 +714,8 @@
       },
     },
     {
-      s: { en: "3-bet pot. River A-K-Q-J-5, you hold A♥A♣, villain bets 1/2 pot. Best action?", zh: "3-bet 底池。河牌 A-K-Q-J-5，你持 A♥A♣，对手 1/2 池下注。最佳行动？" },
-      lbl: { en: "A♥A♣ top set, 3bp", zh: "A♥A♣ 顶三条，3bp" },
+      s: { en: "3-bet pot. River A-K-Q-J-5, you hold A♥A♦, villain bets 1/2 pot. Best action?", zh: "3-bet 底池。河牌 A-K-Q-J-5，你持 A♥A♦，对手 1/2 池下注。最佳行动？" },
+      lbl: { en: "A♥A♦ top set, 3bp", zh: "A♥A♦ 顶三条，3bp" },
       board: ["Ac","Kd","Qh","Js","5d"], pot: 40, bet: 20, pos: "BTN (IP)", hand: ["Ah","Ad"],
       street: "river",
       actions: FACE, correct: ["raise"], leak: "street_plan",
@@ -734,8 +734,8 @@
       },
     },
     {
-      s: { en: "3-bet pot. Turn 7-5-2-3, you hold 7♥6♣ top pair, villain bets pot. Best action?", zh: "3-bet 底池。转牌 7-5-2-3，你持 7♥6♣ 顶对，对手底池下注。最佳行动？" },
-      lbl: { en: "7♥6♣ top pair, 3bp", zh: "7♥6♣ 顶对，3bp" },
+      s: { en: "3-bet pot. Turn 7-5-2-3, you hold 7♣6♠ top pair, villain bets pot. Best action?", zh: "3-bet 底池。转牌 7-5-2-3，你持 7♣6♠ 顶对，对手底池下注。最佳行动？" },
+      lbl: { en: "7♣6♠ top pair, 3bp", zh: "7♣6♠ 顶对，3bp" },
       board: ["7h","5d","2c","3s"], pot: 22, bet: 22, pos: "BTN (IP)", hand: ["7c","6s"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -745,8 +745,8 @@
       },
     },
     {
-      s: { en: "3-bet pot. Flop J-T-8, you hold Q♥Q♣ overpair, villain checks. Best action?", zh: "3-bet 底池。翻牌 J-T-8，你持 Q♥Q♣ 超对，对手过牌。最佳行动？" },
-      lbl: { en: "Q♥Q♣ overpair, 3bp", zh: "Q♥Q♣ 超对，3bp" },
+      s: { en: "3-bet pot. Flop J-T-8, you hold Q♣Q♠ overpair, villain checks. Best action?", zh: "3-bet 底池。翻牌 J-T-8，你持 Q♣Q♠ 超对，对手过牌。最佳行动？" },
+      lbl: { en: "Q♣Q♠ overpair, 3bp", zh: "Q♣Q♠ 超对，3bp" },
       board: ["Jh","Td","8c"], pot: 12, bet: 0, pos: "BB (OOP)", hand: ["Qc","Qs"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -754,8 +754,8 @@
       },
     },
     {
-      s: { en: "3-bet pot. Flop A-8-3, you hold 8♥7♣ middle pair, villain bets 1/3 pot. Best action?", zh: "3-bet 底池。翻牌 A-8-3，你持 8♥7♣ 中对，对手 1/3 池下注。最佳行动？" },
-      lbl: { en: "8♥7♣ middle pair, 3bp", zh: "8♥7♣ 中对，3bp" },
+      s: { en: "3-bet pot. Flop A-8-3, you hold 8♠7♥ middle pair, villain bets 1/3 pot. Best action?", zh: "3-bet 底池。翻牌 A-8-3，你持 8♠7♥ 中对，对手 1/3 池下注。最佳行动？" },
+      lbl: { en: "8♠7♥ middle pair, 3bp", zh: "8♠7♥ 中对，3bp" },
       board: ["Ah","8d","3c"], pot: 14, bet: 5, pos: "BB (OOP)", hand: ["8s","7h"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -764,8 +764,8 @@
       },
     },
     {
-      s: { en: "3-bet pot, SPR ~2. Flop 5-4-3, you hold A♥A♣, villain jams. Best action?", zh: "3-bet 底池，SPR 约 2。翻牌 5-4-3，你持 A♥A♣，对手全压。最佳行动？" },
-      lbl: { en: "A♥A♣ overpair, 3bp", zh: "A♥A♣ 超对，3bp" },
+      s: { en: "3-bet pot, SPR ~2. Flop 5-4-3, you hold A♣A♦, villain jams. Best action?", zh: "3-bet 底池，SPR 约 2。翻牌 5-4-3，你持 A♣A♦，对手全压。最佳行动？" },
+      lbl: { en: "A♣A♦ overpair, 3bp", zh: "A♣A♦ 超对，3bp" },
       board: ["5h","4d","3c"], pot: 22, bet: 33, pos: "BTN (IP)", hand: ["Ac","Ad"],
       allIn: true,
       actions: FACE_CALL, correct: ["call"], leak: "too_tight",
@@ -778,7 +778,7 @@
   QUESTIONS.c17 = buildSpots("c17", "concept.pot_control", [
     {
       s: { en: "Turn, you hold weak top pair on A-9-5-3. Villain (PFR) checks. Best action?", zh: "转牌，你在 A-9-5-3 持弱顶对。对手（翻前加注者）过牌。最佳行动？" },
-      lbl: { en: "A♥7♣ weak top pair", zh: "A♥7♣ 弱顶对" },
+      lbl: { en: "A♣7♥ weak top pair", zh: "A♣7♥ 弱顶对" },
       board: ["Ah","9d","5c","3s"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Ac","7h"],
       street: "turn",
       actions: ACT, correct: ["check"], leak: "street_plan",
@@ -797,7 +797,7 @@
     },
     {
       s: { en: "Turn, you hold overpair QQ on J-8-4-T, villain bets. Best action?", zh: "转牌，你在 J-8-4-T 持超对 QQ，对手下注。最佳行动？" },
-      lbl: { en: "Q♣Q♦ overpair", zh: "Q♣Q♦ 超对" },
+      lbl: { en: "Q♣Q♠ overpair", zh: "Q♣Q♠ 超对" },
       board: ["Jh","8d","4c","Ts"], pot: 16, bet: 10, pos: "BTN (IP)", hand: ["Qc","Qs"],
       street: "turn",
       actions: FACE, correct: ["call"], leak: "too_loose",
@@ -819,7 +819,7 @@
     },
     {
       s: { en: "Flop, you hold set on 9-6-3, villain checks. Best action?", zh: "翻牌，你在 9-6-3 持三条，对手过牌。最佳行动？" },
-      lbl: { en: "6♥6♣ set", zh: "6♥6♣ 三条" },
+      lbl: { en: "6♠6♥ set", zh: "6♠6♥ 三条" },
       board: ["9h","6d","3c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["6s","6h"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -828,7 +828,7 @@
     },
     {
       s: { en: "Turn, you hold two pair on Q-9-5-J, villain checks. Best action?", zh: "转牌，你在 Q-9-5-J 持两对，对手过牌。最佳行动？" },
-      lbl: { en: "Q♥9♣ two pair", zh: "Q♥9♣ 两对" },
+      lbl: { en: "Q♣9♠ two pair", zh: "Q♣9♠ 两对" },
       board: ["Qh","9d","5c","Js"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Qc","9s"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -838,7 +838,7 @@
     },
     {
       s: { en: "Flop, you hold weak top pair on A-K-7, villain c-bets small. Best action?", zh: "翻牌，你在 A-K-7 持弱顶对，对手小持续下注。最佳行动？" },
-      lbl: { en: "A♥T♣ weak top pair", zh: "A♥T♣ 弱顶对" },
+      lbl: { en: "A♣T♥ weak top pair", zh: "A♣T♥ 弱顶对" },
       board: ["Ah","Kd","7c"], pot: 6, bet: 2, pos: "BB (OOP)", hand: ["Ac","Th"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -847,8 +847,8 @@
       },
     },
     {
-      s: { en: "Turn, scare card (ace). You hold 9♥8♣ middle pair on 9-5-3-A. Villain checks. Best action?", zh: "转牌，吓人牌（A）。你在 9-5-3-A 持 9♥8♣ 中对。对手过牌。最佳行动？" },
-      lbl: { en: "9♥8♣ middle pair", zh: "9♥8♣ 中对" },
+      s: { en: "Turn, scare card (ace). You hold 9♣8♥ middle pair on 9-5-3-A. Villain checks. Best action?", zh: "转牌，吓人牌（A）。你在 9-5-3-A 持 9♣8♥ 中对。对手过牌。最佳行动？" },
+      lbl: { en: "9♣8♥ middle pair", zh: "9♣8♥ 中对" },
       board: ["9h","5d","3c","As"], pot: 10, bet: 0, pos: "BTN (IP)", hand: ["9c","8h"],
       street: "turn",
       actions: ACT, correct: ["check"], leak: "street_plan",
@@ -858,7 +858,7 @@
     },
     {
       s: { en: "River, you pot-controlled turn. Board K-8-3-2-5, you hold weak top pair. Villain bets big. Best action?", zh: "河牌，转牌你控了池。牌面 K-8-3-2-5，你持弱顶对。对手大注。最佳行动？" },
-      lbl: { en: "K♥T♣ weak top pair", zh: "K♥T♣ 弱顶对" },
+      lbl: { en: "K♣T♦ weak top pair", zh: "K♣T♦ 弱顶对" },
       board: ["Kh","8d","3c","2s","5h"], pot: 14, bet: 12, pos: "BB (OOP)", hand: ["Kc","Td"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -888,8 +888,8 @@
       },
     },
     {
-      s: { en: "River, you hold K♥K♣ on K-7-4-2-9. Villain checks. Best action?", zh: "河牌，你在 K-7-4-2-9 持 K♥K♣。对手过牌。最佳行动？" },
-      lbl: { en: "K♥K♣ top set", zh: "K♥K♣ 顶三条" },
+      s: { en: "River, you hold K♣K♠ on K-7-4-2-9. Villain checks. Best action?", zh: "河牌，你在 K-7-4-2-9 持 K♣K♠。对手过牌。最佳行动？" },
+      lbl: { en: "K♣K♠ top set", zh: "K♣K♠ 顶三条" },
       board: ["Kh","7d","4c","2s","9h"], pot: 18, bet: 0, pos: "BTN (IP)", hand: ["Kc","Ks"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -900,8 +900,8 @@
   ]);
   QUESTIONS.c18 = buildSpots("c18", "concept.turn_defense", [
     {
-      s: { en: "Turn, villain barrels after c-betting flop. You hold J♥T♣ top pair on J-9-4-2. Best action?", zh: "转牌，对手翻牌持续下注后转牌开火。你在 J-9-4-2 持 J♥T♣ 顶对。最佳行动？" },
-      lbl: { en: "J♥T♣ top pair", zh: "J♥T♣ 顶对" },
+      s: { en: "Turn, villain barrels after c-betting flop. You hold J♠T♣ top pair on J-9-4-2. Best action?", zh: "转牌，对手翻牌持续下注后转牌开火。你在 J-9-4-2 持 J♠T♣ 顶对。最佳行动？" },
+      lbl: { en: "J♠T♣ top pair", zh: "J♠T♣ 顶对" },
       board: ["Jh","9d","4c","2s"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["Js","Tc"],
       street: "turn",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -911,9 +911,9 @@
       },
     },
     {
-      s: { en: "Turn, flush completes. You hold Q♥J♣ top pair. Villain bets 2/3 pot. Best action?", zh: "转牌，同花完成。你持 Q♥J♣ 顶对。对手 2/3 池下注。最佳行动？" },
-      lbl: { en: "Q♥J♣ top pair", zh: "Q♥J♣ 顶对" },
-      board: ["Qh","8h","3h","2d"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["Qc","Jd"],
+      s: { en: "Turn, flush completes. You hold Q♣J♦ top pair. Villain bets 2/3 pot. Best action?", zh: "转牌，同花完成。你持 Q♣J♦ 顶对。对手 2/3 池下注。最佳行动？" },
+      lbl: { en: "Q♣J♦ top pair", zh: "Q♣J♦ 顶对" },
+      board: ["Qh","8h","3d","2h"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["Qc","Jd"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -934,7 +934,7 @@
     },
     {
       s: { en: "Turn, villain barrels. You hold nut flush draw on 9-8-4-2. Best action?", zh: "转牌，对手开火。你在 9-8-4-2 持坚果花听。最佳行动？" },
-      lbl: { en: "A♠K♠ nut FD", zh: "A♠K♠ 坚果花听" },
+      lbl: { en: "A♥K♥ nut FD", zh: "A♥K♥ 坚果花听" },
       board: ["9h","8h","4c","2d"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["Ah","Kh"],
       street: "turn",
       actions: FACE, correct: ["call","raise"], leak: "too_tight",
@@ -943,8 +943,8 @@
       },
     },
     {
-      s: { en: "Turn, four to a straight. You hold A♥A♣ overpair on 9-8-7-6. Villain bets pot. Best action?", zh: "转牌，四张顺子。你在 9-8-7-6 持 A♥A♣ 超对。对手底池下注。最佳行动？" },
-      lbl: { en: "A♥A♣ overpair", zh: "A♥A♣ 超对" },
+      s: { en: "Turn, four to a straight. You hold A♥A♦ overpair on 9-8-7-6. Villain bets pot. Best action?", zh: "转牌，四张顺子。你在 9-8-7-6 持 A♥A♦ 超对。对手底池下注。最佳行动？" },
+      lbl: { en: "A♥A♦ overpair", zh: "A♥A♦ 超对" },
       board: ["9h","8d","7c","6s"], pot: 20, bet: 20, pos: "BTN (IP)", hand: ["Ah","Ad"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -954,19 +954,19 @@
       },
     },
     {
-      s: { en: "Turn, villain barrels small. You hold K♥Q♣ — two overs + gutshot on J-T-4-9. Best action?", zh: "转牌，对手小第二枪。你在 J-T-4-9 持 K♥Q♣ 两高张+卡顺。最佳行动？" },
-      lbl: { en: "K♥Q♣ overs + gut", zh: "K♥Q♣ 高张+卡顺" },
-      board: ["Jh","Td","4c","9s"], pot: 12, bet: 4, pos: "BB (OOP)", hand: ["Kh","Qc"],
+      s: { en: "Turn, villain barrels small. You hold K♥Q♣ — two overs + open-ender on J-T-4-2. Best action?", zh: "转牌，对手小第二枪。你在 J-T-4-2 持 K♥Q♣ 两高张+两头顺听。最佳行动？" },
+      lbl: { en: "K♥Q♣ overs + OESD", zh: "K♥Q♣ 高张+顺听" },
+      board: ["Jh","Td","4c","2s"], pot: 12, bet: 4, pos: "BB (OOP)", hand: ["Kh","Qc"],
       street: "turn",
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
-        fold: { en: "Two overs plus a gutshot vs a small turn bet has enough equity to defend.", zh: "两高张加卡顺对小转牌下注有足够胜率防守。" },
+        fold: { en: "Two overs plus an open-ender vs a small turn bet has enough equity to defend.", zh: "两高张加两头顺听对小转牌下注有足够胜率防守。" },
         raise: { en: "Calling is fine — the key error is folding a draw vs a small barrel.", zh: "跟注即可 — 关键错误是对小第二枪弃听牌。" },
       },
     },
     {
-      s: { en: "Turn, villain barrels. You hold 5♣4♣ pure air on K-Q-J-2. Best action?", zh: "转牌，对手开火。你在 K-Q-J-2 持 5♣4♣ 纯空气。最佳行动？" },
-      lbl: { en: "5♣4♣ air", zh: "5♣4♣ 空气" },
+      s: { en: "Turn, villain barrels. You hold 5♥4♦ pure air on K-Q-J-2. Best action?", zh: "转牌，对手开火。你在 K-Q-J-2 持 5♥4♦ 纯空气。最佳行动？" },
+      lbl: { en: "5♥4♦ air", zh: "5♥4♦ 空气" },
       board: ["Kh","Qd","Jc","2s"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["5h","4d"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -977,7 +977,7 @@
     },
     {
       s: { en: "Turn, villain barrels. You hold two pair on 9-9-5-3. Best action?", zh: "转牌，对手开火。你在 9-9-5-3 持两对。最佳行动？" },
-      lbl: { en: "9♣8♣ two pair", zh: "9♣8♣ 两对" },
+      lbl: { en: "9♣8♥ two pair", zh: "9♣8♥ 两对" },
       board: ["9h","9d","5c","3s"], pot: 18, bet: 12, pos: "BB (OOP)", hand: ["9c","8h"],
       street: "turn",
       actions: FACE, correct: ["call","raise"], leak: "too_tight",
@@ -986,8 +986,8 @@
       },
     },
     {
-      s: { en: "Turn, villain barrels after you called flop. You hold A♥T♣ ace-high on A-K-7-2. Best action?", zh: "转牌，你翻牌跟注后对手开火。你在 A-K-7-2 持 A♥T♣ A 高。最佳行动？" },
-      lbl: { en: "A♥T♣ ace-high", zh: "A♥T♣ A 高" },
+      s: { en: "Turn, villain barrels after you called flop. You hold A♣T♥ ace-high on A-K-7-2. Best action?", zh: "转牌，你翻牌跟注后对手开火。你在 A-K-7-2 持 A♣T♥ A 高。最佳行动？" },
+      lbl: { en: "A♣T♥ ace-high", zh: "A♣T♥ A 高" },
       board: ["Ah","Kd","7c","2s"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["Ac","Th"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -998,7 +998,7 @@
     },
     {
       s: { en: "Turn, villain barrels pot. You hold TPTK on A-8-3-5. Best action?", zh: "转牌，对手底池第二枪。你在 A-8-3-5 持顶对顶踢。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","8d","3c","5h"], pot: 18, bet: 18, pos: "BB (OOP)", hand: ["Ah","Kd"],
       street: "turn",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -1008,9 +1008,9 @@
       },
     },
     {
-      s: { en: "Turn, villain barrels. You hold 9♥8♥ combo draw on Q-J-T-2. Best action?", zh: "转牌，对手开火。你在 Q-J-T-2 持 9♥8♥ 组合听牌。最佳行动？" },
+      s: { en: "Turn, villain barrels. You hold 9♥8♥ combo draw on J-T-3-2. Best action?", zh: "转牌，对手开火。你在 J-T-3-2 持 9♥8♥ 组合听牌。最佳行动？" },
       lbl: { en: "9♥8♥ FD + OESD", zh: "9♥8♥ 花听+顺听" },
-      board: ["Qh","Jh","Td","2c"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["9h","8h"],
+      board: ["Jh","Td","3h","2c"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["9h","8h"],
       street: "turn",
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -1053,7 +1053,7 @@
     },
     {
       s: { en: "Turn, villain checked. Board A-8-3-5. You improved to two pair (A9). Best action?", zh: "转牌，对手过牌。牌面 A-8-3-5。你提升为两对（A9）。最佳行动？" },
-      lbl: { en: "A♥9♣ two pair", zh: "A♥9♣ 两对" },
+      lbl: { en: "A♣9♥ two pair", zh: "A♣9♥ 两对" },
       board: ["Ah","8d","3c","5s"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Ac","9h"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1062,8 +1062,8 @@
       },
     },
     {
-      s: { en: "Flop, wet 9-8-7, villain c-bets. You hold A♥K♣ IP. Best action?", zh: "翻牌，湿润 9-8-7，对手持续下注。你持 A♥K♣ 有位置。最佳行动？" },
-      lbl: { en: "A♥K♣ air", zh: "A♥K♣ 空气" },
+      s: { en: "Flop, wet 9-8-7, villain c-bets. You hold A♥K♦ IP. Best action?", zh: "翻牌，湿润 9-8-7，对手持续下注。你持 A♥K♦ 有位置。最佳行动？" },
+      lbl: { en: "A♥K♦ air", zh: "A♥K♦ 空气" },
       board: ["9h","8d","7c"], pot: 6, bet: 4, pos: "BTN (IP)", hand: ["Ah","Kd"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -1092,18 +1092,18 @@
       },
     },
     {
-      s: { en: "Flop, villain c-bets small on A-5-3. You hold 6♥6♣ (underpair) IP. Best action?", zh: "翻牌，A-5-3 对手小持续下注。你持 6♥6♣（底对）有位置。最佳行动？" },
-      lbl: { en: "6♥6♣ underpair", zh: "6♥6♣ 底对" },
+      s: { en: "Flop, villain c-bets small on A-5-3. You hold 6♥6♠ (underpair) IP. Best action?", zh: "翻牌，A-5-3 对手小持续下注。你持 6♥6♠（底对）有位置。最佳行动？" },
+      lbl: { en: "6♥6♠ underpair", zh: "6♥6♠ 底对" },
       board: ["Ah","5d","3c"], pot: 6, bet: 2, pos: "BTN (IP)", hand: ["6h","6s"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
-        call: { en: "Underpair with no backdoors is not a float candidate — fold.", zh: "无底对的底对不是漂浮候选 — 应弃。" },
+        call: { en: "Underpair with no backdoors is not a float candidate — fold.", zh: "无后门的底对不是漂浮候选 — 应弃。" },
         raise: { en: "Raising an underpair as a float is spew.", zh: "用底对漂浮加注是乱送。" },
       },
     },
     {
-      s: { en: "Turn, villain checked. Board 9-5-3-K. You hold 9♥8♣ middle pair. Best action?", zh: "转牌，对手过牌。牌面 9-5-3-K。你持 9♥8♣ 中对。最佳行动？" },
-      lbl: { en: "9♥8♣ middle pair", zh: "9♥8♣ 中对" },
+      s: { en: "Turn, villain checked. Board 9-5-3-K. You hold 9♣8♥ middle pair. Best action?", zh: "转牌，对手过牌。牌面 9-5-3-K。你持 9♣8♥ 中对。最佳行动？" },
+      lbl: { en: "9♣8♥ middle pair", zh: "9♣8♥ 中对" },
       board: ["9h","5d","3c","Ks"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["9c","8h"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1112,8 +1112,8 @@
       },
     },
     {
-      s: { en: "Flop, villain c-bets pot on J-T-8. You hold A♥Q♣ IP. Best action?", zh: "翻牌，J-T-8 对手底池持续下注。你持 A♥Q♣ 有位置。最佳行动？" },
-      lbl: { en: "A♥Q♣ air", zh: "A♥Q♣ 空气" },
+      s: { en: "Flop, villain c-bets pot on J-T-8. You hold A♥Q♦ IP. Best action?", zh: "翻牌，J-T-8 对手底池持续下注。你持 A♥Q♦ 有位置。最佳行动？" },
+      lbl: { en: "A♥Q♦ air", zh: "A♥Q♦ 空气" },
       board: ["Jh","Td","8c"], pot: 12, bet: 12, pos: "BTN (IP)", hand: ["Ah","Qd"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -1132,8 +1132,8 @@
       },
     },
     {
-      s: { en: "Flop, villain c-bets 1/3 on Q-8-3. You hold J♥T♣ (gutshot + overs) IP. Best action?", zh: "翻牌，Q-8-3 对手 1/3 池持续下注。你持 J♥T♣（卡顺+高张）有位置。最佳行动？" },
-      lbl: { en: "J♥T♣ gut + overs", zh: "J♥T♣ 卡顺+高张" },
+      s: { en: "Flop, villain c-bets 1/3 on Q-8-3. You hold J♣T♠ (gutshot + overs) IP. Best action?", zh: "翻牌，Q-8-3 对手 1/3 池持续下注。你持 J♣T♠（卡顺+高张）有位置。最佳行动？" },
+      lbl: { en: "J♣T♠ gut + overs", zh: "J♣T♠ 卡顺+高张" },
       board: ["Qh","8d","3c"], pot: 6, bet: 2, pos: "BTN (IP)", hand: ["Jc","Ts"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -1143,7 +1143,7 @@
     },
     {
       s: { en: "River, you bet turn after float, villain called. You hold top pair on K-7-2-T-9. Villain checks. Best action?", zh: "河牌，漂浮后你转牌下注，对手跟注。你在 K-7-2-T-9 持顶对。对手过牌。最佳行动？" },
-      lbl: { en: "K♥J♣ top pair", zh: "K♥J♣ 顶对" },
+      lbl: { en: "K♣J♥ top pair", zh: "K♣J♥ 顶对" },
       board: ["Kh","7d","2c","Ts","9s"], pot: 16, bet: 0, pos: "BTN (IP)", hand: ["Kc","Jh"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1155,7 +1155,7 @@
   QUESTIONS.c20 = buildSpots("c20", "concept.overbet", [
     {
       s: { en: "River, you hold the nuts (straight). Villain (capped) checks. Best action?", zh: "河牌，你持坚果（顺子）。对手（封顶）过牌。最佳行动？" },
-      lbl: { en: "9♥8♣ straight", zh: "9♥8♣ 顺子" },
+      lbl: { en: "9♠8♥ straight", zh: "9♠8♥ 顺子" },
       board: ["Qh","Jd","Tc","2s","4h"], pot: 30, bet: 0, pos: "BTN (IP)", hand: ["9s","8h"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1165,7 +1165,7 @@
     },
     {
       s: { en: "River, villain overbets 1.5x pot. You hold weak top pair. Best action?", zh: "河牌，对手 1.5 倍池超池。你持弱顶对。最佳行动？" },
-      lbl: { en: "A♥J♣ weak top pair", zh: "A♥J♣ 弱顶对" },
+      lbl: { en: "A♣J♥ weak top pair", zh: "A♣J♥ 弱顶对" },
       board: ["As","8d","3c","2h","7s"], pot: 40, bet: 60, pos: "BB (OOP)", hand: ["Ac","Jh"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1176,7 +1176,7 @@
     },
     {
       s: { en: "Turn, scare card (flush completes). You hold missed draw with Ah blocker. Villain checks. Best action?", zh: "转牌，吓人牌（同花完成）。你持带 Ah 阻断的破产听牌。对手过牌。最佳行动？" },
-      lbl: { en: "A♥Q♣ missed, Ah blocker", zh: "A♥Q♣ 破产，Ah 阻断" },
+      lbl: { en: "A♥Q♦ missed, Ah blocker", zh: "A♥Q♦ 破产，Ah 阻断" },
       board: ["Jh","9h","4h","2d"], pot: 24, bet: 0, pos: "BTN (IP)", hand: ["Ah","Qd"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1186,7 +1186,7 @@
     },
     {
       s: { en: "River, villain overbets. You hold top set on a dry board. Best action?", zh: "河牌，对手超池。你在干燥面持顶三条。最佳行动？" },
-      lbl: { en: "K♥K♣ top set", zh: "K♥K♣ 顶三条" },
+      lbl: { en: "K♣K♠ top set", zh: "K♣K♠ 顶三条" },
       board: ["Kh","7d","2c","5s","3h"], pot: 36, bet: 54, pos: "BB (OOP)", hand: ["Kc","Ks"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -1206,8 +1206,8 @@
       },
     },
     {
-      s: { en: "River, villain overbets. You hold bluff-catcher (third pair). Best action?", zh: "河牌，对手超池。你持抓诈牌（9♥3♦ 第三对）。最佳行动？" },
-      lbl: { en: "9♥3♦ third pair", zh: "9♥3♦ 第三对" },
+      s: { en: "River, villain overbets. You hold bluff-catcher (third pair). Best action?", zh: "河牌，对手超池。你持抓诈牌（9♣3♦ 第三对）。最佳行动？" },
+      lbl: { en: "9♣3♦ third pair", zh: "9♣3♦ 第三对" },
       board: ["Kc","Qd","9s","4h","7h"], pot: 32, bet: 48, pos: "BB (OOP)", hand: ["9c","3d"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1218,7 +1218,7 @@
     },
     {
       s: { en: "Flop, you hold set, villain checks. Dry board. Best action?", zh: "翻牌，你持三条，对手过牌。干燥面。最佳行动？" },
-      lbl: { en: "5♥5♣ set", zh: "5♥5♣ 三条" },
+      lbl: { en: "5♣5♠ set", zh: "5♣5♠ 三条" },
       board: ["Kc","8d","5h"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["5c","5s"],
       actions: ACT, correct: ["check"], leak: "street_plan",
       fb: {
@@ -1227,7 +1227,7 @@
     },
     {
       s: { en: "River, villain overbets. You hold nut flush. Best action?", zh: "河牌，对手超池。你持坚果同花。最佳行动？" },
-      lbl: { en: "A♠K♠ nut flush", zh: "A♠K♠ 坚果同花" },
+      lbl: { en: "A♥K♥ nut flush", zh: "A♥K♥ 坚果同花" },
       board: ["Qh","8h","3h","2d","9c"], pot: 40, bet: 60, pos: "BB (OOP)", hand: ["Ah","Kh"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -1238,7 +1238,7 @@
     },
     {
       s: { en: "Turn, you hold two pair, villain checks. Wet board. Best action?", zh: "转牌，你持两对，对手过牌。湿润面。最佳行动？" },
-      lbl: { en: "J♥T♣ two pair", zh: "J♥T♣ 两对" },
+      lbl: { en: "J♣T♠ two pair", zh: "J♣T♠ 两对" },
       board: ["Jh","Td","8c","2s"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["Jc","Ts"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1258,18 +1258,18 @@
       },
     },
     {
-      s: { en: "River, villain (capped) checks. You hold full house. Best action?", zh: "河牌，对手（封顶）过牌。你持葫芦。最佳行动？" },
-      lbl: { en: "8♥8♣ full house", zh: "8♥8♣ 葫芦" },
+      s: { en: "River, villain (capped) checks. You hold quads. Best action?", zh: "河牌，对手（封顶）过牌。你持四条。最佳行动？" },
+      lbl: { en: "8♣8♠ quads", zh: "8♣8♠ 四条" },
       board: ["8h","8d","3c","3s","2h"], pot: 32, bet: 0, pos: "BTN (IP)", hand: ["8c","8s"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
-        check: { en: "Full house vs capped range — overbet for max value. Never check the nuts.", zh: "对封顶范围葫芦 — 超池榨最大价值。绝不过牌坚果。" },
+        check: { en: "Quads vs capped range — overbet for max value. Never check the nuts.", zh: "对封顶范围四条 — 超池榨最大价值。绝不过牌坚果。" },
       },
     },
     {
       s: { en: "River, villain overbets. You hold TPTK on dry board. Best action?", zh: "河牌，对手超池。你在干燥面持顶对顶踢。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","7d","2c","5h","3s"], pot: 30, bet: 45, pos: "BB (OOP)", hand: ["Ah","Kd"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1281,8 +1281,8 @@
   ]);
   QUESTIONS.c21 = buildSpots("c21", "concept.donk", [
     {
-      s: { en: "Flop, you called BB vs BTN. Board 6-5-4 connected. You hold 8♥7♣ straight. Villain checks. Best action?", zh: "翻牌，你 BB 跟注 BTN。牌面 6-5-4 连接。你持 8♥7♣ 顺子。对手过牌。最佳行动？" },
-      lbl: { en: "8♥7♣ straight", zh: "8♥7♣ 顺子" },
+      s: { en: "Flop, you called BB vs BTN. Board 6-5-4 connected. You hold 8♠7♣ straight. Villain checks. Best action?", zh: "翻牌，你 BB 跟注 BTN。牌面 6-5-4 连接。你持 8♠7♣ 顺子。对手过牌。最佳行动？" },
+      lbl: { en: "8♠7♣ straight", zh: "8♠7♣ 顺子" },
       board: ["6h","5d","4c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["8s","7c"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -1299,8 +1299,8 @@
       },
     },
     {
-      s: { en: "Flop, BB vs BTN. Board K-7-2 dry. You hold 9♥8♣ air. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。干燥 K-7-2。你持 9♥8♣ 空气。对手过牌。最佳行动？" },
-      lbl: { en: "9♥8♣ air", zh: "9♥8♣ 空气" },
+      s: { en: "Flop, BB vs BTN. Board K-7-2 dry. You hold 9♥8♠ air. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。干燥 K-7-2。你持 9♥8♠ 空气。对手过牌。最佳行动？" },
+      lbl: { en: "9♥8♠ air", zh: "9♥8♠ 空气" },
       board: ["Kh","7d","2c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["9h","8s"],
       actions: ACT, correct: ["check"], leak: "too_loose",
       fb: {
@@ -1308,8 +1308,8 @@
       },
     },
     {
-      s: { en: "Flop, BB vs BTN. Board 8-7-6 wet. You hold 8♥8♣ middle set. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。湿润 8-7-6。你持 8♥8♣ 中三条。对手过牌。最佳行动？" },
-      lbl: { en: "8♥8♣ middle set", zh: "8♥8♣ 中三条" },
+      s: { en: "Flop, BB vs BTN. Board 8-7-6 wet. You hold 8♠8♣ middle set. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。湿润 8-7-6。你持 8♠8♣ 中三条。对手过牌。最佳行动？" },
+      lbl: { en: "8♠8♣ middle set", zh: "8♠8♣ 中三条" },
       board: ["8h","7d","6c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["8s","8c"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -1317,8 +1317,8 @@
       },
     },
     {
-      s: { en: "Turn, BB vs BTN. Board 9-5-3-K. You hold 9♥8♣ middle pair. Villain checked flop. Best action?", zh: "转牌，BB 对 BTN。牌面 9-5-3-K。你持 9♥8♣ 中对。对手翻牌过牌。最佳行动？" },
-      lbl: { en: "9♥8♣ middle pair", zh: "9♥8♣ 中对" },
+      s: { en: "Turn, BB vs BTN. Board 9-5-3-K. You hold 9♣8♥ middle pair. Villain checked flop. Best action?", zh: "转牌，BB 对 BTN。牌面 9-5-3-K。你持 9♣8♥ 中对。对手翻牌过牌。最佳行动？" },
+      lbl: { en: "9♣8♥ middle pair", zh: "9♣8♥ 中对" },
       board: ["9h","5d","3c","Ks"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["9c","8h"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1327,8 +1327,8 @@
       },
     },
     {
-      s: { en: "Flop, BB vs BTN. Board A-A-5 paired. You hold 5♥4♣ trips. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。配对面 A-A-5。你持 5♥4♣ 三条。对手过牌。最佳行动？" },
-      lbl: { en: "5♥4♣ trips", zh: "5♥4♣ 三条" },
+      s: { en: "Flop, BB vs BTN. Board A-A-5 paired. You hold 5♥4♠ trips. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。配对面 A-A-5。你持 5♥4♠ 三条。对手过牌。最佳行动？" },
+      lbl: { en: "5♥4♠ trips", zh: "5♥4♠ 三条" },
       board: ["Ah","Ad","5c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["5h","4s"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -1336,8 +1336,8 @@
       },
     },
     {
-      s: { en: "Flop, BB vs BTN. Board Q-J-T. You hold A♥K♣ (nut straight). Villain checks. Best action?", zh: "翻牌，BB 对 BTN。牌面 Q-J-T。你持 A♥K♣（坚果顺）。对手过牌。最佳行动？" },
-      lbl: { en: "A♥K♣ nut straight", zh: "A♥K♣ 坚果顺" },
+      s: { en: "Flop, BB vs BTN. Board Q-J-T. You hold A♥K♦ (nut straight). Villain checks. Best action?", zh: "翻牌，BB 对 BTN。牌面 Q-J-T。你持 A♥K♦（坚果顺）。对手过牌。最佳行动？" },
+      lbl: { en: "A♥K♦ nut straight", zh: "A♥K♦ 坚果顺" },
       board: ["Qh","Jd","Tc"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["Ah","Kd"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -1354,8 +1354,8 @@
       },
     },
     {
-      s: { en: "Turn, BB vs BTN. Board 7-5-2-T. You hold 7♥7♣ set. Villain checked flop. Best action?", zh: "转牌，BB 对 BTN。牌面 7-5-2-T。你持 7♥7♣ 三条。对手翻牌过牌。最佳行动？" },
-      lbl: { en: "7♥7♣ set", zh: "7♥7♣ 三条" },
+      s: { en: "Turn, BB vs BTN. Board 7-5-2-T. You hold 7♣7♠ set. Villain checked flop. Best action?", zh: "转牌，BB 对 BTN。牌面 7-5-2-T。你持 7♣7♠ 三条。对手翻牌过牌。最佳行动？" },
+      lbl: { en: "7♣7♠ set", zh: "7♣7♠ 三条" },
       board: ["7h","5d","2c","Ts"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["7c","7s"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1374,8 +1374,8 @@
       },
     },
     {
-      s: { en: "River, BB vs BTN. Board 6-5-4-2-K. You hold 8♥7♣ straight. Villain checks. Best action?", zh: "河牌，BB 对 BTN。牌面 6-5-4-2-K。你持 8♥7♣ 顺子。对手过牌。最佳行动？" },
-      lbl: { en: "8♥7♣ straight", zh: "8♥7♣ 顺子" },
+      s: { en: "River, BB vs BTN. Board 6-5-4-2-K. You hold 8♠7♣ straight. Villain checks. Best action?", zh: "河牌，BB 对 BTN。牌面 6-5-4-2-K。你持 8♠7♣ 顺子。对手过牌。最佳行动？" },
+      lbl: { en: "8♠7♣ straight", zh: "8♠7♣ 顺子" },
       board: ["6h","5d","4c","2s","Kh"], pot: 14, bet: 0, pos: "BB (OOP)", hand: ["8s","7c"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1384,8 +1384,8 @@
       },
     },
     {
-      s: { en: "Flop, BB vs BTN. Board A-8-3. You hold 8♥7♣ middle pair. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。牌面 A-8-3。你持 8♥7♣ 中对。对手过牌。最佳行动？" },
-      lbl: { en: "8♥7♣ middle pair", zh: "8♥7♣ 中对" },
+      s: { en: "Flop, BB vs BTN. Board A-8-3. You hold 8♠7♥ middle pair. Villain checks. Best action?", zh: "翻牌，BB 对 BTN。牌面 A-8-3。你持 8♠7♥ 中对。对手过牌。最佳行动？" },
+      lbl: { en: "8♠7♥ middle pair", zh: "8♠7♥ 中对" },
       board: ["Ah","8d","3c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["8s","7h"],
       actions: ACT, correct: ["check"], leak: "street_plan",
       fb: {
@@ -1396,7 +1396,7 @@
   QUESTIONS.c22 = buildSpots("c22", "concept.thin_value", [
     {
       s: { en: "River, villain checks. You hold weak top pair on K-9-4-2-7. Best action?", zh: "河牌，对手过牌。你在 K-9-4-2-7 持弱顶对。最佳行动？" },
-      lbl: { en: "K♥T♣ weak top pair", zh: "K♥T♣ 弱顶对" },
+      lbl: { en: "K♣T♦ weak top pair", zh: "K♣T♦ 弱顶对" },
       board: ["Kh","9d","4c","2s","7h"], pot: 16, bet: 0, pos: "BTN (IP)", hand: ["Kc","Td"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1406,7 +1406,7 @@
     },
     {
       s: { en: "River, villain checks. You hold second pair on Q-J-9-4-2. Best action?", zh: "河牌，对手过牌。你在 Q-J-9-4-2 持第二对。最佳行动？" },
-      lbl: { en: "J♥T♣ second pair", zh: "J♥T♣ 第二对" },
+      lbl: { en: "J♣T♠ second pair", zh: "J♣T♠ 第二对" },
       board: ["Qh","Jd","9s","4c","2h"], pot: 18, bet: 0, pos: "BB (OOP)", hand: ["Jc","Ts"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1415,8 +1415,8 @@
       },
     },
     {
-      s: { en: "River, villain checks. You hold A♥Q♣ — ace-high on A-K-7-3-2. Best action?", zh: "河牌，对手过牌。你在 A-K-7-3-2 持 A♥Q♣ A 高。最佳行动？" },
-      lbl: { en: "A♥Q♣ ace-high", zh: "A♥Q♣ A 高" },
+      s: { en: "River, villain checks. You hold A♣Q♦ — ace-high on A-K-7-3-2. Best action?", zh: "河牌，对手过牌。你在 A-K-7-3-2 持 A♣Q♦ A 高。最佳行动？" },
+      lbl: { en: "A♣Q♦ ace-high", zh: "A♣Q♦ A 高" },
       board: ["Ah","Kd","7c","3s","2h"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Ac","Qd"],
       street: "river",
       actions: ACT, correct: ["check"], leak: "too_loose",
@@ -1446,7 +1446,7 @@
     },
     {
       s: { en: "River, tight villain checks. You hold top pair on A-8-3-5-2. Best action?", zh: "河牌，紧凶对手过牌。你在 A-8-3-5-2 持顶对。最佳行动？" },
-      lbl: { en: "A♥J♣ top pair", zh: "A♥J♣ 顶对" },
+      lbl: { en: "A♣J♥ top pair", zh: "A♣J♥ 顶对" },
       board: ["Ah","8d","3c","5s","2h"], pot: 18, bet: 0, pos: "BTN (IP)", hand: ["Ac","Jh"],
       street: "river",
       actions: ACT, correct: ["check"], leak: "street_plan",
@@ -1456,7 +1456,7 @@
     },
     {
       s: { en: "River, calling station checks. You hold second pair on J-T-4-2-8. Best action?", zh: "河牌，跟注站过牌。你在 J-T-4-2-8 持第二对。最佳行动？" },
-      lbl: { en: "T♥9♣ second pair", zh: "T♥9♣ 第二对" },
+      lbl: { en: "T♠9♦ second pair", zh: "T♠9♦ 第二对" },
       board: ["Jh","Td","4c","2s","8h"], pot: 20, bet: 0, pos: "BB (OOP)", hand: ["Ts","9d"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1466,7 +1466,7 @@
     },
     {
       s: { en: "River, you bet thin and villain raises. You hold weak top pair. Best action?", zh: "河牌，你薄价值下注后对手加注。你持弱顶对。最佳行动？" },
-      lbl: { en: "K♥9♣ weak top pair", zh: "K♥9♣ 弱顶对" },
+      lbl: { en: "K♣9♥ weak top pair", zh: "K♣9♥ 弱顶对" },
       board: ["Kh","8d","3c","2s","5h"], pot: 18, bet: 14, pos: "BTN (IP)", hand: ["Kc","9h"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1477,7 +1477,7 @@
     },
     {
       s: { en: "Turn, villain checks. You hold two pair on 9-9-5-3. Best action?", zh: "转牌，对手过牌。你在 9-9-5-3 持两对。最佳行动？" },
-      lbl: { en: "9♣8♣ two pair", zh: "9♣8♣ 两对" },
+      lbl: { en: "9♣8♥ two pair", zh: "9♣8♥ 两对" },
       board: ["9h","9d","5c","3s"], pot: 12, bet: 0, pos: "BB (OOP)", hand: ["9c","8h"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1487,7 +1487,7 @@
     },
     {
       s: { en: "River, villain checks. You hold TPTK on A-7-2-5-3. Best action?", zh: "河牌，对手过牌。你在 A-7-2-5-3 持顶对顶踢。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","7d","2c","5h","3s"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["Ah","Kd"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1506,8 +1506,8 @@
       },
     },
     {
-      s: { en: "River, villain checks. You hold second pair on 8-5-3-2-K. Best action?", zh: "河牌，对手过牌。你在 8-5-3-2-K 持 8♥7♣ 第二对。最佳行动？" },
-      lbl: { en: "8♥7♣ second pair", zh: "8♥7♣ 第二对" },
+      s: { en: "River, villain checks. You hold second pair on 8-5-3-2-K. Best action?", zh: "河牌，对手过牌。你在 8-5-3-2-K 持 8♣7♥ 第二对。最佳行动？" },
+      lbl: { en: "8♣7♥ second pair", zh: "8♣7♥ 第二对" },
       board: ["8h","5d","3c","2s","Kh"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["8c","7h"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1529,8 +1529,8 @@
     },
     {
       s: { en: "Flop, villain c-bets small. You hold gutshot only on K-Q-J. Best action?", zh: "翻牌，对手小持续下注。你在 K-Q-J 仅持卡顺。最佳行动？" },
-      lbl: { en: "T♥9♣ gutshot", zh: "T♥9♣ 卡顺" },
-      board: ["Kh","Qd","Jc"], pot: 6, bet: 2, pos: "BB (OOP)", hand: ["Th","9s"],
+      lbl: { en: "T♥9♥ gutshot", zh: "T♥9♥ 卡顺" },
+      board: ["Kh","Qd","Jc"], pot: 6, bet: 2, pos: "BB (OOP)", hand: ["9h","8s"],
       actions: FACE, correct: ["call"], leak: "too_loose",
       fb: {
         fold: { en: "Gutshot only (4 outs) vs a c-bet — call is marginal; raise is spew.", zh: "仅卡顺（4 补牌）对持续下注 — 跟注边缘；加注是乱送。" },
@@ -1539,7 +1539,7 @@
     },
     {
       s: { en: "Turn, you bet and villain raises. You hold flush draw on T-9-4-2. Best action?", zh: "转牌，你下注后对手加注。你在 T-9-4-2 持花听。最佳行动？" },
-      lbl: { en: "A♠K♠ nut FD", zh: "A♠K♠ 坚果花听" },
+      lbl: { en: "A♥K♥ nut FD", zh: "A♥K♥ 坚果花听" },
       board: ["Th","9h","4c","2d"], pot: 18, bet: 12, pos: "BB (OOP)", hand: ["Ah","Kh"],
       street: "turn",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -1549,9 +1549,9 @@
       },
     },
     {
-      s: { en: "Flop, villain c-bets. You hold OESD on J-T-8. Best action?", zh: "翻牌，对手持续下注。你在 J-T-8 持两头顺听。最佳行动？" },
-      lbl: { en: "Q♥9♣ OESD", zh: "Q♥9♣ 两头顺听" },
-      board: ["Jh","Td","8c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Qs","9h"],
+      s: { en: "Flop, villain c-bets. You hold OESD on J-T-3. Best action?", zh: "翻牌，对手持续下注。你在 J-T-3 持两头顺听。最佳行动？" },
+      lbl: { en: "Q♠9♥ OESD", zh: "Q♠9♥ 两头顺听" },
+      board: ["Jh","Td","3c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Qs","9h"],
       actions: FACE, correct: ["call","raise"], leak: "too_tight",
       fb: {
         fold: { en: "OESD (8 outs) has enough equity to continue — call or raise as semi-bluff.", zh: "两头顺听（8 补牌）有足够胜率继续 — 跟或半诈唬加注。" },
@@ -1559,7 +1559,7 @@
     },
     {
       s: { en: "Flop, villain c-bets pot. You hold air on A-K-5. Best action?", zh: "翻牌，对手底池持续下注。你在 A-K-5 持空气。最佳行动？" },
-      lbl: { en: "7♣6♣ air", zh: "7♣6♣ 空气" },
+      lbl: { en: "7♥6♦ air", zh: "7♥6♦ 空气" },
       board: ["Ah","Kd","5c"], pot: 12, bet: 12, pos: "BB (OOP)", hand: ["7h","6d"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -1568,9 +1568,9 @@
       },
     },
     {
-      s: { en: "Turn, villain barrels. You hold combo draw on Q-J-T-2. Best action?", zh: "转牌，对手开火。你在 Q-J-T-2 持组合听牌。最佳行动？" },
+      s: { en: "Turn, villain barrels. You hold combo draw on J-T-3-2. Best action?", zh: "转牌，对手开火。你在 J-T-3-2 持组合听牌。最佳行动？" },
       lbl: { en: "9♥8♥ FD + OESD", zh: "9♥8♥ 花听+顺听" },
-      board: ["Qh","Jh","Td","2c"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["9h","8h"],
+      board: ["Jh","Td","3h","2c"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["9h","8h"],
       street: "turn",
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -1599,7 +1599,7 @@
     },
     {
       s: { en: "Flop, villain c-bets. You hold flush draw + pair on 8-5-2 two-tone. Best action?", zh: "翻牌，对手持续下注。你在 8-5-2 双花面持花听+对子。最佳行动？" },
-      lbl: { en: "8♥7♥ pair + FD", zh: "8♥7♥ 对子+花听" },
+      lbl: { en: "8♣7♥ pair + FD", zh: "8♣7♥ 对子+花听" },
       board: ["8h","5h","2h"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["8c","7h"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -1620,7 +1620,7 @@
     },
     {
       s: { en: "Flop, villain c-bets. You hold set on 9-8-6. Best action?", zh: "翻牌，对手持续下注。你在 9-8-6 持三条。最佳行动？" },
-      lbl: { en: "6♥6♣ set", zh: "6♥6♣ 三条" },
+      lbl: { en: "6♣6♠ set", zh: "6♣6♠ 三条" },
       board: ["9s","8d","6h"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["6c","6s"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -1653,7 +1653,7 @@
     },
     {
       s: { en: "River, villain triple-barrels pot. You hold TPTK on A-7-2-5-3. Best action?", zh: "河牌，对手三枪底池。你在 A-7-2-5-3 持顶对顶踢。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","7d","2c","5h","3s"], pot: 48, bet: 48, pos: "BB (OOP)", hand: ["Ah","Kd"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1663,8 +1663,8 @@
       },
     },
     {
-      s: { en: "River, villain bets 1/3 pot. You hold 9♥8♣ — third pair. Best action?", zh: "河牌，对手 1/3 池下注。你持 9♥8♣ 第三对。最佳行动？" },
-      lbl: { en: "9♥8♣ third pair", zh: "9♥8♣ 第三对" },
+      s: { en: "River, villain bets 1/3 pot. You hold 9♣8♦ — third pair. Best action?", zh: "河牌，对手 1/3 池下注。你持 9♣8♦ 第三对。最佳行动？" },
+      lbl: { en: "9♣8♦ third pair", zh: "9♣8♦ 第三对" },
       board: ["Kh","Qd","9s","7c","4h"], pot: 30, bet: 10, pos: "BTN (IP)", hand: ["9c","8d"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1675,7 +1675,7 @@
     },
     {
       s: { en: "River, villain bets 2/3 pot. You hold QQ on Q-J-9-4-2 — top set. Best action?", zh: "河牌，对手 2/3 池下注。你在 Q-J-9-4-2 持 QQ 顶三条。最佳行动？" },
-      lbl: { en: "Q♣Q♦ top set", zh: "Q♣Q♦ 顶三条" },
+      lbl: { en: "Q♣Q♠ top set", zh: "Q♣Q♠ 顶三条" },
       board: ["Qh","Jd","9s","4c","2h"], pot: 40, bet: 27, pos: "BB (OOP)", hand: ["Qc","Qs"],
       street: "river",
       actions: FACE, correct: ["raise"], leak: "street_plan",
@@ -1707,8 +1707,8 @@
     },
     {
       s: { en: "River, villain overbets. You hold nut flush. Best action?", zh: "河牌，对手超池。你持坚果同花。最佳行动？" },
-      lbl: { en: "A♠K♠ nut flush", zh: "A♠K♠ 坚果同花" },
-      board: ["Qh","8h","3h","2d","9c"], pot: 36, bet: 54, pos: "BB (OOP)", hand: ["As","Kh"],
+      lbl: { en: "A♥K♥ nut flush", zh: "A♥K♥ 坚果同花" },
+      board: ["Qh","8h","3h","2d","9c"], pot: 36, bet: 54, pos: "BB (OOP)", hand: ["Ah","Kh"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -1717,8 +1717,8 @@
       },
     },
     {
-      s: { en: "River, villain bets 1/2 pot. You hold 6♥6♣ — underpair on K-Q-J-9-2. Best action?", zh: "河牌，对手 1/2 池下注。你在 K-Q-J-9-2 持 6♥6♣ 垫底对。最佳行动？" },
-      lbl: { en: "6♥6♣ underpair", zh: "6♥6♣ 垫底对" },
+      s: { en: "River, villain bets 1/2 pot. You hold 6♥6♦ — underpair on K-Q-J-9-2. Best action?", zh: "河牌，对手 1/2 池下注。你在 K-Q-J-9-2 持 6♥6♦ 垫底对。最佳行动？" },
+      lbl: { en: "6♥6♦ underpair", zh: "6♥6♦ 垫底对" },
       board: ["Kh","Qd","Jc","9s","2h"], pot: 24, bet: 12, pos: "BB (OOP)", hand: ["6h","6d"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1728,8 +1728,8 @@
       },
     },
     {
-      s: { en: "River, villain bets 1/3 pot. You hold A♥Q♣ — ace-high on A-K-7-3-2. Best action?", zh: "河牌，对手 1/3 池下注。你在 A-K-7-3-2 持 A♥Q♣ A 高。最佳行动？" },
-      lbl: { en: "A♥Q♣ ace-high", zh: "A♥Q♣ A 高" },
+      s: { en: "River, villain bets 1/3 pot. You hold A♣Q♦ — ace-high on A-K-7-3-2. Best action?", zh: "河牌，对手 1/3 池下注。你在 A-K-7-3-2 持 A♣Q♦ A 高。最佳行动？" },
+      lbl: { en: "A♣Q♦ ace-high", zh: "A♣Q♦ A 高" },
       board: ["Ah","Kd","7c","3s","2h"], pot: 18, bet: 6, pos: "BTN (IP)", hand: ["Ac","Qd"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1750,19 +1750,19 @@
       },
     },
     {
-      s: { en: "River, villain bets 1/2 pot. You hold 8♥8♣ — full house on 8-8-3-3-2. Best action?", zh: "河牌，对手 1/2 池下注。你在 8-8-3-3-2 持 8♥8♣ 葫芦。最佳行动？" },
-      lbl: { en: "8♥8♣ full house", zh: "8♥8♣ 葫芦" },
+      s: { en: "River, villain bets 1/2 pot. You hold 8♣8♠ — quads on 8-8-3-3-2. Best action?", zh: "河牌，对手 1/2 池下注。你在 8-8-3-3-2 持 8♣8♠ 四条。最佳行动？" },
+      lbl: { en: "8♣8♠ quads", zh: "8♣8♠ 四条" },
       board: ["8h","8d","3c","3s","2h"], pot: 30, bet: 15, pos: "BB (OOP)", hand: ["8c","8s"],
       street: "river",
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
-        fold: { en: "Full house — never fold.", zh: "葫芦 — 绝不弃。" },
+        fold: { en: "Quads — never fold.", zh: "四条 — 绝不弃。" },
         call: { en: "Raise for max value.", zh: "最大化价值加注。" },
       },
     },
     {
-      s: { en: "River, villain bets 2/3 pot. You hold K♥K♣ on K-9-4-2-7 — top set. Best action?", zh: "河牌，对手 2/3 池下注。你在 K-9-4-2-7 持 K♥K♣ 顶三条。最佳行动？" },
-      lbl: { en: "K♥K♣ top set", zh: "K♥K♣ 顶三条" },
+      s: { en: "River, villain bets 2/3 pot. You hold K♣K♠ on K-9-4-2-7 — top set. Best action?", zh: "河牌，对手 2/3 池下注。你在 K-9-4-2-7 持 K♣K♠ 顶三条。最佳行动？" },
+      lbl: { en: "K♣K♠ top set", zh: "K♣K♠ 顶三条" },
       board: ["Kh","9d","4c","2s","7h"], pot: 36, bet: 24, pos: "BTN (IP)", hand: ["Kc","Ks"],
       street: "river",
       actions: FACE, correct: ["raise"], leak: "street_plan",
@@ -1784,7 +1784,7 @@
     },
     {
       s: { en: "Multiway flop, you're OOP. Wet 9-8-7, you hold set. Villain bets. Best action?", zh: "多人翻牌，你无位置。湿润 9-8-7，你持三条。对手下注。最佳行动？" },
-      lbl: { en: "8♥8♣ set, multiway", zh: "8♥8♣ 三条，多人" },
+      lbl: { en: "8♠8♣ set, multiway", zh: "8♠8♣ 三条，多人" },
       board: ["9h","8d","7c"], pot: 12, bet: 6, pos: "BB (OOP)", hand: ["8s","8c"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -1813,7 +1813,7 @@
     },
     {
       s: { en: "Multiway flop, you're IP. Low 6-5-4, you hold AK air. Villain checks. Best action?", zh: "多人翻牌，你有位置。低 6-5-4，你持 AK 空气。对手过牌。最佳行动？" },
-      lbl: { en: "A♣K♣ air, multiway", zh: "A♣K♣ 空气，多人" },
+      lbl: { en: "A♣K♦ air, multiway", zh: "A♣K♦ 空气，多人" },
       board: ["6h","5s","4d"], pot: 9, bet: 0, pos: "BTN (IP)", hand: ["Ac","Kd"],
       actions: ACT, correct: ["check"], leak: "too_loose",
       fb: {
@@ -1842,7 +1842,7 @@
     },
     {
       s: { en: "Multiway river, you're IP. Board K-9-4-2-7, you hold top pair. Villain checks. Best action?", zh: "多人河牌，你有位置。牌面 K-9-4-2-7，你持顶对。对手过牌。最佳行动？" },
-      lbl: { en: "K♥J♣ top pair, multiway", zh: "K♥J♣ 顶对，多人" },
+      lbl: { en: "K♣J♥ top pair, multiway", zh: "K♣J♥ 顶对，多人" },
       board: ["Kh","9d","4c","2s","7h"], pot: 24, bet: 0, pos: "BTN (IP)", hand: ["Kc","Jh"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1852,7 +1852,7 @@
     },
     {
       s: { en: "Multiway flop, you're OOP. A-A-5 paired, you hold 5x trips. Villain checks. Best action?", zh: "多人翻牌，你无位置。配对面 A-A-5，你持 5x 三条。对手过牌。最佳行动？" },
-      lbl: { en: "5♥4♣ trips, multiway", zh: "5♥4♣ 三条，多人" },
+      lbl: { en: "5♥4♠ trips, multiway", zh: "5♥4♠ 三条，多人" },
       board: ["Ah","Ad","5c"], pot: 9, bet: 0, pos: "BB (OOP)", hand: ["5h","4s"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -1870,7 +1870,7 @@
     },
     {
       s: { en: "Multiway turn, you're OOP. Flush completes. You hold top pair. Villain bets. Best action?", zh: "多人转牌，你无位置。同花完成。你持顶对。对手下注。最佳行动？" },
-      lbl: { en: "Q♥J♣ top pair, multiway", zh: "Q♥J♣ 顶对，多人" },
+      lbl: { en: "Q♣J♦ top pair, multiway", zh: "Q♣J♦ 顶对，多人" },
       board: ["Qh","8h","3h","2d"], pot: 18, bet: 12, pos: "BB (OOP)", hand: ["Qc","Jd"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1881,7 +1881,7 @@
     },
     {
       s: { en: "Multiway flop, you're IP. 9-6-4, you hold overpair QQ. Villain checks. Best action?", zh: "多人翻牌，你有位置。9-6-4，你持超对 QQ。对手过牌。最佳行动？" },
-      lbl: { en: "Q♣Q♦ overpair, multiway", zh: "Q♣Q♦ 超对，多人" },
+      lbl: { en: "Q♣Q♠ overpair, multiway", zh: "Q♣Q♠ 超对，多人" },
       board: ["9d","6c","4h"], pot: 9, bet: 0, pos: "BTN (IP)", hand: ["Qc","Qs"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -1902,7 +1902,7 @@
     },
     {
       s: { en: "Vs a calling station. River, you hold second pair. Villain checks. Best action?", zh: "对跟注站。河牌，你持第二对。对手过牌。最佳行动？" },
-      lbl: { en: "J♥T♣ second pair", zh: "J♥T♣ 第二对" },
+      lbl: { en: "J♣T♠ second pair", zh: "J♣T♠ 第二对" },
       board: ["Qh","Jd","4c","2s","8h"], pot: 18, bet: 0, pos: "BB (OOP)", hand: ["Jc","Ts"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -1912,7 +1912,7 @@
     },
     {
       s: { en: "Vs a calling station. River, you hold air. Villain checks. Best action?", zh: "对跟注站。河牌，你持空气。对手过牌。最佳行动？" },
-      lbl: { en: "7♣6♣ air", zh: "7♣6♣ 空气" },
+      lbl: { en: "7♥6♦ air", zh: "7♥6♦ 空气" },
       board: ["Kc","8d","3h","2s","5d"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["7h","6d"],
       street: "river",
       actions: ACT, correct: ["check"], leak: "too_loose",
@@ -1931,7 +1931,7 @@
     },
     {
       s: { en: "Vs a maniac who bluffs too much. River, you hold bluff-catcher. Villain bets 1/2 pot. Best action?", zh: "对诈唬过多的疯子。河牌，你持抓诈牌。对手 1/2 池下注。最佳行动？" },
-      lbl: { en: "A♥J♣ weak top pair", zh: "A♥J♣ 弱顶对" },
+      lbl: { en: "A♣J♥ weak top pair", zh: "A♣J♥ 弱顶对" },
       board: ["As","8d","3c","2h","7s"], pot: 24, bet: 12, pos: "BB (OOP)", hand: ["Ac","Jh"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -1942,7 +1942,7 @@
     },
     {
       s: { en: "Vs a nit. River, you hold TPTK. Villain bets 1/2 pot. Best action?", zh: "对紧凶。河牌，你持顶对顶踢。对手 1/2 池下注。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","7d","2c","5h","3s"], pot: 20, bet: 10, pos: "BB (OOP)", hand: ["Ah","Kd"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -1973,8 +1973,8 @@
     },
     {
       s: { en: "Vs a station. River, you hold nut flush. Villain checks. Best action?", zh: "对跟注站。河牌，你持坚果同花。对手过牌。最佳行动？" },
-      lbl: { en: "A♠K♠ nut flush", zh: "A♠K♠ 坚果同花" },
-      board: ["Qh","8h","3h","2d","9c"], pot: 24, bet: 0, pos: "BB (OOP)", hand: ["As","Kh"],
+      lbl: { en: "A♥K♥ nut flush", zh: "A♥K♥ 坚果同花" },
+      board: ["Qh","8h","3h","2d","9c"], pot: 24, bet: 0, pos: "BB (OOP)", hand: ["Ah","Kh"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -1983,7 +1983,7 @@
     },
     {
       s: { en: "Vs a maniac. Flop, you hold top pair. Villain bets pot. Best action?", zh: "对疯子。翻牌，你持顶对。对手底池下注。最佳行动？" },
-      lbl: { en: "K♥J♣ top pair", zh: "K♥J♣ 顶对" },
+      lbl: { en: "K♣J♥ top pair", zh: "K♣J♥ 顶对" },
       board: ["Kh","8d","3c"], pot: 12, bet: 12, pos: "BB (OOP)", hand: ["Kc","Jh"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -2003,7 +2003,7 @@
     },
     {
       s: { en: "Vs a station. Flop, you hold set. Villain checks. Best action?", zh: "对跟注站。翻牌，你持三条。对手过牌。最佳行动？" },
-      lbl: { en: "6♥6♣ set", zh: "6♥6♣ 三条" },
+      lbl: { en: "6♣6♠ set", zh: "6♣6♠ 三条" },
       board: ["9h","6d","2c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["6c","6s"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2014,7 +2014,7 @@
   QUESTIONS.c27 = buildSpots("c27", "concept.tournament", [
     {
       s: { en: "Tournament, 20bb effective. Flop A-7-2, you hold TPTK, villain bets pot. Best action?", zh: "锦标赛，20bb 有效。翻牌 A-7-2，你持顶对顶踢，对手底池下注。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK, 20bb", zh: "A♠K♥ 顶对顶踢，20bb" },
+      lbl: { en: "A♥K♦ TPTK, 20bb", zh: "A♥K♦ 顶对顶踢，20bb" },
       board: ["As","7d","2c"], pot: 8, bet: 8, pos: "BB (OOP)", hand: ["Ah","Kd"],
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -2024,7 +2024,7 @@
     },
     {
       s: { en: "Tournament, 12bb effective. Flop 8-5-2, you hold overpair QQ, villain bets. Best action?", zh: "锦标赛，12bb 有效。翻牌 8-5-2，你持超对 QQ，对手下注。最佳行动？" },
-      lbl: { en: "Q♣Q♦ overpair, 12bb", zh: "Q♣Q♦ 超对，12bb" },
+      lbl: { en: "Q♣Q♠ overpair, 12bb", zh: "Q♣Q♠ 超对，12bb" },
       board: ["8h","5d","2c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Qc","Qs"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -2034,7 +2034,7 @@
     },
     {
       s: { en: "Tournament, 25bb. Flop K-Q-8, you hold JJ underpair, villain bets big. Best action?", zh: "锦标赛，25bb。翻牌 K-Q-8，你持 JJ 垫底对，对手大注。最佳行动？" },
-      lbl: { en: "J♥J♣ underpair, 25bb", zh: "J♥J♣ 垫底对，25bb" },
+      lbl: { en: "J♥J♠ underpair, 25bb", zh: "J♥J♠ 垫底对，25bb" },
       board: ["Kh","Qd","8c"], pot: 8, bet: 7, pos: "BB (OOP)", hand: ["Jh","Js"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -2044,7 +2044,7 @@
     },
     {
       s: { en: "Tournament, 10bb effective. Flop T-6-2, you hold AK, villain checks. Best action?", zh: "锦标赛，10bb 有效。翻牌 T-6-2，你持 AK，对手过牌。最佳行动？" },
-      lbl: { en: "A♥K♣ AK, 10bb", zh: "A♥K♣ AK，10bb" },
+      lbl: { en: "A♥K♦ AK, 10bb", zh: "A♥K♦ AK，10bb" },
       board: ["Td","6c","2s"], pot: 4, bet: 0, pos: "BB (OOP)", hand: ["Ah","Kd"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2063,7 +2063,7 @@
     },
     {
       s: { en: "Tournament, 18bb. Flop A-A-5, you hold 5x trips, villain bets. Best action?", zh: "锦标赛，18bb。翻牌 A-A-5，你持 5x 三条，对手下注。最佳行动？" },
-      lbl: { en: "5♥4♣ trips, 18bb", zh: "5♥4♣ 三条，18bb" },
+      lbl: { en: "5♥4♠ trips, 18bb", zh: "5♥4♠ 三条，18bb" },
       board: ["Ah","Ad","5c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["5h","4s"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -2072,8 +2072,8 @@
       },
     },
     {
-      s: { en: "Tournament, bubble, 30bb. Flop Q-J-4, you hold 7♣6♣ air, villain c-bets. Best action?", zh: "锦标赛，泡沫期，30bb。翻牌 Q-J-4，你持 7♣6♣ 空气，对手持续下注。最佳行动？" },
-      lbl: { en: "7♣6♣ air, bubble", zh: "7♣6♣ 空气，泡沫" },
+      s: { en: "Tournament, bubble, 30bb. Flop Q-J-4, you hold 7♥6♦ air, villain c-bets. Best action?", zh: "锦标赛，泡沫期，30bb。翻牌 Q-J-4，你持 7♥6♦ 空气，对手持续下注。最佳行动？" },
+      lbl: { en: "7♥6♦ air, bubble", zh: "7♥6♦ 空气，泡沫" },
       board: ["Qh","Jd","4c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["7h","6d"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -2083,7 +2083,7 @@
     },
     {
       s: { en: "Tournament, 8bb effective. Flop K-7-2, you hold 99, villain bets. Best action?", zh: "锦标赛，8bb 有效。翻牌 K-7-2，你持 99，对手下注。最佳行动？" },
-      lbl: { en: "9♣9♦ underpair, 8bb", zh: "9♣9♦ 垫底对，8bb" },
+      lbl: { en: "9♥9♦ underpair, 8bb", zh: "9♥9♦ 垫底对，8bb" },
       board: ["Kh","7d","2c"], pot: 4, bet: 3, pos: "BB (OOP)", hand: ["9h","9d"],
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -2103,7 +2103,7 @@
     },
     {
       s: { en: "Tournament, 22bb. Turn K-8-3-2, you hold top pair, villain bets pot. Best action?", zh: "锦标赛，22bb。转牌 K-8-3-2，你持顶对，对手底池下注。最佳行动？" },
-      lbl: { en: "K♥J♣ top pair, 22bb", zh: "K♥J♣ 顶对，22bb" },
+      lbl: { en: "K♣J♥ top pair, 22bb", zh: "K♣J♥ 顶对，22bb" },
       board: ["Kh","8d","3c","2s"], pot: 12, bet: 12, pos: "BB (OOP)", hand: ["Kc","Jh"],
       street: "turn",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -2113,8 +2113,8 @@
       },
     },
     {
-      s: { en: "Tournament, 6bb effective. Flop A-7-2, you hold A♥Q♣ TPTK, villain checks. Best action?", zh: "锦标赛，6bb 有效。翻牌 A-7-2，你持 A♥Q♣ 顶对顶踢，对手过牌。最佳行动？" },
-      lbl: { en: "A♥Q♣ TPTK, 6bb", zh: "A♥Q♣ 顶对顶踢，6bb" },
+      s: { en: "Tournament, 6bb effective. Flop A-7-2, you hold A♣Q♥ TPTK, villain checks. Best action?", zh: "锦标赛，6bb 有效。翻牌 A-7-2，你持 A♣Q♥ 顶对顶踢，对手过牌。最佳行动？" },
+      lbl: { en: "A♣Q♥ TPTK, 6bb", zh: "A♣Q♥ 顶对顶踢，6bb" },
       board: ["As","7d","2c"], pot: 3, bet: 0, pos: "BB (OOP)", hand: ["Ac","Qh"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2123,7 +2123,7 @@
     },
     {
       s: { en: "Tournament, 20bb. River, you hold bluff-catcher, villain bets 1/2 pot. Best action?", zh: "锦标赛，20bb。河牌，你持抓诈牌，对手 1/2 池下注。最佳行动？" },
-      lbl: { en: "A♥J♣ weak top pair, 20bb", zh: "A♥J♣ 弱顶对，20bb" },
+      lbl: { en: "A♣J♥ weak top pair, 20bb", zh: "A♣J♥ 弱顶对，20bb" },
       board: ["As","8d","3c","2h","7s"], pot: 16, bet: 8, pos: "BB (OOP)", hand: ["Ac","Jh"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
@@ -2136,7 +2136,7 @@
   QUESTIONS.c28 = buildSpots("c28", "concept.line_plan", [
     {
       s: { en: "Flop, you hold set on 9-6-3. Plan three streets. Villain checks. Best action?", zh: "翻牌，你在 9-6-3 持三条。规划三街。对手过牌。最佳行动？" },
-      lbl: { en: "6♥6♣ set", zh: "6♥6♣ 三条" },
+      lbl: { en: "6♠6♥ set", zh: "6♠6♥ 三条" },
       board: ["9h","6d","3c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["6s","6h"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2145,7 +2145,7 @@
     },
     {
       s: { en: "Flop, you c-bet with air on 6-5-4. Turn brings ace (bad for you). Villain checks. Best action?", zh: "翻牌，你在 6-5-4 用空气持续下注。转牌 A（对你不利）。对手过牌。最佳行动？" },
-      lbl: { en: "A♣K♣ air", zh: "A♣K♣ 空气" },
+      lbl: { en: "A♣K♦ air", zh: "A♣K♦ 空气" },
       board: ["6h","5s","4d","Ah"], pot: 10, bet: 0, pos: "BTN (IP)", hand: ["Ac","Kd"],
       street: "turn",
       actions: ACT, correct: ["check"], leak: "street_plan",
@@ -2155,7 +2155,7 @@
     },
     {
       s: { en: "Flop, you hold TPTK on A-8-3. Plan: barrel dry turns, give up wet. Turn 2 (blank). Villain checks. Best action?", zh: "翻牌，你在 A-8-3 持顶对顶踢。计划：干燥转牌继续，湿润放弃。转牌 2（空白）。对手过牌。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK", zh: "A♠K♥ 顶对顶踢" },
+      lbl: { en: "A♥K♦ TPTK", zh: "A♥K♦ 顶对顶踢" },
       board: ["As","8d","3c","2h"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Ah","Kd"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -2165,7 +2165,7 @@
     },
     {
       s: { en: "Flop, you had a draw on J-T-8. Turn K (scare card). Missed draw. Villain bets. Best action?", zh: "翻牌，你在 J-T-8 持听牌。转牌 K（吓人牌）。听牌破产。对手下注。最佳行动？" },
-      lbl: { en: "Q♣7♣ missed draw", zh: "Q♣7♣ 破产听牌" },
+      lbl: { en: "Q♣7♥ missed draw", zh: "Q♣7♥ 破产听牌" },
       board: ["Jh","Td","8c","Ks"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["Qc","7h"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -2176,7 +2176,7 @@
     },
     {
       s: { en: "Flop, you hold overpair on 8-5-2. Plan to stack off. Villain bets. Best action?", zh: "翻牌，你在 8-5-2 持超对。规划全下。对手下注。最佳行动？" },
-      lbl: { en: "A♥A♣ overpair", zh: "A♥A♣ 超对" },
+      lbl: { en: "A♥A♦ overpair", zh: "A♥A♦ 超对" },
       board: ["8h","5d","2c"], pot: 12, bet: 8, pos: "BB (OOP)", hand: ["Ah","Ad"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -2186,7 +2186,7 @@
     },
     {
       s: { en: "Flop, you c-bet with KQ on K-7-2. Turn 7 (pairs). Villain checks. Best action?", zh: "翻牌，你在 K-7-2 用 KQ 持续下注。转牌 7（配对）。对手过牌。最佳行动？" },
-      lbl: { en: "K♥Q♣ two pair", zh: "K♥Q♣ 两对" },
+      lbl: { en: "K♣Q♥ two pair", zh: "K♣Q♥ 两对" },
       board: ["Kh","7d","2c","7s"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Kc","Qh"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -2196,7 +2196,7 @@
     },
     {
       s: { en: "Flop, you check with medium hand on Q-J-9. Turn blank. Villain checks. Best action?", zh: "翻牌，你在 Q-J-9 用中等牌过牌。转牌空白。对手过牌。最佳行动？" },
-      lbl: { en: "T♥9♣ middle pair", zh: "T♥9♣ 中对" },
+      lbl: { en: "T♥9♣ bottom pair", zh: "T♥9♣ 底对" },
       board: ["Qh","Jd","9s","2c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["Th","9c"],
       street: "turn",
       actions: ACT, correct: ["check"], leak: "street_plan",
@@ -2206,7 +2206,7 @@
     },
     {
       s: { en: "River, you barreled flop+turn with value. Board K-9-4-2-7. You hold top set. Villain checks. Best action?", zh: "河牌，你用价值牌翻牌+转牌开火。牌面 K-9-4-2-7。你持顶三条。对手过牌。最佳行动？" },
-      lbl: { en: "K♥K♣ top set", zh: "K♥K♣ 顶三条" },
+      lbl: { en: "K♣K♠ top set", zh: "K♣K♠ 顶三条" },
       board: ["Kh","9d","4c","2s","7h"], pot: 24, bet: 0, pos: "BTN (IP)", hand: ["Kc","Ks"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -2216,7 +2216,7 @@
     },
     {
       s: { en: "Flop, you hold air on A-K-Q. Plan: give up unless scare card. Turn 2 (blank). Villain checks. Best action?", zh: "翻牌，你在 A-K-Q 持空气。计划：除非吓人牌否则放弃。转牌 2（空白）。对手过牌。最佳行动？" },
-      lbl: { en: "5♣4♣ air", zh: "5♣4♣ 空气" },
+      lbl: { en: "5♥4♦ air", zh: "5♥4♦ 空气" },
       board: ["Ah","Kd","Qc","2s"], pot: 8, bet: 0, pos: "BB (OOP)", hand: ["5h","4d"],
       street: "turn",
       actions: ACT, correct: ["check"], leak: "street_plan",
@@ -2226,7 +2226,7 @@
     },
     {
       s: { en: "Flop, you hold nut flush draw. Plan: semi-bluff turn if called. Villain c-bets. Best action?", zh: "翻牌，你持坚果花听。计划：被跟则转牌半诈唬。对手持续下注。最佳行动？" },
-      lbl: { en: "A♠K♠ nut FD", zh: "A♠K♠ 坚果花听" },
+      lbl: { en: "A♥K♥ nut FD", zh: "A♥K♥ 坚果花听" },
       board: ["Jh","9h","5d"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["Ah","Kh"],
       actions: FACE, correct: ["call"], leak: "street_plan",
       fb: {
@@ -2246,7 +2246,7 @@
     },
     {
       s: { en: "Flop, you hold two pair on J-T-4. Plan three streets. Villain checks. Best action?", zh: "翻牌，你在 J-T-4 持两对。规划三街。对手过牌。最佳行动？" },
-      lbl: { en: "J♥T♣ two pair", zh: "J♥T♣ 两对" },
+      lbl: { en: "J♣T♠ two pair", zh: "J♣T♠ 两对" },
       board: ["Jh","Td","4c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["Jc","Ts"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2256,8 +2256,8 @@
   ]);
   QUESTIONS.c29 = buildSpots("c29", "concept.special_board", [
     {
-      s: { en: "Paired flop T-T-5. You hold A♥J♣ air as IP raiser. Villain checks. Best action?", zh: "配对翻牌 T-T-5。你是有位置加注者持 A♥J♣ 空气。对手过牌。最佳行动？" },
-      lbl: { en: "A♥J♣ air", zh: "A♥J♣ 空气" },
+      s: { en: "Paired flop T-T-5. You hold A♥J♥ air as IP raiser. Villain checks. Best action?", zh: "配对翻牌 T-T-5。你是有位置加注者持 A♥J♥ 空气。对手过牌。最佳行动？" },
+      lbl: { en: "A♥J♥ air", zh: "A♥J♥ 空气" },
       board: ["Tc","Td","5s"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["Ah","Jh"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2274,8 +2274,8 @@
       },
     },
     {
-      s: { en: "Paired flop 8-8-3. You hold 8♥8♣ — quads. Villain bets. Best action?", zh: "配对翻牌 8-8-3。你持 8♥8♣ 四条。对手下注。最佳行动？" },
-      lbl: { en: "8♥8♣ quads", zh: "8♥8♣ 四条" },
+      s: { en: "Paired flop 8-8-3. You hold 8♠8♣ — quads. Villain bets. Best action?", zh: "配对翻牌 8-8-3。你持 8♠8♣ 四条。对手下注。最佳行动？" },
+      lbl: { en: "8♠8♣ quads", zh: "8♠8♣ 四条" },
       board: ["8h","8d","3c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["8s","8c"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -2284,8 +2284,8 @@
       },
     },
     {
-      s: { en: "Double paired flop 9-9-5-5. You hold A♥K♣. Villain checks. Best action?", zh: "双配对翻牌 9-9-5-5。你持 A♥K♣。对手过牌。最佳行动？" },
-      lbl: { en: "A♥K♣ ace-high", zh: "A♥K♣ A 高" },
+      s: { en: "Double paired flop 9-9-5-5. You hold A♣K♥. Villain checks. Best action?", zh: "双配对翻牌 9-9-5-5。你持 A♣K♥。对手过牌。最佳行动？" },
+      lbl: { en: "A♣K♥ ace-high", zh: "A♣K♥ A 高" },
       board: ["9h","9d","5c","5s"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Ac","Kh"],
       street: "turn",
       actions: ACT, correct: ["check"], leak: "too_loose",
@@ -2295,7 +2295,7 @@
     },
     {
       s: { en: "Monotone turn, three hearts. You hold Ah (nut flush blocker) but missed. Villain checks. Best action?", zh: "同色转牌，三张红心。你持 Ah（坚果同花阻断）但破产。对手过牌。最佳行动？" },
-      lbl: { en: "A♥Q♣ missed, Ah blocker", zh: "A♥Q♣ 破产，Ah 阻断" },
+      lbl: { en: "A♥Q♦ missed, Ah blocker", zh: "A♥Q♦ 破产，Ah 阻断" },
       board: ["Jh","9h","4h","2d"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Ah","Qd"],
       street: "turn",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -2313,8 +2313,8 @@
       },
     },
     {
-      s: { en: "Paired river 9-9-5-3-2. You hold 9♣5♣ — full house. Villain bets. Best action?", zh: "配对河牌 9-9-5-3-2。你持 9♣5♣ 葫芦。对手下注。最佳行动？" },
-      lbl: { en: "9♣5♣ full house", zh: "9♣5♣ 葫芦" },
+      s: { en: "Paired river 9-9-5-3-2. You hold 9♣5♥ — full house. Villain bets. Best action?", zh: "配对河牌 9-9-5-3-2。你持 9♣5♥ 葫芦。对手下注。最佳行动？" },
+      lbl: { en: "9♣5♥ full house", zh: "9♣5♥ 葫芦" },
       board: ["9h","9d","5c","3s","2h"], pot: 20, bet: 10, pos: "BB (OOP)", hand: ["9c","5h"],
       street: "river",
       actions: FACE, correct: ["raise"], leak: "street_plan",
@@ -2335,7 +2335,7 @@
     },
     {
       s: { en: "Four-flush river. You hold no heart. Villain bets. Best action?", zh: "四花河牌。你无红心。对手下注。最佳行动？" },
-      lbl: { en: "K♥Q♣ no heart", zh: "K♥Q♣ 无红心" },
+      lbl: { en: "K♣Q♦ no heart", zh: "K♣Q♦ 无红心" },
       board: ["Ah","9h","4h","2h","7d"], pot: 24, bet: 12, pos: "BB (OOP)", hand: ["Kc","Qd"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -2345,8 +2345,8 @@
       },
     },
     {
-      s: { en: "Paired flop Q-Q-8. You hold 8♥8♣ — full house. Villain checks. Best action?", zh: "配对翻牌 Q-Q-8。你持 8♥8♣ 葫芦。对手过牌。最佳行动？" },
-      lbl: { en: "8♥8♣ full house", zh: "8♥8♣ 葫芦" },
+      s: { en: "Paired flop Q-Q-8. You hold 8♠8♥ — full house. Villain checks. Best action?", zh: "配对翻牌 Q-Q-8。你持 8♠8♥ 葫芦。对手过牌。最佳行动？" },
+      lbl: { en: "8♠8♥ full house", zh: "8♠8♥ 葫芦" },
       board: ["Qh","Qd","8c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["8s","8h"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2355,7 +2355,7 @@
     },
     {
       s: { en: "Connected flop 6-5-4. You hold AK air as IP raiser. Villain checks. Best action?", zh: "连接翻牌 6-5-4。你是有位置加注者持 AK 空气。对手过牌。最佳行动？" },
-      lbl: { en: "A♣K♣ air", zh: "A♣K♣ 空气" },
+      lbl: { en: "A♣K♦ air", zh: "A♣K♦ 空气" },
       board: ["6h","5s","4d"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["Ac","Kd"],
       actions: ACT, correct: ["check"], leak: "too_loose",
       fb: {
@@ -2363,8 +2363,8 @@
       },
     },
     {
-      s: { en: "Trips board 7-7-7. You hold A♥A♣ — full house. Villain bets. Best action?", zh: "三条面 7-7-7。你持 A♥A♣ 葫芦。对手下注。最佳行动？" },
-      lbl: { en: "A♥A♣ full house", zh: "A♥A♣ 葫芦" },
+      s: { en: "Trips board 7-7-7. You hold A♥A♦ — full house. Villain bets. Best action?", zh: "三条面 7-7-7。你持 A♥A♦ 葫芦。对手下注。最佳行动？" },
+      lbl: { en: "A♥A♦ full house", zh: "A♥A♦ 葫芦" },
       board: ["7h","7d","7c"], pot: 12, bet: 8, pos: "BB (OOP)", hand: ["Ah","Ad"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -2376,7 +2376,7 @@
   QUESTIONS.c30 = buildSpots("c30", "concept.capstone", [
     {
       s: { en: "Capstone: Low SPR 3-bet pot. Flop K-Q-5, you hold AA, villain jams. Best action?", zh: "综合：低 SPR 3-bet 底池。翻牌 K-Q-5，你持 AA，对手全压。最佳行动？" },
-      lbl: { en: "A♥A♣ overpair, 3bp", zh: "A♥A♣ 超对，3bp" },
+      lbl: { en: "A♥A♦ overpair, 3bp", zh: "A♥A♦ 超对，3bp" },
       board: ["Kc","Qd","5h"], pot: 24, bet: 36, pos: "BB (OOP)", hand: ["Ah","Ad"],
       allIn: true,
       actions: FACE_CALL, correct: ["call"], leak: "too_tight",
@@ -2387,8 +2387,8 @@
     },
     {
       s: { en: "Capstone: River, villain overbets. You hold nut flush. Best action?", zh: "综合：河牌，对手超池。你持坚果同花。最佳行动？" },
-      lbl: { en: "A♠K♠ nut flush", zh: "A♠K♠ 坚果同花" },
-      board: ["Qh","8h","3h","2d","9c"], pot: 40, bet: 60, pos: "BB (OOP)", hand: ["As","Kh"],
+      lbl: { en: "A♥K♥ nut flush", zh: "A♥K♥ 坚果同花" },
+      board: ["Qh","8h","3h","2d","9c"], pot: 40, bet: 60, pos: "BB (OOP)", hand: ["Ah","Kh"],
       street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -2398,8 +2398,8 @@
     },
     {
       s: { en: "Capstone: Turn, flush completes. You hold top pair. Villain bets. Best action?", zh: "综合：转牌，同花完成。你持顶对。对手下注。最佳行动？" },
-      lbl: { en: "Q♥J♣ top pair", zh: "Q♥J♣ 顶对" },
-      board: ["Qh","8h","3h","2d"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["Qc","Jd"],
+      lbl: { en: "Q♣J♦ top pair", zh: "Q♣J♦ 顶对" },
+      board: ["Qh","8h","3d","2h"], pot: 16, bet: 11, pos: "BB (OOP)", hand: ["Qc","Jd"],
       street: "turn",
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -2409,7 +2409,7 @@
     },
     {
       s: { en: "Capstone: Flop, you hold bottom set on wet board. Villain c-bets. Best action?", zh: "综合：翻牌，湿面你持底三条。对手持续下注。最佳行动？" },
-      lbl: { en: "6♥6♣ bottom set", zh: "6♥6♣ 底三条" },
+      lbl: { en: "6♠6♥ bottom set", zh: "6♠6♥ 底三条" },
       board: ["9h","8d","6c"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["6s","6h"],
       actions: FACE, correct: ["raise"], leak: "street_plan",
       fb: {
@@ -2429,7 +2429,7 @@
     },
     {
       s: { en: "Capstone: Multiway flop, you're IP. Dry K-7-2, you hold TPTK. Villain checks. Best action?", zh: "综合：多人翻牌，你有位置。干燥 K-7-2，你持顶对顶踢。对手过牌。最佳行动？" },
-      lbl: { en: "A♠K♥ TPTK, multiway", zh: "A♠K♥ 顶对顶踢，多人" },
+      lbl: { en: "A♠K♦ TPTK, multiway", zh: "A♠K♦ 顶对顶踢，多人" },
       board: ["Kh","7d","2c"], pot: 9, bet: 0, pos: "BTN (IP)", hand: ["As","Kd"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2438,7 +2438,7 @@
     },
     {
       s: { en: "Capstone: Vs nit, river you hold bluff-catcher. Villain bets 1/2 pot. Best action?", zh: "综合：对紧凶，河牌你持抓诈牌。对手 1/2 池下注。最佳行动？" },
-      lbl: { en: "A♥J♣ weak top pair", zh: "A♥J♣ 弱顶对" },
+      lbl: { en: "A♣J♥ weak top pair", zh: "A♣J♥ 弱顶对" },
       board: ["As","8d","3c","2h","7s"], pot: 24, bet: 12, pos: "BB (OOP)", hand: ["Ac","Jh"],
       street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
@@ -2459,7 +2459,7 @@
     },
     {
       s: { en: "Capstone: BB donk on 6-5-4, you hold straight. Villain checks. Best action?", zh: "综合：BB 在 6-5-4 领先，你持顺子。对手过牌。最佳行动？" },
-      lbl: { en: "8♥7♣ straight", zh: "8♥7♣ 顺子" },
+      lbl: { en: "8♠7♣ straight", zh: "8♠7♣ 顺子" },
       board: ["6h","5d","4c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["8s","7c"],
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
@@ -2468,7 +2468,7 @@
     },
     {
       s: { en: "Capstone: Thin value river, villain checks. You hold weak top pair. Best action?", zh: "综合：河牌薄价值，对手过牌。你持弱顶对。最佳行动？" },
-      lbl: { en: "K♥T♣ weak top pair", zh: "K♥T♣ 弱顶对" },
+      lbl: { en: "K♣T♦ weak top pair", zh: "K♣T♦ 弱顶对" },
       board: ["Kh","9d","4c","2s","7h"], pot: 16, bet: 0, pos: "BTN (IP)", hand: ["Kc","Td"],
       street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
@@ -2488,7 +2488,7 @@
     },
     {
       s: { en: "Capstone: Pot control turn, you hold middle pair. Villain (PFR) checks. Best action?", zh: "综合：转牌控池，你持中对。对手（翻前加注者）过牌。最佳行动？" },
-      lbl: { en: "9♥8♣ middle pair", zh: "9♥8♣ 中对" },
+      lbl: { en: "9♣8♥ middle pair", zh: "9♣8♥ 中对" },
       board: ["Ah","9d","5c","3s"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["9c","8h"],
       street: "turn",
       actions: ACT, correct: ["check"], leak: "street_plan",

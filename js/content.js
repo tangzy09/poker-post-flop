@@ -137,7 +137,7 @@ function registerContentStrings() {
   _r("c9.l3.b", "Before betting the flop, ask: which turns will I barrel? Which will I give up? Avoid betting flop with no plan.", "翻牌下注前先问：哪些转牌继续？哪些放弃？避免无计划下注。");
 
   _r("c10.l1.t", "River value", "河牌价值");
-  _r("c10.l1.b", "Bet hands that beat >50% of villain's calling range. Size up vs inelastic callers (they call same with top pair or two pair).", "用能赢对手跟注范围 >50% 的牌下注。对非弹性跟注者加大尺寸。");
+  _r("c10.l1.b", "Bet hands that beat >50% of villain's calling range. Size up vs inelastic callers (they call same with top pair or two pair).", "用能赢对手跟注范围 >50% 的牌下注。对非弹性跟注者加大尺寸（他们持顶对或两对都同样跟注）。");
   _r("c10.l2.t", "Bluff selection", "诈唬选择");
   _r("c10.l2.b", "Bluff with blockers to nuts (e.g. Ah on three-heart board). Avoid bluffing into calling stations.", "用阻断坚果的牌诈唬（如三花面持 Ah）。避免对跟注站诈唬。");
   _r("c10.l3.t", "Over-bluffing loses", "过度诈唬会亏");
@@ -1185,7 +1185,7 @@ const QUESTIONS = {
       lbl: { en: "A\u2660A\u2666 overpair", zh: "A\u2660A\u2666 超对" },
       board: ["8h", "5d", "2c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["As", "Ad"],
       actions: ACT, correct: ["bet"], leak: "sizing",
-      fb: { check: { en: "On a dry board a small value bet gets called by worse and protects \u2014 checking is too passive with an overpair.", zh: "干燥面小价值注被更差牌跟注又能保护 \u2014 超对过牌太被动。" } },
+      fb: { check: { en: "On a dry board a small value bet gets called by worse and protects \u2014 checking is too passive with an overpair.", zh: "干燥面小价值下注被更差牌跟注又能保护 \u2014 超对过牌太被动。" } },
     },
     {
       s: { en: "Wet 9-8-7 two-tone. You hold an overpair (AA). Best action?", zh: "湿润 9-8-7 双花。你持超对（AA）。最佳行动？" },
@@ -2078,7 +2078,7 @@ const QUESTIONS = {
     },
     {
       s: { en: "River. Dry runout. You hold top pair facing a pot bet from a polarized range. Best action?", zh: "河牌。干燥发牌。你持顶对面对极化范围的底池下注。最佳行动？" },
-      lbl: { en: "K\u2665J\u2663 top pair", zh: "K\u2665J\u2663 顶对" },
+      lbl: { en: "K\u2663J\u2666 top pair", zh: "K\u2663J\u2666 顶对" },
       board: ["Kh", "8d", "6c", "3s", "2h"], pot: 20, bet: 20, pos: "BTN (IP)", hand: ["Kc", "Jd"], street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -2109,7 +2109,7 @@ const QUESTIONS = {
     },
     {
       s: { en: "River. Three hearts and a connected board. You hold an overpair (no heart) facing a big bet. Best action?", zh: "河牌。三张红心且连接的牌面。你持超对（无红心）面对大注。最佳行动？" },
-      lbl: { en: "A\u2660A\u2663 overpair", zh: "A\u2660A\u2663 超对" },
+      lbl: { en: "A\u2660A\u2666 overpair", zh: "A\u2660A\u2666 超对" },
       board: ["Th", "9h", "8h", "4c", "2d"], pot: 20, bet: 18, pos: "BTN (IP)", hand: ["As", "Ad"], street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -2126,7 +2126,7 @@ const QUESTIONS = {
     },
     {
       s: { en: "River. Dry runout. You hold top pair facing a pot bet from a polarized range. Best action?", zh: "河牌。干燥发牌。你持顶对面对极化范围的底池下注。最佳行动？" },
-      lbl: { en: "J\u2665Q\u2663 top pair", zh: "J\u2665Q\u2663 顶对" },
+      lbl: { en: "J\u2663Q\u2665 top pair", zh: "J\u2663Q\u2665 顶对" },
       board: ["Js", "8d", "5c", "3h", "2s"], pot: 20, bet: 20, pos: "BTN (IP)", hand: ["Jc", "Qh"], street: "river",
       actions: FACE, correct: ["call"], leak: "too_tight",
       fb: {
@@ -2137,7 +2137,7 @@ const QUESTIONS = {
     {
       s: { en: "River. Your gutshot missed (no showdown value). Villain checks. Best action?", zh: "河牌。卡顺听落空（无摊牌价值）。对手过牌。最佳行动？" },
       lbl: { en: "J\u2665T\u2665 missed gutshot", zh: "J\u2665T\u2665 落空卡顺" },
-      board: ["Kd", "Qs", "9c", "6h", "2d"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["Jh", "Th"], street: "river",
+      board: ["Kd", "3s", "9c", "6h", "2d"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["Jh", "Th"], street: "river",
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: { check: { en: "Your missed straight draw has no showdown value \u2014 betting reps the straight and is better than checking.", zh: "你落空的顺听无摊牌价值 \u2014 下注代表顺子，优于过牌。" } },
     },
@@ -2150,7 +2150,7 @@ const QUESTIONS = {
     },
     {
       s: { en: "River brings a third diamond, completing the flush on board. You hold top pair (no diamond) facing a big bet. Best action?", zh: "河牌来第三张方块，牌面成同花。你持顶对（无方块）面对大注。最佳行动？" },
-      lbl: { en: "A\u2665Q\u2663 top pair", zh: "A\u2665Q\u2663 顶对" },
+      lbl: { en: "A\u2660Q\u2663 top pair", zh: "A\u2660Q\u2663 顶对" },
       board: ["Ad", "Kd", "9h", "5c", "2d"], pot: 20, bet: 18, pos: "BTN (IP)", hand: ["As", "Qc"], street: "river",
       actions: FACE, correct: ["fold"], leak: "too_loose",
       fb: {
@@ -2244,7 +2244,7 @@ const QUESTIONS = {
     },
     {
       s: { en: "BB vs BTN. T-9-4 two hearts, villain c-bets. You flopped bottom set. Best action?", zh: "BB 对 BTN。T-9-4 两张红心，对手持续下注。你翻牌成最小三条。最佳行动？" },
-      lbl: { en: "4\u26654\u2660 bottom set", zh: "4\u26654\u2660 底三条" },
+      lbl: { en: "4\u26664\u2660 bottom set", zh: "4\u26664\u2660 底三条" },
       board: ["Th", "9c", "4h"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["4d", "4s"],
       actions: FACE, correct: ["raise"], leak: "too_tight",
       fb: {
@@ -2324,7 +2324,7 @@ const QUESTIONS = {
     },
     {
       s: { en: "BB vs BTN. 9-6-3 rainbow, villain c-bets. You flopped top set. Best action?", zh: "BB 对 BTN。9-6-3 彩虹，对手持续下注。你翻牌成顶三条。最佳行动？" },
-      lbl: { en: "9\u26659\u2660 top set", zh: "9\u26659\u2660 顶三条" },
+      lbl: { en: "9\u26609\u2663 top set", zh: "9\u26609\u2663 顶三条" },
       board: ["9h", "6c", "3d"], pot: 6, bet: 4, pos: "BB (OOP)", hand: ["9s", "9c"],
       actions: FACE, correct: ["raise"], leak: "too_tight",
       fb: {
@@ -2433,7 +2433,7 @@ const QUESTIONS = {
     {
       s: { en: "Low SPR ~3 (3-bet pot). You hold an overpair on K-Q-5 and villain jams. Best action?", zh: "低 SPR ~3（3-bet 底池）。你在 K-Q-5 持超对，对手全下。最佳行动？" },
       ctx: { en: "SPR 3 in a 3-bet pot: an overpair is at the top of your range.", zh: "3-bet 底池 SPR 3：超对位于你范围顶端。" },
-      lbl: { en: "A\u2665A\u2663 overpair, SPR 3", zh: "A\u2665A\u2663 超对，SPR 3" },
+      lbl: { en: "A\u2665A\u2666 overpair, SPR 3", zh: "A\u2665A\u2666 超对，SPR 3" },
       board: ["Kc", "Qd", "5h"], pot: 18, bet: 27, pos: "BTN (IP)", hand: ["Ah", "Ad"], allIn: true,
       actions: FACE_CALL, correct: ["call"], leak: "too_tight",
       fb: {
@@ -2471,9 +2471,9 @@ const QUESTIONS = {
       fb: { fold: { en: "At SPR 2, top pair top kicker is committed \u2014 folding here is a big leak.", zh: "SPR 2 时顶对顶踢已投入 \u2014 此处弃牌是明显漏洞。" } },
     },
     {
-      s: { en: "Deep (SPR ~12). Q-J-9-8 four-to-a-straight, a tight villain jams the turn. You hold an underpair (TT). Best action?", zh: "深筹（SPR 约 12）。Q-J-9-8 四张顺子，紧凶对手转牌全压。你持垫底对（TT）。最佳行动？" },
-      lbl: { en: "T\u2665T\u2663 underpair", zh: "T\u2665T\u2663 垫底对" },
-      board: ["Qs", "Jd", "9h", "8c"], pot: 20, bet: 20, pos: "BB (OOP)", hand: ["Th", "Tc"], street: "turn", allIn: true,
+      s: { en: "Deep (SPR ~12). Q-J-9-8 four-to-a-straight, a tight villain jams the turn. You hold an underpair (66). Best action?", zh: "深筹（SPR 约 12）。Q-J-9-8 四张顺子，紧凶对手转牌全压。你持垫底对（66）。最佳行动？" },
+      lbl: { en: "6\u26656\u2663 underpair", zh: "6\u26656\u2663 垫底对" },
+      board: ["Qs", "Jd", "9h", "8c"], pot: 20, bet: 20, pos: "BB (OOP)", hand: ["6h", "6c"], street: "turn", allIn: true,
       actions: FACE_CALL, correct: ["fold"], leak: "too_loose",
       fb: {
         call: { en: "Deep, a jam into a four-straight board crushes an underpair \u2014 fold.", zh: "深筹时对四张顺子面的全压压制垫底对 \u2014 应弃。" },
@@ -2512,11 +2512,11 @@ const QUESTIONS = {
       },
     },
     {
-      s: { en: "Low-SPR 3-bet pot. K-Q-5 flop, you hold aces and villain jams. Best action?", zh: "低 SPR 的 3bet 底池。K-Q-5 翻牌，你持 AA，对手全压。最佳行动？" },
+      s: { en: "Low-SPR 3-bet pot. K-Q-5 flop, you hold aces and villain jams. Best action?", zh: "低 SPR 的 3-bet 底池。K-Q-5 翻牌，你持 AA，对手全压。最佳行动？" },
       lbl: { en: "A\u2665A\u2666 overpair", zh: "A\u2665A\u2666 超对" },
       board: ["Kc", "Qd", "5h"], pot: 24, bet: 18, pos: "BB (OOP)", hand: ["Ah", "Ad"], allIn: true,
       actions: FACE_CALL, correct: ["call"], leak: "too_tight",
-      fb: { fold: { en: "In a low-SPR 3-bet pot, aces are committed vs a single pair / draw jam \u2014 call.", zh: "低 SPR 的 3bet 底池里，AA 对单对/听牌的全压已投入 \u2014 应跟注。" } },
+      fb: { fold: { en: "In a low-SPR 3-bet pot, aces are committed vs a single pair / draw jam \u2014 call.", zh: "低 SPR 的 3-bet 底池里，AA 对单对/听牌的全压已投入 \u2014 应跟注。" } },
     },
     {
       s: { en: "SPR ~2. 7-5-2 rainbow, you hold an overpair and villain bets. Best action?", zh: "SPR 约 2。7-5-2 彩虹，你持超对，对手下注。最佳行动？" },
