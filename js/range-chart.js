@@ -103,23 +103,22 @@ function eqBar(name, pct, color) {
 }
 
 function renderRangeMatrix(btnSet, bbSet) {
-  let hdr = '<div class="rm-corner"></div>';
-  for (let c = 0; c < 13; c++) hdr += '<div class="rm-lbl">' + RC_RANKS[c] + "</div>";
-  let rows = hdr;
+  let html = '<div class="range-matrix-grid"><span class="rm-corner" aria-hidden="true"></span>';
+  for (let c = 0; c < 13; c++) html += '<span class="rm-lbl">' + RC_RANKS[c] + "</span>";
   for (let r = 0; r < 13; r++) {
-    rows += '<div class="rm-lbl rm-row">' + RC_RANKS[r] + "</div>";
+    html += '<span class="rm-lbl rm-row">' + RC_RANKS[r] + "</span>";
     for (let c = 0; c < 13; c++) {
       const lbl = rcHandLabel(r, c);
       const inBtn = btnSet.has(lbl);
       const inBb = bbSet.has(lbl);
       let cls = "rm-cell";
-      if (inBtn && inBb) cls += " both";
-      else if (inBtn) cls += " btn";
-      else if (inBb) cls += " bb";
-      rows += '<div class="' + cls + '" title="' + lbl + '">' + (r === c ? RC_RANKS[r] : "") + "</div>";
+      if (inBtn && inBb) cls += " rng-both";
+      else if (inBtn) cls += " rng-open";
+      else if (inBb) cls += " rng-call";
+      html += '<div class="' + cls + '" title="' + lbl + '" aria-label="' + lbl + '"></div>';
     }
   }
-  return '<div class="range-matrix">' + rows + "</div>";
+  return '<div class="range-matrix">' + html + "</div></div>";
 }
 
 function boardTextureHint(board) {
@@ -185,13 +184,13 @@ function renderRangeChart(container, board) {
       "</p>" +
       renderRangeMatrix(_BTN_SET, _BB_SET) +
       '<div class="range-legend">' +
-      '<span><i class="lg btn"></i>' +
+      '<span><i class="lg rng-open"></i>' +
       t("range.legendBtn") +
       "</span>" +
-      '<span><i class="lg bb"></i>' +
+      '<span><i class="lg rng-call"></i>' +
       t("range.legendBb") +
       "</span>" +
-      '<span><i class="lg both"></i>' +
+      '<span><i class="lg rng-both"></i>' +
       t("range.legendBoth") +
       "</span>" +
       "</div></div>";

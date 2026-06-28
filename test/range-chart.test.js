@@ -30,6 +30,33 @@ test("boardTextureHint matches C3 lesson boards", () => {
   assert.equal(boardTextureHint(["Ks", "8d", "3c"]), t("range.hintDryHigh"));
 });
 
+test("renderRangeMatrix uses flat grid without global btn class collision", () => {
+  const { renderRangeMatrix, _BTN_SET, _BB_SET } = loadRangeChartWithMatrix();
+  const html = renderRangeMatrix(_BTN_SET, _BB_SET);
+  assert.match(html, /range-matrix-grid/);
+  assert.match(html, /rng-open/);
+  assert.doesNotMatch(html, /\brm-cell btn\b/);
+  assert.doesNotMatch(html, /class="lg btn"/);
+  assert.doesNotMatch(html, /rm-cell[^>]*>A</);
+});
+
+function loadRangeChartWithMatrix() {
+  const files = ["js/i18n.js", "js/equity.js", "js/range-chart.js"];
+  let code = "";
+  for (const f of files) code += fs.readFileSync(path.join(root, f), "utf8") + "\n";
+  code += "globalThis.__out = { boardTextureHint, computeHuEquity, renderRangeMatrix, _BTN_SET, _BB_SET, t };";
+  const ctx = {
+    window: {},
+    localStorage: { _m: {}, getItem() { return null; }, setItem() {} },
+    document: { documentElement: {} },
+    console,
+  };
+  ctx.window = ctx;
+  vm.createContext(ctx);
+  vm.runInContext(code, ctx);
+  return ctx.__out;
+}
+
 test("computeHuEquity favors caller on low connected 654", () => {
   const { computeHuEquity } = loadRangeChart();
   const eq = computeHuEquity(["6h", "5s", "4d"]);

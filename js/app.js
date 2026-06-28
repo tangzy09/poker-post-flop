@@ -88,7 +88,7 @@ function renderCourses() {
       actions = '<p class="cc-lock">' + t("course.locked") + "</p>";
     } else if (p.learnDone) {
       actions =
-        '<div class="cc-actions">' +
+        '<div class="btn-row">' +
         '<button class="btn secondary" data-action="start-learn" data-id="' + c.id + '">' + t("course.reviewLearn") + "</button>" +
         '<button class="btn primary" data-action="start-drill" data-id="' + c.id + '">' + t("course.practice") + "</button>" +
         "</div>";
@@ -152,9 +152,10 @@ function renderLearn() {
     '<div class="learn-body' + (slide.summary ? " learn-summary" : "") + '">' + t(slide.bodyKey) + "</div>" +
     (slide.rangeChart ? '<div id="range-chart-mount" class="range-chart-mount"></div>' : "") +
     '<p class="slide-pager">' + t("learn.slide", { n: Engine.learnIdx + 1, total: slides.length }) + "</p>" +
+    '<div class="btn-stack">' +
     '<button class="btn primary" data-action="' + (isLast ? "finish-learn" : "next-learn") + '">' +
     (isLast ? t("learn.startDrill") : t("learn.next")) +
-    "</button></section>"
+    "</button></div></section>"
   );
 }
 
@@ -202,7 +203,7 @@ function renderDrill() {
 
   const learnBtn =
     !Engine.reviewMode && p.learnDone
-      ? '<button class="btn secondary drill-learn-btn" data-action="start-learn" data-id="' + drillCourseId + '">' + t("learn.backToLearn") + "</button>"
+      ? '<div class="btn-stack drill-actions"><button class="btn secondary" data-action="start-learn" data-id="' + drillCourseId + '">' + t("learn.backToLearn") + "</button></div>"
       : "";
 
   return (
@@ -235,9 +236,10 @@ function renderFeedback() {
         '<div class="fb-block"><h4>' + t("fb.concept") + "</h4><p>" + detail.concept + "</p></div>" +
         (detail.ctx ? '<div class="fb-block"><h4>' + t("fb.context") + "</h4><p>" + detail.ctx + "</p></div>" : "")
       : "") +
+    '<div class="btn-stack">' +
     '<button class="btn primary" data-action="next-q">' +
     (Engine.qIdx + 1 >= Engine.currentQuestions().length ? t("fb.finish") : t("fb.next")) +
-    "</button></section>"
+    "</button></div></section>"
   );
 }
 
@@ -252,11 +254,13 @@ function renderOver() {
     "<h2>" + t("over.title") + "</h2>" +
     '<p class="big-score">' + t("over.accuracy", { pct }) + "</p>" +
     '<p class="muted">' + t("over.score", { n: correct }) + " / " + total + "</p>" +
+    '<div class="btn-stack">' +
     (mistakes
       ? '<button class="btn secondary" data-action="review-mistakes">' + t("over.review") + "</button>"
       : "") +
     '<button class="btn secondary" data-action="start-learn" data-id="' + Engine.courseId + '">' + t("course.reviewLearn") + "</button>" +
-    '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button></section>"
+    '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button>" +
+    "</div></section>"
   );
 }
 
@@ -277,7 +281,8 @@ function renderReviewOver() {
     '<p class="muted">' + t("review.over.score", { n: s.correct, total: s.total }) + "</p>" +
     masteredLine +
     remainingLine +
-    '<button class="btn primary" data-action="review-done">' + t("review.over.done") + "</button></section>"
+    '<div class="btn-stack">' +
+    '<button class="btn primary" data-action="review-done">' + t("review.over.done") + "</button></div></section>"
   );
 }
 
@@ -286,7 +291,8 @@ function renderReviewEmpty() {
   return (
     '<section class="screen">' +
     "<h2>" + msg + "</h2>" +
-    '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button></section>"
+    '<div class="btn-stack">' +
+    '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button></div></section>"
   );
 }
 
@@ -302,7 +308,7 @@ function profRow(label, value, detail, color) {
 
 function leakDrillBtn(courseId, leak) {
   return (
-    '<button type="button" class="leak-drill" data-drill="1" data-drill-course="' +
+    '<button type="button" class="btn btn-sm outline leak-drill" data-drill="1" data-drill-course="' +
     courseId +
     '" data-drill-leak="' +
     (leak || "") +
@@ -476,7 +482,7 @@ function renderReviewDetail() {
           '<div class="rv-group">' +
           '<div class="rv-head"><b>' +
           title +
-          '</b><button type="button" class="rv-mini" data-action="review-drill-course" data-id="' +
+          '</b><button type="button" class="btn btn-sm success rv-mini" data-action="review-drill-course" data-id="' +
           g.courseId +
           '">' +
           t("review.drillGroup", { n: g.items.length }) +
@@ -490,7 +496,7 @@ function renderReviewDetail() {
   }
 
   const allBtn =
-    '<button type="button" class="btn secondary review-all-btn"' +
+    '<button type="button" class="btn success review-all-btn"' +
     (reviewN ? "" : " disabled") +
     ' data-action="review-all">' +
     t("review.all", { n: reviewN }) +
