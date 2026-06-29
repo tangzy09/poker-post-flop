@@ -642,6 +642,126 @@
         raise: { en: "Calling is correct — raising second pair bloats the pot unnecessarily.", zh: "跟注正确 — 用第二对加注不必要地放大底池。" },
       },
     },
+    {
+      s: { en: "River, three-spade board, villain checks. You hold the nut-spade blocker but no pair. Best action?", zh: "河牌，三张黑桃面，对手过牌。你持坚果黑桃阻断牌但没成对。最佳行动？" },
+      lbl: { en: "A♠Q♦ air, As blocker", zh: "A♠Q♦ 空气，As 阻断" },
+      board: ["Js","7s","4s","Kd","2c"], pot: 30, bet: 0, pos: "BTN (IP)", hand: ["As","Qd"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "You block the nut flush and have no showdown value — a perfect bluff: villain can't have the nuts and only hands that beat A-high fold out. Bet.", zh: "你阻断坚果同花且无摊牌价值 — 完美诈唬点：对手不可能有坚果，只赶走能赢 A 高的牌。应下注。" },
+      },
+    },
+    {
+      s: { en: "Turn, two-heart board. You hold the nut-flush draw plus the ace-heart blocker. Villain bets half pot. Best action?", zh: "转牌，两张红心面。你持坚果同花听+红心 A 阻断。对手半池下注。最佳行动？" },
+      lbl: { en: "A♥7♥ nut FD + blocker", zh: "A♥7♥ 坚果花听+阻断" },
+      board: ["Kd","8h","5h","2c"], pot: 20, bet: 10, pos: "BTN (IP)", hand: ["Ah","7h"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        call: { en: "Nut-flush draw plus the ace-heart blocker is a premium semi-bluff raise — equity when called and fold equity from the blocker. Raise.", zh: "坚果同花听+红心 A 阻断是顶级半诈唬加注 — 被跟有权益，阻断牌带弃牌率。应加注。" },
+      },
+    },
+    {
+      s: { en: "River, board A-8-5-3-2. You hold top pair with the ace blocker. Villain bets 2/3 pot. Best action?", zh: "河牌，牌面 A-8-5-3-2。你持顶对带 A 阻断。对手 2/3 池下注。最佳行动？" },
+      lbl: { en: "A♥T♣ top pair, A blocker", zh: "A♥T♣ 顶对，A 阻断" },
+      board: ["Ad","8c","5h","3s","2d"], pot: 30, bet: 20, pos: "BB (OOP)", hand: ["Ah","Tc"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "too_tight",
+      fb: {
+        fold: { en: "Holding an ace blocks much of villain's value (strong Ax reduced) — top pair is a clear bluff-catcher here. Folding is too tight. Call.", zh: "持 A 阻断对手大量价值（强 Ax 被削弱）— 顶对是明确抓诈牌。弃牌过紧。应跟。" },
+      },
+    },
+    {
+      s: { en: "River, paired board Q-Q-9-6-3. You hold ace-high with the ace blocker but no pair. Villain bets pot. Best action?", zh: "河牌，对子面 Q-Q-9-6-3。你持 A 高带 A 阻断但无对子。对手底池下注。最佳行动？" },
+      lbl: { en: "A♠J♦ air, A blocker", zh: "A♠J♦ 空气，A 阻断" },
+      board: ["Qd","Qc","9s","6h","3d"], pot: 24, bet: 24, pos: "BB (OOP)", hand: ["As","Jd"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "On a paired board a pot-size bet is polarized to trips/full houses — ace-high blocks nothing relevant and has no showdown value. Fold.", zh: "对子面底池下注极化为三条/葫芦 — A 高没阻断相关组合且无摊牌价值。应弃。" },
+      },
+    },
+    {
+      s: { en: "River, board A-J-8-5-2. You hold third pair (eights) plus the king blocker. Villain checks. Best action?", zh: "河牌，牌面 A-J-8-5-2。你持第三对（8）带 K 阻断。对手过牌。最佳行动？" },
+      lbl: { en: "K♣8♦ third pair", zh: "K♣8♦ 第三对" },
+      board: ["Ac","Jh","8s","5d","2c"], pot: 18, bet: 0, pos: "BTN (IP)", hand: ["Kc","8d"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Third pair still beats villain's missed draws and air — betting turns a showdown hand into a bluff that only better hands call. Check to realize showdown.", zh: "第三对仍赢对手错过的听牌与空气 — 下注把摊牌牌变诈唬、只被更好牌跟。应过牌收摊牌。" },
+      },
+    },
+    {
+      s: { en: "River brings a fourth spade. You hold the nut flush. Villain checks. Best action?", zh: "河牌来第四张黑桃。你持 坚果同花。对手过牌。最佳行动？" },
+      lbl: { en: "A♠8♠ nut flush", zh: "A♠8♠ 坚果同花" },
+      board: ["Ts","6s","3s","Kd","9s"], pot: 26, bet: 0, pos: "BTN (IP)", hand: ["As","8s"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "You hold the nut flush and block villain's only better hand — value bet, worse spades and bluff-catchers pay. Checking the nuts leaves money behind.", zh: "你持坚果同花并阻断对手唯一更好的牌 — 价值下注，更差同花与抓诈牌会付钱。过掉坚果漏价值。" },
+      },
+    },
+    {
+      s: { en: "Turn, board Q-9-6-2. You hold second pair plus the ace blocker. Villain bets 1/3 pot. Best action?", zh: "转牌，牌面 Q-9-6-2。你持第二对带 A 阻断。对手 1/3 池下注。最佳行动？" },
+      lbl: { en: "A♦9♣ second pair, A blocker", zh: "A♦9♣ 第二对，A 阻断" },
+      board: ["Qh","9d","6c","2s"], pot: 24, bet: 8, pos: "BB (OOP)", hand: ["Ad","9c"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "too_tight",
+      fb: {
+        fold: { en: "Vs a 1/3-pot bet MDF is high — second pair plus an ace that blocks villain's AQ/A9 is a strong continue. Folding lets the small bet auto-profit. Call.", zh: "面对 1/3 池下注 MDF 很高 — 第二对+阻断对手 AQ/A9 的 A 是强继续。弃牌让小注自动盈利。应跟。" },
+      },
+    },
+    {
+      s: { en: "River, board Q-8-5-3-2. You hold second pair with the king blocker. Villain checks. Best action?", zh: "河牌，牌面 Q-8-5-3-2。你持第二对带 K 阻断。对手过牌。最佳行动？" },
+      lbl: { en: "K♦8♥ second pair", zh: "K♦8♥ 第二对" },
+      board: ["Qc","8d","5s","3h","2c"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["Kd","8h"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Second pair has showdown value vs villain's missed draws — checking takes a cheap showdown; betting only gets called by better and folds out what you beat.", zh: "第二对对错过听牌有摊牌价值 — 过牌拿便宜摊牌；下注只被更好牌跟、赶走你能赢的。" },
+      },
+    },
+    {
+      s: { en: "River, board K-9-4-7-2. You hold top pair, weak kicker. Villain overbets 1.5x pot. Best action?", zh: "河牌，牌面 K-9-4-7-2。你持顶对弱踢。对手超池下注 1.5 倍。最佳行动？" },
+      lbl: { en: "K♦5♣ weak top pair", zh: "K♦5♣ 弱顶对" },
+      board: ["Ks","9h","4d","7c","2s"], pot: 30, bet: 45, pos: "BB (OOP)", hand: ["Kd","5c"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "A 1.5x overbet is extremely polarized — strong two-pair-plus or pure air. Top pair with a 5 kicker blocks none of villain's value and loses to most value. Fold.", zh: "1.5x 超池极度极化 — 强两对以上或纯空气。顶对 5 踢没阻断价值且输给大部分价值。应弃。" },
+      },
+    },
+    {
+      s: { en: "River, three spades A-K-8 plus 4-2. You hold Q-J of spades — the nut flush. Villain leads 2/3 pot. Best action?", zh: "河牌，三张黑桃 A-K-8 加 4-2。你持黑桃 Q-J 坚果同花。对手 2/3 池领出。最佳行动？" },
+      lbl: { en: "Q♠J♠ nut flush", zh: "Q♠J♠ 坚果同花" },
+      board: ["As","Ks","8s","4d","2c"], pot: 30, bet: 20, pos: "BB (OOP)", hand: ["Qs","Js"],
+      street: "river",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        call: { en: "With A-K of spades on board, Q♠J♠ makes the absolute nuts — just calling lets worse flushes off cheaply. Raise for max value.", zh: "牌面有黑桃 A、K，Q♠J♠ 成绝对坚果 — 只跟放走更差同花。加注榨最大价值。" },
+      },
+    },
+    {
+      s: { en: "Turn, board A-9-5-T. You are OOP with top pair, weak kicker, plus the ace blocker. Best action?", zh: "转牌，牌面 A-9-5-T。你无位置持顶对弱踢带 A 阻断。最佳行动？" },
+      lbl: { en: "A♦8♦ weak top pair", zh: "A♦8♦ 弱顶对" },
+      board: ["Ah","9c","5d","Ts"], pot: 16, bet: 0, pos: "BB (OOP)", hand: ["Ad","8d"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Weak top pair OOP wants pot control — betting bloats the pot and gets raised by better aces. Your ace blocks villain's strong Ax, so checking to bluff-catch is best.", zh: "无位置弱顶对应控池 — 下注放大底池、被更好 Ax 加注。你的 A 阻断对手强 Ax，过牌抓诈更优。" },
+      },
+    },
+    {
+      s: { en: "River, board K-Q-7-4-2. You hold second pair (queens) with the ace blocker. Villain bets half pot. Best action?", zh: "河牌，牌面 K-Q-7-4-2。你持第二对（Q）带 A 阻断。对手半池下注。最佳行动？" },
+      lbl: { en: "A♥Q♣ second pair, A blocker", zh: "A♥Q♣ 第二对，A 阻断" },
+      board: ["Kh","Qd","7s","4c","2h"], pot: 28, bet: 14, pos: "BB (OOP)", hand: ["Ah","Qc"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "too_tight",
+      fb: {
+        fold: { en: "Second pair plus the ace blocks villain's AK/AQ value and the missed nut hearts — a textbook bluff-catcher vs a half-pot bet. Folding over-folds. Call.", zh: "第二对+A 阻断对手 AK/AQ 价值及错过的坚果红心 — 面对半池下注的教科书抓诈牌。弃牌过度。应跟。" },
+      },
+    },
   ]);
   QUESTIONS.c15 = buildSpots("c15", "concept.facing_raise", [
     {

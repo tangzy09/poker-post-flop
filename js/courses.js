@@ -13,7 +13,7 @@ const COURSES = [
   { id: "c11", order: 11, free: true, titleKey: "c11.title", subKey: "c11.sub", concepts: ["check_raise", "probe"] },
   { id: "c12", order: 12, free: true, titleKey: "c12.title", subKey: "c12.sub", concepts: ["spr", "commitment"] },
   { id: "c13", order: 13, free: true, drillCount: 24, titleKey: "c13.title", subKey: "c13.sub", concepts: ["sizing", "mdf"] },
-  { id: "c14", order: 14, free: true, drillCount: 12, titleKey: "c14.title", subKey: "c14.sub", concepts: ["blockers", "bluff"] },
+  { id: "c14", order: 14, free: true, drillCount: 24, titleKey: "c14.title", subKey: "c14.sub", concepts: ["blockers", "bluff"] },
   { id: "c15", order: 15, free: true, drillCount: 12, titleKey: "c15.title", subKey: "c15.sub", concepts: ["facing_raise"] },
   { id: "c16", order: 16, free: true, drillCount: 12, titleKey: "c16.title", subKey: "c16.sub", concepts: ["3bet_pot", "spr"] },
   { id: "c17", order: 17, free: true, drillCount: 12, titleKey: "c17.title", subKey: "c17.sub", concepts: ["pot_control"] },
