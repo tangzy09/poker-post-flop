@@ -1,7 +1,7 @@
 /* courses.js — 30-lesson curriculum metadata */
 const COURSES = [
-  { id: "c1", order: 1, free: true, drillCount: 8, titleKey: "c1.title", subKey: "c1.sub", concepts: ["pot_odds", "mdf"] },
-  { id: "c2", order: 2, free: true, titleKey: "c2.title", subKey: "c2.sub", concepts: ["implied_odds", "reverse_implied"] },
+  { id: "c1", order: 1, free: true, placement: true, drillCount: 0, titleKey: "c1.title", subKey: "c1.sub", concepts: [] },
+  { id: "c2", order: 2, free: true, drillCount: 27, titleKey: "c2.title", subKey: "c2.sub", concepts: ["pot_odds", "mdf", "implied_odds", "reverse_implied"] },
   { id: "c3", order: 3, free: true, titleKey: "c3.title", subKey: "c3.sub", concepts: ["range_advantage", "nut_advantage"] },
   { id: "c4", order: 4, free: true, titleKey: "c4.title", subKey: "c4.sub", concepts: ["board_texture", "dry", "wet"] },
   { id: "c5", order: 5, free: true, titleKey: "c5.title", subKey: "c5.sub", concepts: ["cbet", "ip"] },

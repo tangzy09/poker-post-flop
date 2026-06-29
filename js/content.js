@@ -688,59 +688,7 @@ function drillActionsForQuestion(q) {
 }
 
 const QUESTIONS = {
-  c1: [
-    _choice("c1-q1", "c1.q1.s", [
-      { id: "a", labelKey: "c1.q1.a" },
-      { id: "b", labelKey: "c1.q1.b" },
-      { id: "c", labelKey: "c1.q1.c" },
-      { id: "d", labelKey: "c1.q1.d" },
-    ], "a", "conceptual", "concept_gap", "c1.q1.fb.b"),
-    _choice("c1-q2", "c1.q2.s", [
-      { id: "a", labelKey: "c1.q2.a" },
-      { id: "b", labelKey: "c1.q2.b" },
-      { id: "c", labelKey: "c1.q2.c" },
-      { id: "d", labelKey: "c1.q2.d" },
-    ], "a", "conceptual", "concept_gap", "c1.q2.fb.b"),
-    _choice("c1-q3", "c1.q3.s", [
-      { id: "a", labelKey: "c1.q3.a" },
-      { id: "b", labelKey: "c1.q3.b" },
-      { id: "c", labelKey: "c1.q3.c" },
-      { id: "d", labelKey: "c1.q3.d" },
-    ], "a", "conceptual", "sizing", "c1.q3.fb.a"),
-    _action("c1-q4", "c1.q4.s", {
-      street: "river", board: ["2c", "7d", "9h", "Js", "4s"], pot: 100, bet: 100,
-      hero: { pos: "IP", hand: ["Ad", "Ac"], labelKey: "spot.lbl.aa_bc" },
-      villain: { pos: "OOP", label: "Polarized" },
-      facing: "bet",
-    }, ["call"], "reference", "too_tight", {
-      fold: { reasonKey: "c1.q4.fb.fold", concept: "mdf" },
-      raise: { reasonKey: "fb.generic.bet_bad", concept: "polarization" },
-    }, "c1.q4.ctx"),
-    _choice("c1-q5", "c1.q5.s", [
-      { id: "a", labelKey: "c1.q5.a" },
-      { id: "b", labelKey: "c1.q5.b" },
-      { id: "c", labelKey: "c1.q5.c" },
-      { id: "d", labelKey: "c1.q5.d" },
-    ], "a", "conceptual", "concept_gap", "c1.q5.fb.b"),
-    _choice("c1-q6", "c1.q6.s", [
-      { id: "a", labelKey: "c1.q6.a" },
-      { id: "b", labelKey: "c1.q6.b" },
-      { id: "c", labelKey: "c1.q6.c" },
-      { id: "d", labelKey: "c1.q6.d" },
-    ], "a", "conceptual", "concept_gap", "c1.q6.fb.b"),
-    _choice("c1-q7", "c1.q7.s", [
-      { id: "a", labelKey: "c1.q7.a" },
-      { id: "b", labelKey: "c1.q7.b" },
-      { id: "c", labelKey: "c1.q7.c" },
-      { id: "d", labelKey: "c1.q7.d" },
-    ], "a", "conceptual", "sizing", "c1.q7.fb.a"),
-    _choice("c1-q8", "c1.q8.s", [
-      { id: "a", labelKey: "c1.q8.a" },
-      { id: "b", labelKey: "c1.q8.b" },
-      { id: "c", labelKey: "c1.q8.c" },
-      { id: "d", labelKey: "c1.q8.d" },
-    ], "a", "conceptual", "concept_gap", "c1.q8.fb.b"),
-  ],
+  c1: [], /* placement test — no drill questions */
 
   c2: buildSpots("c2", "concept.implied", [
     {

@@ -31,14 +31,26 @@ test("30 courses defined", () => {
   assert.equal(ctx.__out.COURSES.length, 30);
 });
 
-test("each course has 4 learn slides (incl. summary) and expected drill count", () => {
+test("each non-placement course has 4 learn slides and expected drill count", () => {
   const ctx = loadScripts("globalThis.__out = { COURSES, LEARN, QUESTIONS, getLearn, getQuestions, courseDrillCount };");
   for (const c of ctx.__out.COURSES) {
+    if (c.placement) {
+      assert.equal(ctx.__out.getQuestions(c.id).length, 0, c.id + " placement has no drill questions");
+      continue;
+    }
     const slides = ctx.__out.getLearn(c.id);
     assert.equal(slides.length, 4, c.id + " learn");
     assert.equal(slides[slides.length - 1].summary, true, c.id + " last slide is summary");
     assert.equal(ctx.__out.getQuestions(c.id).length, ctx.__out.courseDrillCount(c), c.id + " questions");
   }
+});
+
+test("c1 is the placement test, c2 has 27 drill questions", () => {
+  const ctx = loadScripts("globalThis.__out = { COURSES, getQuestions };");
+  const c1 = ctx.__out.COURSES.find((c) => c.id === "c1");
+  assert.equal(c1.placement, true);
+  assert.equal(ctx.__out.getQuestions("c1").length, 0);
+  assert.equal(ctx.__out.getQuestions("c2").length, 27);
 });
 
 test("all courses are free", () => {
