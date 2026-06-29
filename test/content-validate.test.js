@@ -58,6 +58,7 @@ function collectIssues(out) {
   const seenIds = new Set();
 
   for (const course of COURSES) {
+    if (course.placement) continue; // 初始测试无常规题/learn,跳过结构校验
     const qs = getQuestions(course.id);
     if (qs.length !== courseDrillCount(course)) issues.push(`${course.id}: expected ${courseDrillCount(course)} questions, got ${qs.length}`);
 
@@ -144,6 +145,7 @@ test("every learn slide has registered title/body keys + a summary slide", () =>
   const { STR, COURSES, getLearn } = out;
   const issues = [];
   for (const course of COURSES) {
+    if (course.placement) continue; // 初始测试无 learn slides,跳过
     const slides = getLearn(course.id);
     if (!Array.isArray(slides) || slides.length < 1) {
       issues.push(`${course.id}: no learn slides`);
