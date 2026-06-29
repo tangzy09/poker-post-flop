@@ -76,7 +76,23 @@ function render() {
 }
 
 function renderCourses() {
-  const cards = COURSES.map((c) => {
+  const noProgress = Object.keys(Engine.store.progress || {}).length === 0;
+  let cards = "";
+  if (!Engine.store.onboardingSeen && noProgress && !Engine.store.placement) {
+    cards += `<div class="onboard-banner">${t("placement.onboard")}
+      <button class="btn" data-action="onboard-start">${t("placement.start")}</button>
+      <button data-action="onboard-dismiss">${t("placement.later")}</button></div>`;
+  }
+  COURSES.forEach((c) => {
+    if (c.placement) {
+      const p = Engine.store.placement;
+      const last = p ? " · " + t("placement.scoreLine", { c: p.score, t: p.total }) : "";
+      cards += `<button class="course-card placement-card" data-action="start-placement">
+        <div class="course-title">🎯 ${t(c.titleKey)}</div>
+        <div class="course-sub">${t(c.subKey)}${last}</div>
+      </button>`;
+      return;
+    }
     const p = Engine.getProgress(c.id);
     const qs = getQuestions(c.id).length;
     const locked = !canAccessCourse(c);
@@ -96,7 +112,7 @@ function renderCourses() {
       actions = '<button class="btn primary" data-action="start-course" data-id="' + c.id + '">' + t("course.start") + "</button>";
     }
 
-    return (
+    cards += (
       '<article class="course-card' + (locked ? " locked" : "") + (p.completed ? " done" : "") + '">' +
       '<div class="cc-head">' +
       '<span class="cc-num">' + c.order + "</span>" +
@@ -111,7 +127,7 @@ function renderCourses() {
       actions +
       "</article>"
     );
-  }).join("");
+  });
 
   const reviewN = Engine.store.reviewPile.length;
   return (
@@ -206,11 +222,15 @@ function renderDrill() {
       ? '<div class="btn-stack drill-actions"><button class="btn secondary" data-action="start-learn" data-id="' + drillCourseId + '">' + t("learn.backToLearn") + "</button></div>"
       : "";
 
+  const progressLabel = Engine.testMode
+    ? t("placement.progress", { n: Engine.qIdx + 1 })
+    : t("drill.q", { n: Engine.qIdx + 1, total: qs.length });
+
   return (
     '<section class="screen drill-screen">' +
     '<button class="back-btn" data-action="back-courses">←</button>' +
     '<p class="eyebrow">' + t(course.titleKey) + " · " + t("drill.title") + "</p>" +
-    '<p class="q-pager">' + t("drill.q", { n: Engine.qIdx + 1, total: qs.length }) + "</p>" +
+    '<p class="q-pager">' + progressLabel + "</p>" +
     body +
     learnBtn +
     "</section>"
@@ -644,6 +664,19 @@ function handleAction(action, el) {
       resetChoiceShuffle();
       Engine.finishLearn();
       break;
+    case "start-placement":
+      resetChoiceShuffle();
+      Engine.startPlacementTest();
+      break;
+    case "onboard-start":
+      Engine.store.onboardingSeen = true; Engine.save();
+      resetChoiceShuffle();
+      Engine.startPlacementTest();
+      break;
+    case "onboard-dismiss":
+      Engine.store.onboardingSeen = true; Engine.save();
+      Engine.screen = "courses";
+      break;
     case "back-courses":
       _pendingFeedback = null;
       if (Engine.reviewMode || Engine.screen === "review-empty") {
@@ -659,7 +692,8 @@ function handleAction(action, el) {
       _pendingFeedback = null;
       Engine.qIdx++;
       if (Engine.qIdx >= Engine.currentQuestions().length) {
-        if (Engine.reviewMode) Engine.finishReviewSession();
+        if (Engine.testMode) Engine.finishPlacementTest(Date.now());
+        else if (Engine.reviewMode) Engine.finishReviewSession();
         else Engine.finishDrill();
       } else Engine.screen = "drill";
       break;
