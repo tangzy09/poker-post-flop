@@ -1,4 +1,4 @@
-/* content.js — learn slides + drill questions (courses c1–c12) */
+﻿/* content.js — learn slides + drill questions (courses c1–c12) */
 
 function _r(key, en, zh) {
   reg(key, en, zh);
@@ -67,12 +67,14 @@ function registerContentStrings() {
   _r("c1.q8.fb.b", "Smaller bets need higher MDF (~67% half-pot vs 50% pot).", "下注越小 MDF 越高（半池约 67% vs 底池 50%）。");
 
   // C2
-  _r("c2.l1.t", "Implied odds", "隐含赔率");
-  _r("c2.l1.b", "Implied odds add <b>future chips you expect to win</b> when you hit. A call can be correct even when direct pot odds aren't enough — if you stack villain on later streets.", "隐含赔率加上命中后<b>预期赢取的筹码</b>。即使直接底池赔率不够，若能在后续街道赢光对手，跟注仍可能正确。");
-  _r("c2.l2.t", "Reverse implied odds", "反向隐含赔率");
-  _r("c2.l2.b", "You can lose extra chips when you hit but are <b>dominated</b> (flush vs higher flush) or when your made hand is <b>second best</b>. This makes calls worse than pot odds suggest.", "命中但被<b>压制</b>（小同花 vs 大同花）或成<b>第二好牌</b>时会输掉更多筹码，使跟注比底池赔率显示的更差。");
-  _r("c2.l3.t", "When implied odds matter most", "隐含赔率何时最重要");
-  _r("c2.l3.b", "Deep stacks + draw-heavy boards + opponents who pay off big hands. Short stacks and multiway pots reduce implied odds.", "深筹码 + 听牌面 + 愿为大牌付钱的对手。浅筹码和多人底池降低隐含赔率。");
+  _r("c2.title", "Pot Odds, MDF & Implied Odds", "底池赔率、MDF 与隐含赔率");
+  _r("c2.sub", "Foundations of profitable defense", "盈利防守的基础");
+  _r("c2.l1.t", "What are pot odds?", "什么是底池赔率？");
+  _r("c2.l1.b", "Pot odds compare the <b>cost of a call</b> to the <b>total pot you can win</b>. If the pot is 100 and you must call 50, you are getting 150:50 = <b>3:1</b>. You need to win more than 25% of the time for a call to break even.", "底池赔率比较<b>跟注成本</b>与<b>可赢总底池</b>。底池 100、跟注 50，赔率为 150:50 = <b>3:1</b>。盈亏平衡需胜率 > 25%。");
+  _r("c2.l2.t", "Minimum Defense Frequency (MDF)", "最小防守频率 MDF");
+  _r("c2.l2.b", "Facing a bet, MDF is the <b>minimum fraction of your range</b> that must continue so villain can't profit by betting any two cards: <b>MDF = 1 − bet/(pot+bet)</b>. Vs a pot bet: 50%. It's a <b>range</b> rule — a single hand may fold or call, but on average you must hit MDF.", "面对下注时，MDF 是你范围中<b>必须继续的最低比例</b>，防止对手任意两张牌盈利：<b>MDF = 1 − 下注/(底池+下注)</b>。面对底池下注：50%。这是<b>范围</b>概念 — 单手牌可弃可跟，但整体平均必须达到 MDF。");
+  _r("c2.l3.t", "Implied & reverse implied odds", "隐含与反向隐含赔率");
+  _r("c2.l3.b", "<b>Implied odds</b> add the chips you expect to win <b>after</b> hitting — a call short on direct odds can still be right if you stack villain later. <b>Reverse implied odds</b> are the chips you lose when you hit but stay dominated (small flush vs big flush). Implied odds matter most <b>deep, on draw-heavy boards, vs players who pay off</b>.", "<b>隐含赔率</b>加上命中<b>之后</b>预期多赢的筹码 — 即使直接赔率不够，若能赢光对手，跟注仍可能正确。<b>反向隐含赔率</b>是命中但仍被压制（小同花 vs 大同花）时多输的筹码。隐含赔率在<b>深筹、听牌面、愿付钱的对手</b>时最重要。");
 
   _r("c2.q1.s", "You have a flush draw on the flop. Which factor most increases implied odds?", "翻牌有同花听牌。哪项最提高隐含赔率？");
   _r("c2.q1.a", "Deep effective stacks", "深有效筹码");
@@ -486,8 +488,8 @@ function registerContentStrings() {
     "• 底池赔率 = 跟注成本 vs 最终底池；盈亏平衡胜率 = 跟注/(底池+跟注)。<br>• MDF = 1 − 下注/(底池+下注) — 下注越小，需防守越多。<br>• 按 MDF 防守整个<b>范围</b>，使诈唬无法自动盈利；单手牌仍可混合。");
 
   _r("c2.sum.b",
-    "• Implied odds = extra chips you win <b>after</b> hitting — rewarded by deep stacks and pay-off-prone villains.<br>• Reverse implied odds = extra chips you <b>lose</b> with dominated or second-best hands.<br>• Chase toward the nuts; discount weak or dominated draws.",
-    "• 隐含赔率 = 命中<b>之后</b>多赢的筹码 — 深筹码与愿付钱的对手时更高。<br>• 反向隐含赔率 = 被压制或第二好牌时多<b>输</b>的筹码。<br>• 追向坚果听牌；弱或被压制的听牌要打折扣。");
+    "• Pot odds = call cost vs final pot; break-even equity = call/(pot+call).<br>• MDF = 1 − bet/(pot+bet) — defend your <b>range</b> so bluffs can't auto-profit.<br>• Implied odds reward draws that win more later; reverse implied odds punish dominated hands.",
+    "• 底池赔率 = 跟注成本 vs 最终底池；盈亏平衡胜率 = 跟注/(底池+跟注)。<br>• MDF = 1 − 下注/(底池+下注) — 按<b>范围</b>防守，使诈唬无法自动盈利。<br>• 隐含赔率奖励能赢更多的听牌；反向隐含赔率惩罚被压制的牌。");
 
   _r("c3.sum.b",
     "• Range advantage = more strong hands overall → bet more often.<br>• Nut advantage = more top combos → license to bet bigger.<br>• PFR is favored on high/dry flops; the caller catches up on low/connected flops.",
@@ -534,12 +536,7 @@ registerContentStrings();
 
 /* Learn slides per course */
 const LEARN = {
-  c1: [
-    { titleKey: "c1.l1.t", bodyKey: "c1.l1.b" },
-    { titleKey: "c1.l2.t", bodyKey: "c1.l2.b" },
-    { titleKey: "c1.l3.t", bodyKey: "c1.l3.b" },
-    { titleKey: "c1.sum.t", bodyKey: "c1.sum.b", summary: true },
-  ],
+  c1: [],
   c2: [
     { titleKey: "c2.l1.t", bodyKey: "c2.l1.b" },
     { titleKey: "c2.l2.t", bodyKey: "c2.l2.b" },
@@ -690,7 +687,26 @@ function drillActionsForQuestion(q) {
 const QUESTIONS = {
   c1: [], /* placement test — no drill questions */
 
-  c2: buildSpots("c2", "concept.implied", [
+  c2: [
+    _choice("c2-q1c", "c1.q1.s", [
+      { id: "a", labelKey: "c1.q1.a" },
+      { id: "b", labelKey: "c1.q1.b" },
+      { id: "c", labelKey: "c1.q1.c" },
+      { id: "d", labelKey: "c1.q1.d" },
+    ], "a", "conceptual", "concept_gap", "c1.q1.fb.b"),
+    _choice("c2-q2c", "c1.q2.s", [
+      { id: "a", labelKey: "c1.q2.a" },
+      { id: "b", labelKey: "c1.q2.b" },
+      { id: "c", labelKey: "c1.q2.c" },
+      { id: "d", labelKey: "c1.q2.d" },
+    ], "a", "conceptual", "concept_gap", "c1.q2.fb.b"),
+    _choice("c2-q3c", "c1.q3.s", [
+      { id: "a", labelKey: "c1.q3.a" },
+      { id: "b", labelKey: "c1.q3.b" },
+      { id: "c", labelKey: "c1.q3.c" },
+      { id: "d", labelKey: "c1.q3.d" },
+    ], "a", "conceptual", "sizing", "c1.q3.fb.a"),
+    ...buildSpots("c2", "concept.implied", [
     {
       s: { en: "100bb deep. Flop, villain bets 1/3 pot. You hold the nut flush draw with two overcards. Best action?", zh: "100bb 深筹。翻牌对手下注 1/3 池。你持坚果同花听+两张高张。最佳行动？" },
       lbl: { en: "A\u2660K\u2660 nut FD + overs", zh: "A\u2660K\u2660 坚果花听+高张" },
@@ -898,7 +914,7 @@ const QUESTIONS = {
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: { check: { en: "With top set, bet for value and to build the pot \u2014 checking wastes a street of value.", zh: "持顶三条应下注取价值并做大底池 \u2014 过牌浪费一条街的价值。" } },
     },
-  ]),
+  ]) ],
 
   c3: buildSpots("c3", "concept.range_adv", [
     {
