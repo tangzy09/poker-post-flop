@@ -4,10 +4,13 @@
 
 | 范围 | 课数 | 每课 drill | 合计 |
 |------|------|------------|------|
-| C1 | 1 | 8 | 8 |
-| C2–C12 | 11 | 24 | 264 |
-| C13–C30 | 18 | 12 | 216 |
-| **合计** | **30** | — | **488** |
+| C1（初始测试） | 1 | — | 0 |
+| C2 | 1 | 27 | 27 |
+| C3–C12 | 10 | 24 | 240 |
+| C13–C30 | 18 | 24 | 432 |
+| **合计** | **30** | — | **699** |
+
+> C1 是**初始测试**（placement test）：从 C2–C30 抽 20 道实战题（action spot），做完给出评价，自身不新增题目。原 C1 的赔率/MDF 概念已并入 C2（故 C2 = 27 题）。
 
 每课 **4 页 Learn**（3 原理 + 1 summary）→ 再进入 Drill。
 
@@ -23,7 +26,7 @@
 
 ### C13–C30：`scripts/courses-ext-data.js` → `js/content-ext.js`
 
-1. 编辑 `scripts/courses-ext-data.js`（learn 四段 + 12 个 spot）
+1. 编辑 `scripts/courses-ext-data.js`（learn 四段 + 24 个 spot）
 2. 运行：
 
 ```bash
@@ -120,8 +123,8 @@ t("course.questions", { n: 24 });
 
 ```bash
 node scripts/gen-content-ext.js   # 仅当改了 C13–C30 源数据
-npm test                          # 必须全绿（当前 39 tests）
-npm run audit                     # 期望 488/488
+npm test                          # 必须全绿（当前 44 tests）
+npm run audit                     # 期望 699/699
 node scripts/audit-stem-spot.js   # 题干 vs 牌面
 ```
 

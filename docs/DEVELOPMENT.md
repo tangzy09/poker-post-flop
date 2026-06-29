@@ -48,8 +48,8 @@ VS Code 也可用任务：**Terminal → Run Task → serve**（见 `.vscode/tas
 
 | 命令 | 作用 |
 |------|------|
-| `npm test` | **39** 项结构/内容/引擎测试，改题库或 i18n 后必跑 |
-| `npm run audit` | 488 题全量审计，输出 `tools/audit-report.json` |
+| `npm test` | **44** 项结构/内容/引擎测试，改题库或 i18n 后必跑 |
+| `npm run audit` | 699 题全量审计，输出 `tools/audit-report.json` |
 | `node scripts/gen-content-ext.js` | 改 C13–C30 源数据后重新生成 `js/content-ext.js` |
 | `node scripts/audit-stem-spot.js` | 题干文字 vs 牌面/手牌一致性 |
 | `powershell -File tools/deploy-ec2.ps1` | 打版本戳 + 上传 EC2（需 SSH 密钥） |

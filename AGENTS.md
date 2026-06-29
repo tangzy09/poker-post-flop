@@ -1,6 +1,6 @@
 # AI assistant guidelines (Claude / Copilot)
 
-Project: **Poker Post-Flop** — static bilingual HU post-flop trainer (30 courses, 488 questions).
+Project: **Poker Post-Flop** — static bilingual HU post-flop trainer (30 courses incl. a placement test, 699 questions).
 
 ## Stack
 
@@ -11,7 +11,7 @@ Project: **Poker Post-Flop** — static bilingual HU post-flop trainer (30 cours
 ## Before finishing a task
 
 1. Run `npm test` when touching `js/`, `scripts/`, or `test/`.
-2. Run `npm run audit` when changing question content (expect 488/488).
+2. Run `npm run audit` when changing question content (expect 699/699).
 3. Do **not** commit unless the user asks.
 
 ## Code conventions

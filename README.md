@@ -1,6 +1,6 @@
 # Poker Post-Flop
 
-Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons, theory slides, **488** drill questions, wrong-answer feedback, review pile, and an interactive table view.
+Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons (including an adaptive placement test), theory slides, **699** drill questions, wrong-answer feedback, review pile, and an interactive table view.
 
 **Live:** https://post-flop-coach.ai-speeds.com/
 
@@ -19,7 +19,9 @@ Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons, theory 
 
 ## Features
 
-- **30 courses** — C1–C12 fundamentals + C13–C30 advanced (sizing, blockers, 3-bet pots, river defense, ICM, capstone)
+- **30 courses** — C1 placement test, C2–C12 fundamentals, C13–C30 advanced: sizing/MDF, blockers, facing raises, 3-bet pots, pot control, turn defense, floating, overbets, donk bets, thin value, draws & semi-bluffs, river defense, multiway, exploits, tournament/ICM, multi-street planning, special boards, capstone
+- **C13–C30 hold 24 drills each** (432 advanced spots) — every answer cross-checked by adversarial blind-solve
+- **C1 placement test** — a fixed 20-question baseline drawn from later courses, with a detailed evaluation at the end
 - Learn → drill flow; **review lessons** anytime after first pass
 - Poker table visualization (HU spots)
 - C3 range / equity chart (`js/range-chart.js`, `js/equity.js`)
@@ -44,8 +46,8 @@ In VS Code: **Terminal → Run Task → serve**
 
 | Command | Description |
 |---------|-------------|
-| `npm test` | 39 tests — structure, content, engine, i18n |
-| `npm run audit` | Full 488-question audit → `tools/audit-report.json` |
+| `npm test` | 44 tests — structure, content, engine, i18n |
+| `npm run audit` | Full 699-question audit → `tools/audit-report.json` |
 | `node scripts/gen-content-ext.js` | Regenerate `js/content-ext.js` from C13–C30 source |
 | `npm run build:www` | Copy assets to `www/` for Capacitor |
 | `powershell -File tools/deploy-ec2.ps1` | Stamp cache version + deploy to EC2 |
@@ -84,7 +86,7 @@ AGENTS.md                 AI assistant rules
 
 1. **C1–C12** — edit `js/content.js`
 2. **C13–C30** — edit `scripts/courses-ext-data.js`, then `node scripts/gen-content-ext.js`
-3. Run `npm test` and `npm run audit` (expect **488/488**)
+3. Run `npm test` and `npm run audit` (expect **699/699**)
 
 See [docs/CONTENT.md](docs/CONTENT.md) for spot format, i18n, and terminology.
 

@@ -2,7 +2,7 @@
 
 本文件为 Claude Code（claude.ai/code）在本仓库中工作时提供指引。
 
-双语（EN / 中文）单挑翻后扑克训练器：30 课、488 道训练题，以**纯静态站点**形式提供（网页端无打包器、无构建步骤）。同时通过 Capacitor 打包成 Android 应用。
+双语（EN / 中文）单挑翻后扑克训练器：30 课（C1 为初始测试）、699 道训练题，以**纯静态站点**形式提供（网页端无打包器、无构建步骤）。同时通过 Capacitor 打包成 Android 应用。
 
 硬性规则（i18n、术语、类名冲突）见 **[AGENTS.md](AGENTS.md)**；VS Code 工作流见 **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)**；题库格式见 **[docs/CONTENT.md](docs/CONTENT.md)**。本文件是精简总览。
 
@@ -10,15 +10,15 @@
 
 ```bash
 npx serve . -l 3456              # 本地运行 → http://127.0.0.1:3456（无需 install）
-npm test                         # ~39 个 node:test 测试 —— 改动 js/、scripts/、test/ 后必跑
-npm run audit                    # 488 题全量审计 → tools/audit-report.json
+npm test                         # ~44 个 node:test 测试 —— 改动 js/、scripts/、test/ 后必跑
+npm run audit                    # 699 题全量审计 → tools/audit-report.json
 node --test test/i18n.test.js    # 单独跑某个测试文件
 node scripts/gen-content-ext.js  # 改完 C13–C30 源数据后重新生成 js/content-ext.js
 node scripts/audit-stem-spot.js  # 检查题干文字与牌面/手牌是否一致
 powershell -File tools/deploy-ec2.ps1   # 部署到 EC2（仅在用户要求时）
 ```
 
-基线预期：测试全绿，审计 **488/488**。VS Code 任务与这些命令对应（Terminal → Run Task → serve / test / audit）。
+基线预期：测试全绿，审计 **699/699**。VS Code 任务与这些命令对应（Terminal → Run Task → serve / test / audit）。
 
 ## 架构
 
