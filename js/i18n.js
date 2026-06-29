@@ -312,11 +312,11 @@ reg("placement.byTheme", "By topic", "各主题表现");
 reg("placement.review", "Question review", "逐题回顾");
 reg("placement.addToReview", "Add my misses to review", "把错题加入复习");
 reg("placement.retake", "Retake test", "重测");
-reg("placement.startHere", "Start systematic study from this course", "从这课开始系统学习");
+reg("placement.startHere", "Start here: {title}", "从这课开始：{title}");
 reg("placement.smallSample", "Small sample — treat as a rough signal", "样本较小，仅作大致参考");
-reg("placement.youChose", "You chose", "你选了");
+reg("placement.youChose", "You chose: ", "你选了：");
 reg("placement.abandon", "Abandon the test? Your progress will be lost.", "放弃测试？当前进度会丢失。");
-reg("placement.correctAns", "Correct", "正确答案");
+reg("placement.correctAns", "Correct: ", "正确答案：");
 
 // —— Placement themes ——
 reg("theme.flop", "Flop initiative", "翻牌主导权");

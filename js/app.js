@@ -182,7 +182,8 @@ function renderDrill() {
   const qs = Engine.currentQuestions();
   const q = qs[Engine.qIdx];
   if (!q) {
-    if (Engine.reviewMode) Engine.finishReviewSession();
+    if (Engine.testMode) Engine.finishPlacementTest(Date.now());
+    else if (Engine.reviewMode) Engine.finishReviewSession();
     else Engine.finishDrill();
     render();
     return "";
@@ -232,7 +233,7 @@ function renderDrill() {
   return (
     '<section class="screen drill-screen">' +
     '<button class="back-btn" data-action="back-courses">←</button>' +
-    '<p class="eyebrow">' + t(course.titleKey) + " · " + t("drill.title") + "</p>" +
+    '<p class="eyebrow">' + (Engine.testMode ? t("c1.title") : t(course.titleKey)) + " · " + t("drill.title") + "</p>" +
     '<p class="q-pager">' + progressLabel + "</p>" +
     body +
     learnBtn +
@@ -565,15 +566,14 @@ function renderPlacementResult() {
   html += `<div class="note">${t("placement.smallSample")}</div>`;
   const sc = p.startCourse;
   const scTitle = t(courseById(sc).titleKey);
-  html += `<button class="btn" data-action="start-course" data-id="${sc}">${t("placement.startHere")}: ${scTitle}</button>`;
+  html += `<button class="btn" data-action="start-course" data-id="${sc}">${t("placement.startHere", { title: scTitle })}</button>`;
   html += `<h3>${t("placement.review")}</h3>`;
   for (const r of p.results) {
     const open = r.ok ? "" : " open";
     const mark = r.ok ? "✓" : "✗";
-    const q = getQuestions(r.courseId).find((x) => x.id === r.qid);
-    const correct = ((q && q.correct) || []).map((a) => t("action." + a)).join(" / ");
+    const correct = (r.correct || []).map((a) => t("action." + a)).join(" / ");
     html += `<details class="q-review${open}"><summary>${mark} ${r.qid} — ${t("theme." + r.theme)}</summary>
-      <div>${t("placement.youChose")}: ${t("action." + r.choice)} · ${t("placement.correctAns")}: ${correct}</div></details>`;
+      <div>${t("placement.youChose")}${t("action." + r.choice)} · ${t("placement.correctAns")}${correct}</div></details>`;
   }
   html += `<div class="result-actions">
     <button class="btn" data-action="add-misses">${t("placement.addToReview")}</button>

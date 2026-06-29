@@ -162,10 +162,9 @@ const Engine = {
     if (this.testMode) {
       this.testResults.push({
         qid: question.id, courseId: question._courseId || cid, theme: question._theme,
-        choice, ok: result.ok,
+        choice, ok: result.ok, correct: question.correct,
         leak: normalizeLeak(question.leak), street: question.spot?.street || "flop",
       });
-      this.save();
       return;
     }
 
@@ -257,16 +256,19 @@ const Engine = {
 
   _placementStartCourse: { flop: "c3", odds: "c2", turn: "c9", river: "c10", advanced: "c13" },
 
+  _tally(map, key, ok) {
+    const m = (map[key] = map[key] || { h: 0, c: 0 });
+    m.h++;
+    if (ok) m.c++;
+  },
+
   finishPlacementTest(takenAt) {
     const res = this.testResults;
     const total = res.length;
     const score = res.filter((r) => r.ok).length;
-    const byTheme = {}, byStreet = {}, byLeak = {};
+    const byTheme = {}, byLeak = {};
     for (const r of res) {
-      (byTheme[r.theme] = byTheme[r.theme] || { h: 0, c: 0 }).h++;
-      if (r.ok) byTheme[r.theme].c++;
-      (byStreet[r.street] = byStreet[r.street] || { h: 0, c: 0 }).h++;
-      if (r.ok) byStreet[r.street].c++;
+      this._tally(byTheme, r.theme, r.ok);
       if (!r.ok) byLeak[r.leak] = (byLeak[r.leak] || 0) + 1;
     }
     let weakestTheme = null, worst = 2;
@@ -278,7 +280,7 @@ const Engine = {
     this.store.placement = {
       takenAt: takenAt || 0,
       score, total,
-      byTheme, byStreet, byLeak,
+      byTheme, byLeak,
       weakestTheme,
       startCourse: this._placementStartCourse[weakestTheme] || "c2",
       results: res.slice(),
@@ -293,10 +295,8 @@ const Engine = {
   placementPseudoStore(results) {
     const statsByCourse = {}, statsByStreet = {}, reviewPile = [];
     for (const r of results) {
-      (statsByCourse[r.courseId] = statsByCourse[r.courseId] || { h: 0, c: 0 }).h++;
-      if (r.ok) statsByCourse[r.courseId].c++;
-      (statsByStreet[r.street] = statsByStreet[r.street] || { h: 0, c: 0 }).h++;
-      if (r.ok) statsByStreet[r.street].c++;
+      this._tally(statsByCourse, r.courseId, r.ok);
+      this._tally(statsByStreet, r.street, r.ok);
       if (!r.ok) reviewPile.push({ courseId: r.courseId, qid: r.qid, leak: r.leak, choice: r.choice, streak: 0, wrong: 1 });
     }
     return { statsByCourse, statsByStreet, reviewPile, stats: { totalQ: results.length, correctQ: results.filter((x) => x.ok).length, coursesDone: 0 }, progress: {} };
