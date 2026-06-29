@@ -187,26 +187,21 @@ test("removeFromPile removes matching record", () => {
   assert.equal(Engine.store.reviewPile[0].courseId, "c5");
 });
 
-test("_migrateStore trims c1 progress and review pile to 8 questions", () => {
+test("_migrateStore removes old c1 course data (c1 is now the placement test)", () => {
   const { Engine } = loadEngine();
-  Engine.store = freshStore();
-  Engine.store.progress.c1 = { learnDone: true, qDone: 20, correct: 15, total: 24, completed: true };
-  Engine.store.statsByCourse.c1 = { h: 24, c: 18 };
-  Engine.store.stats = { totalQ: 100, correctQ: 70, coursesDone: 1 };
-  Engine.store.reviewPile = [
-    { courseId: "c1", qid: "c1-q1", wrong: 1 },
-    { courseId: "c1", qid: "c1-q20", wrong: 1 },
-    { courseId: "c2", qid: "c2-q1", wrong: 1 },
-  ];
+  Engine.store = {
+    progress: { c1: { qDone: 8, total: 8, completed: true }, c5: { qDone: 2 } },
+    reviewPile: [{ courseId: "c1", qid: "c1-q4", leak: "too_tight" }, { courseId: "c5", qid: "c5-q2", leak: "too_loose" }],
+    stats: { totalQ: 10, correctQ: 5, coursesDone: 1, coursesDoneList: ["c1", "c5"] },
+    statsByCourse: { c1: { h: 8, c: 4 }, c5: { h: 2, c: 1 } },
+    statsByStreet: {},
+  };
+  Engine.save = function () {};
   Engine._migrateStore();
-  assert.equal(Engine.store.progress.c1.total, 8);
-  assert.equal(Engine.store.progress.c1.qDone, 8);
-  assert.equal(Engine.store.reviewPile.length, 2);
-  assert.ok(Engine.store.reviewPile.every((r) => r.qid !== "c1-q20"));
-  assert.equal(Engine.store.statsByCourse.c1.h, 8);
-  assert.equal(Engine.store.statsByCourse.c1.c, 8);
-  assert.equal(Engine.store.stats.totalQ, 84);
-  assert.equal(Engine.store.stats.correctQ, 60);
+  assert.equal(Engine.store.progress.c1, undefined);
+  assert.equal(Engine.store.statsByCourse.c1, undefined);
+  assert.equal(Engine.store.reviewPile.filter((r) => r.courseId === "c1").length, 0);
+  assert.ok(!Engine.store.stats.coursesDoneList.includes("c1"));
 });
 
 test("_migrateStore backfills statsByCourse from completed progress", () => {

@@ -70,3 +70,30 @@ test("finishPlacementTest aggregates score, themes, leaks and builds placement r
 });
 
 function otherAction(a) { return a === "fold" ? "call" : "fold"; }
+
+test("migration clears old c1 course data; pseudo-store reflects test results", () => {
+  const { Engine } = load();
+  Engine.store = {
+    progress: { c1: { qDone: 8, completed: true, total: 8 }, c5: { qDone: 2 } },
+    reviewPile: [{ courseId: "c1", qid: "c1-q4", leak: "too_tight" }, { courseId: "c5", qid: "c5-q1", leak: "too_loose" }],
+    stats: { totalQ: 10, correctQ: 5, coursesDone: 1, coursesDoneList: ["c1", "c5"] },
+    statsByCourse: { c1: { h: 8, c: 4 }, c5: { h: 2, c: 1 } },
+    statsByStreet: {},
+  };
+  Engine.save = function () {};
+  Engine._migrateStore();
+  assert.equal(Engine.store.progress.c1, undefined, "c1 progress removed");
+  assert.equal(Engine.store.statsByCourse.c1, undefined, "c1 stats removed");
+  assert.equal(Engine.store.reviewPile.find((r) => r.courseId === "c1"), undefined, "c1 review removed");
+  assert.ok(!Engine.store.stats.coursesDoneList.includes("c1"), "c1 not in doneList");
+
+  const ps = Engine.placementPseudoStore([
+    { qid: "c3-q1", courseId: "c3", theme: "flop", choice: "check", ok: false, leak: "too_tight", street: "flop" },
+    { qid: "c3-q2", courseId: "c3", theme: "flop", choice: "check", ok: true, leak: "other", street: "flop" },
+  ]);
+  assert.equal(ps.statsByCourse.c3.h, 2);
+  assert.equal(ps.statsByCourse.c3.c, 1);
+  assert.equal(ps.statsByStreet.flop.h, 2);
+  assert.equal(ps.reviewPile.length, 1, "only wrong answers in pseudo reviewPile");
+  assert.equal(ps.reviewPile[0].qid, "c3-q1");
+});

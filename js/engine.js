@@ -68,27 +68,16 @@ const Engine = {
         this.store.statsByCourse[c.id] = { h: p.total, c: p.correct || 0 };
       }
     }
-    const c1Len = getQuestions("c1").length;
-    const c1Ids = new Set(getQuestions("c1").map((q) => q.id));
-    this.store.reviewPile = (this.store.reviewPile || []).filter((r) => r.courseId !== "c1" || c1Ids.has(r.qid));
-    const p1 = this.store.progress.c1;
-    if (p1 && ((p1.total || 0) > c1Len || (p1.qDone || 0) > c1Len)) {
-      p1.qDone = Math.min(p1.qDone || 0, c1Len);
-      p1.correct = Math.min(p1.correct || 0, p1.qDone);
-      p1.total = c1Len;
-      p1.completed = !!p1.completed || p1.qDone >= c1Len;
-      const s1 = this.store.statsByCourse.c1;
-      if (s1 && (s1.h || 0) > c1Len) {
-        const oldH = s1.h || 0;
-        const oldC = s1.c || 0;
-        const newH = Math.min(oldH, c1Len);
-        const newC = Math.min(oldC, newH);
-        this.store.stats.totalQ = Math.max(0, (this.store.stats.totalQ || 0) - (oldH - newH));
-        this.store.stats.correctQ = Math.max(0, (this.store.stats.correctQ || 0) - (oldC - newC));
-        s1.h = newH;
-        s1.c = newC;
-      }
+    // c1 改造为初始测试:清理旧的 c1 答题课数据
+    delete this.store.progress.c1;
+    delete this.store.statsByCourse.c1;
+    this.store.reviewPile = (this.store.reviewPile || []).filter((r) => r.courseId !== "c1");
+    if (this.store.stats.coursesDoneList) {
+      this.store.stats.coursesDoneList = this.store.stats.coursesDoneList.filter((c) => c !== "c1");
+      this.store.stats.coursesDone = this.store.stats.coursesDoneList.length;
     }
+    if (this.store.placement === undefined) this.store.placement = null;
+    if (this.store.onboardingSeen === undefined) this.store.onboardingSeen = false;
   },
 
   save() {
@@ -104,6 +93,8 @@ const Engine = {
       stats: { totalQ: 0, correctQ: 0, coursesDone: 0 },
       statsByCourse: {},
       statsByStreet: {},
+      placement: null,
+      onboardingSeen: false,
     };
   },
 
@@ -295,6 +286,18 @@ const Engine = {
     this.testQueue = [];
     this.screen = "placement-result";
     this.save();
+  },
+
+  placementPseudoStore(results) {
+    const statsByCourse = {}, statsByStreet = {}, reviewPile = [];
+    for (const r of results) {
+      (statsByCourse[r.courseId] = statsByCourse[r.courseId] || { h: 0, c: 0 }).h++;
+      if (r.ok) statsByCourse[r.courseId].c++;
+      (statsByStreet[r.street] = statsByStreet[r.street] || { h: 0, c: 0 }).h++;
+      if (r.ok) statsByStreet[r.street].c++;
+      if (!r.ok) reviewPile.push({ courseId: r.courseId, qid: r.qid, leak: r.leak, choice: r.choice, streak: 0, wrong: 1 });
+    }
+    return { statsByCourse, statsByStreet, reviewPile, stats: { totalQ: results.length, correctQ: results.filter((x) => x.ok).length, coursesDone: 0 }, progress: {} };
   },
 
   startReview(filter) {
