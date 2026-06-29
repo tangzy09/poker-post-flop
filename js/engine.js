@@ -117,6 +117,8 @@ const Engine = {
     this.qIdx = 0;
     this.answers = [];
     this.reviewMode = false;
+    this.testMode = false;
+    this.testQueue = [];
     const p = this.getProgress(courseId);
     if (mode === "learn") {
       this.screen = "learn";

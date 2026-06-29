@@ -1,4 +1,4 @@
-﻿/* content.js — learn slides + drill questions (courses c1–c12) */
+/* content.js — learn slides + drill questions (courses c1–c12) */
 
 function _r(key, en, zh) {
   reg(key, en, zh);

@@ -570,8 +570,10 @@ function renderPlacementResult() {
   for (const r of p.results) {
     const open = r.ok ? "" : " open";
     const mark = r.ok ? "✓" : "✗";
+    const q = getQuestions(r.courseId).find((x) => x.id === r.qid);
+    const correct = ((q && q.correct) || []).map((a) => t("action." + a)).join(" / ");
     html += `<details class="q-review${open}"><summary>${mark} ${r.qid} — ${t("theme." + r.theme)}</summary>
-      <div>${t("placement.youChose")}: ${r.choice}</div></details>`;
+      <div>${t("placement.youChose")}: ${t("action." + r.choice)} · ${t("placement.correctAns")}: ${correct}</div></details>`;
   }
   html += `<div class="result-actions">
     <button class="btn" data-action="add-misses">${t("placement.addToReview")}</button>
@@ -592,7 +594,7 @@ function renderStats() {
     '<div class="stat-tile"><div class="v">' +
     (s.coursesDone || 0) +
     "/" +
-    COURSES.length +
+    COURSES.filter((c) => !c.placement).length +
     '</div><div class="k">' +
     t("stats.coursesDone") +
     "</div></div>" +
@@ -724,6 +726,14 @@ function handleAction(action, el) {
       break;
     case "back-courses":
       _pendingFeedback = null;
+      if (Engine.testMode) {
+        if (!confirm(t("placement.abandon"))) break;
+        Engine.testMode = false;
+        Engine.testQueue = [];
+        Engine.testResults = [];
+        Engine.screen = "courses";
+        break;
+      }
       if (Engine.reviewMode || Engine.screen === "review-empty") {
         Engine.exitReviewFlow();
       } else {
