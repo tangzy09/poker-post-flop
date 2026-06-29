@@ -3,6 +3,29 @@ const STORE_KEY = "pokerPostFlop_v1";
 const STORE_KEY_LEGACY = "postflopCoach_v1";
 const MASTER_STREAK = 2;
 
+const PLACEMENT_SPEC = [
+  { theme: "flop", courseId: "c3", qid: "c3-q1" },
+  { theme: "flop", courseId: "c3", qid: "c3-q2" },
+  { theme: "flop", courseId: "c6", qid: "c6-q1" },
+  { theme: "flop", courseId: "c6", qid: "c6-q3" },
+  { theme: "odds", courseId: "c2", qid: "c2-q24" },
+  { theme: "odds", courseId: "c7", qid: "c7-q1" },
+  { theme: "odds", courseId: "c7", qid: "c7-q3" },
+  { theme: "odds", courseId: "c2", qid: "c2-q4" },
+  { theme: "turn", courseId: "c9", qid: "c9-q1" },
+  { theme: "turn", courseId: "c9", qid: "c9-q2" },
+  { theme: "turn", courseId: "c11", qid: "c11-q1" },
+  { theme: "turn", courseId: "c18", qid: "c18-q3" },
+  { theme: "river", courseId: "c10", qid: "c10-q3" },
+  { theme: "river", courseId: "c10", qid: "c10-q5" },
+  { theme: "river", courseId: "c10", qid: "c10-q6" },
+  { theme: "river", courseId: "c24", qid: "c24-q12" },
+  { theme: "advanced", courseId: "c20", qid: "c20-q1" },
+  { theme: "advanced", courseId: "c25", qid: "c25-q1" },
+  { theme: "advanced", courseId: "c12", qid: "c12-q2" },
+  { theme: "advanced", courseId: "c23", qid: "c23-q1" },
+];
+
 function normalizeLeak(leak) {
   return leak || "other";
 }
@@ -15,6 +38,9 @@ const Engine = {
   answers: [],
   reviewMode: false,
   reviewQueue: [],
+  testMode: false,
+  testQueue: [],
+  testResults: [],
 
   load() {
     try {
@@ -115,6 +141,7 @@ const Engine = {
   },
 
   currentQuestions() {
+    if (this.testMode) return this.testQueue;
     if (this.reviewMode) return this.reviewQueue;
     return getQuestions(this.courseId);
   },
@@ -138,6 +165,16 @@ const Engine = {
   recordAnswer(question, choice, result) {
     this.answers.push({ qid: question.id, choice, ok: result.ok });
     const cid = this.questionCourseId(question);
+
+    if (this.testMode) {
+      this.testResults.push({
+        qid: question.id, courseId: question._courseId || cid, theme: question._theme,
+        choice, ok: result.ok,
+        leak: normalizeLeak(question.leak), street: question.spot?.street || "flop",
+      });
+      this.save();
+      return;
+    }
 
     if (!this.reviewMode) {
       this.store.stats.totalQ++;
@@ -201,6 +238,27 @@ const Engine = {
       this.store.stats.coursesDone = this.store.stats.coursesDoneList.length;
     }
     this.screen = "over";
+    this.save();
+  },
+
+  startPlacementTest(rng) {
+    const rand = rng || Math.random;
+    const queue = PLACEMENT_SPEC.map((s) => {
+      const q = getQuestions(s.courseId).find((x) => x.id === s.qid);
+      return q ? Object.assign({}, q, { _courseId: s.courseId, _theme: s.theme }) : null;
+    }).filter(Boolean);
+    for (let i = queue.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [queue[i], queue[j]] = [queue[j], queue[i]];
+    }
+    this.testQueue = queue;
+    this.testResults = [];
+    this.testMode = true;
+    this.reviewMode = false;
+    this.courseId = "c1";
+    this.qIdx = 0;
+    this.answers = [];
+    this.screen = "drill";
     this.save();
   },
 
