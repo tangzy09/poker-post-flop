@@ -67,6 +67,9 @@ function render() {
     case "stats":
       root.innerHTML = renderStats();
       break;
+    case "placement-result":
+      root.innerHTML = renderPlacementResult();
+      break;
     default:
       root.innerHTML = renderCourses();
   }
@@ -536,6 +539,48 @@ function renderReviewDetail() {
   );
 }
 
+function renderPlacementResult() {
+  const p = Engine.store.placement;
+  const ps = Engine.placementPseudoStore(p.results);
+  const pct = Math.round((p.score / p.total) * 100);
+  const level = pct >= 85 ? "expert" : pct >= 60 ? "inter" : "beginner";
+  let html = `<div class="screen result">`;
+  html += `<h2>${t("placement.resultTitle")}</h2>`;
+  html += `<div class="big-score">${t("placement.scoreLine", { c: p.score, t: p.total })} · ${pct}%</div>`;
+  html += `<div class="level">${t("placement.level." + level)}</div>`;
+  if (p.history.length > 1) {
+    const prev = p.history[p.history.length - 2].score;
+    html += `<div class="trend">${t("placement.lastTime", { a: prev, b: p.score })}</div>`;
+  }
+  html += `<h3>${t("placement.byTheme")}</h3><div class="theme-bars">`;
+  for (const th of ["flop", "odds", "turn", "river", "advanced"]) {
+    const d = p.byTheme[th] || { h: 0, c: 0 };
+    const weak = th === p.weakestTheme ? " weak" : "";
+    html += `<div class="theme-bar${weak}"><span>${t("theme." + th)}</span><b>${d.c}/${d.h}</b></div>`;
+  }
+  html += `</div>`;
+  html += renderProfileCard(ps);
+  html += renderLeakCard(ps);
+  html += renderPlanCard(ps);
+  html += `<div class="note">${t("placement.smallSample")}</div>`;
+  const sc = p.startCourse;
+  const scTitle = t(courseById(sc).titleKey);
+  html += `<button class="btn" data-action="start-course" data-id="${sc}">${t("placement.startHere")}: ${scTitle}</button>`;
+  html += `<h3>${t("placement.review")}</h3>`;
+  for (const r of p.results) {
+    const open = r.ok ? "" : " open";
+    const mark = r.ok ? "✓" : "✗";
+    html += `<details class="q-review${open}"><summary>${mark} ${r.qid} — ${t("theme." + r.theme)}</summary>
+      <div>${t("placement.youChose")}: ${r.choice}</div></details>`;
+  }
+  html += `<div class="result-actions">
+    <button class="btn" data-action="add-misses">${t("placement.addToReview")}</button>
+    <button data-action="start-placement">${t("placement.retake")}</button>
+    <button data-action="back-courses">${t("course.back")}</button>
+  </div></div>`;
+  return html;
+}
+
 function renderStats() {
   const s = Engine.store.stats;
   const reviewN = Engine.store.reviewPile.length;
@@ -719,6 +764,16 @@ function handleAction(action, el) {
       const qid = el.getAttribute("data-qid");
       const rec = Engine.store.reviewPile.find((r) => r.courseId === courseId && r.qid === qid);
       if (rec) Engine.removeFromPile(rec);
+      break;
+    }
+    case "add-misses": {
+      const ps = Engine.placementPseudoStore(Engine.store.placement.results);
+      for (const r of ps.reviewPile) {
+        if (!Engine.store.reviewPile.find((x) => x.qid === r.qid && x.courseId === r.courseId)) {
+          Engine.store.reviewPile.push(r);
+        }
+      }
+      Engine.save();
       break;
     }
   }
