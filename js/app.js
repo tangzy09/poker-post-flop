@@ -318,8 +318,9 @@ function leakDrillBtn(courseId, leak) {
   );
 }
 
-function renderProfileCard() {
-  const p = Coach.buildProfile(Engine.store);
+function renderProfileCard(store) {
+  store = store || Engine.store;
+  const p = Coach.buildProfile(store);
   if (!p.ready) {
     return '<p class="coach-note">' + t("prof.empty", { need: p.need }) + "</p>";
   }
@@ -345,8 +346,9 @@ function renderProfileCard() {
   return html;
 }
 
-function renderLeakCard() {
-  const agg = Coach.aggregateLeaks(Engine.store);
+function renderLeakCard(store) {
+  store = store || Engine.store;
+  const agg = Coach.aggregateLeaks(store);
   if (!agg.total) {
     return '<p class="coach-note">' + t("leak.empty") + "</p>";
   }
@@ -379,7 +381,7 @@ function renderLeakCard() {
       );
     })
     .join("");
-  const missed = Coach.topMissed(Engine.store, 5);
+  const missed = Coach.topMissed(store, 5);
   if (missed.length) {
     html += '<div class="leak-sub">' + t("leak.worstQs") + "</div>";
     html += missed
@@ -400,8 +402,9 @@ function renderLeakCard() {
   return html;
 }
 
-function renderPlanCard() {
-  const plan = Coach.buildPlan(Engine.store);
+function renderPlanCard(store) {
+  store = store || Engine.store;
+  const plan = Coach.buildPlan(store);
   if (!plan.ready) {
     return '<p class="coach-note">' + t("plan.empty") + "</p>";
   }
