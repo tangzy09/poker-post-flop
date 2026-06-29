@@ -889,6 +889,132 @@
         call: { en: "Re-raise for value — your straight crushes villain's raising range.", zh: "再加注价值 — 你的顺子压制对手加注范围。" },
       },
     },
+    {
+      s: { en: "Flop, you c-bet two-thirds pot and villain check-raises on a wet board. You flopped a set. Best action?", zh: "翻牌，你持续下注三分之二底池后，对手在湿润牌面 check-raise。你击中了暗三条。最佳行动？" },
+      lbl: { en: "9♦9♠ middle set", zh: "9♦9♠ 中暗三条" },
+      board: ["Jh","9c","7s"], pot: 12, bet: 8, pos: "BTN (IP)", hand: ["9d","9s"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        call: { en: "A set on a wet, draw-heavy board wants to build the pot now and charge draws — flat-calling lets free cards beat you. Re-raise for value.", zh: "湿润、多听牌的牌面上击中三条，要立刻做大底池、向听牌收费 — 平跟会给出免费牌反超。应再加注价值。" },
+        fold: { en: "Folding a set to a check-raise is far too tight; you have one of the strongest hands here. Raise.", zh: "面对 check-raise 弃掉三条过紧；你这里是最强牌型之一。应加注。" },
+      },
+    },
+    {
+      s: { en: "Turn, you bet for value and villain raises on a brick. You hold an overpair to the board. Best action?", zh: "转牌，你下注价值后对手在无关牌加注。你持有对牌面的超对。最佳行动？" },
+      lbl: { en: "Q♥Q♣ overpair", zh: "Q♥Q♣ 超对" },
+      board: ["Jd","8s","4c","2h"], pot: 22, bet: 16, pos: "BTN (IP)", hand: ["Qh","Qc"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "An overpair is too strong to fold to a single turn raise on a blank — you beat bluffs and worse value. Call down.", zh: "面对无关转牌的一次加注，超对太强不能弃 — 你打赢诈唬和更差的价值。应跟到底。" },
+        raise: { en: "Raising turns your overpair into a bluff-catcher-only line and folds out everything you beat; just call.", zh: "加注把超对变成只剩抓诈唬的线，赶走所有你打赢的牌；平跟即可。" },
+      },
+    },
+    {
+      s: { en: "Flop, you c-bet and face a check-raise holding only two overcards and a backdoor. Best action?", zh: "翻牌，你持续下注后面对 check-raise，只有两张超牌加后门。最佳行动？" },
+      lbl: { en: "A♣K♦ two overcards", zh: "A♣K♦ 两张超牌" },
+      board: ["Th","8c","3s"], pot: 9, bet: 7, pos: "BTN (IP)", hand: ["Ac","Kd"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Two overcards with no pair and only a backdoor have too little equity versus a check-raising range; calling burns money. Fold.", zh: "无对、仅后门的两张超牌，对 check-raise 范围权益太低；跟注是烧钱。应弃牌。" },
+        raise: { en: "Raising as a pure bluff with no equity gets called by the strong range that raised you. Fold.", zh: "无权益纯诈唬加注会被加注你的强范围跟住。应弃牌。" },
+      },
+    },
+    {
+      s: { en: "Turn, you bet and villain raises. You hold a nut flush draw. Best action?", zh: "转牌，你下注后对手加注。你持有坚果同花听牌。最佳行动？" },
+      lbl: { en: "A♠Q♠ nut flush draw", zh: "A♠Q♠ 坚果同花听牌" },
+      board: ["Ks","8s","5d","2c"], pot: 18, bet: 14, pos: "BTN (IP)", hand: ["As","Qs"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "indifference",
+      fb: {
+        fold: { en: "A nut flush draw has too much equity and fold equity to surrender — folding throws away a profitable semi-bluff. Raise.", zh: "坚果同花听牌权益与弃牌率都很高，弃掉等于丢掉盈利的半诈唬。应加注。" },
+        call: { en: "Calling is fine but raising as a semi-bluff scoops fold equity now and still has the nut draw if called. Raise.", zh: "平跟可行，但半诈唬加注现在能拿弃牌率，被跟也仍握坚果听牌。应加注。" },
+      },
+    },
+    {
+      s: { en: "Flop, you c-bet and get check-raised. You hold top pair with a weak kicker on a coordinated board. Best action?", zh: "翻牌，你持续下注后被 check-raise。你在协调牌面持顶对弱踢脚。最佳行动？" },
+      lbl: { en: "K♣7♣ weak top pair", zh: "K♣7♣ 弱顶对" },
+      board: ["Kd","Qc","Jh"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["Kc","7c"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Top pair with a weak kicker on a connected board is dominated by a check-raising range full of two pair, sets and strong draws. Fold.", zh: "协调牌面上顶对弱踢脚被满是两对、三条、强听牌的 check-raise 范围压制。应弃牌。" },
+        raise: { en: "Raising for value with a weak kicker only gets called by better; no reason to bloat the pot. Fold.", zh: "弱踢脚加注价值只会被更好牌跟住；没理由做大底池。应弃牌。" },
+      },
+    },
+    {
+      s: { en: "Turn, you bet and villain raises. You hold two pair on a board with no flush possible. Best action?", zh: "转牌，你下注后对手加注。你在无同花可能的牌面持两对。最佳行动？" },
+      lbl: { en: "A♦J♥ two pair", zh: "A♦J♥ 两对" },
+      board: ["Ac","Js","6d","3h"], pot: 20, bet: 15, pos: "BTN (IP)", hand: ["Ad","Jh"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top two pair is far too strong to fold to one turn raise on a dry board — you beat most value and all bluffs. Call.", zh: "干燥牌面面对一次转牌加注，顶两对太强不能弃 — 你打赢多数价值和全部诈唬。应跟注。" },
+        raise: { en: "Raising folds out worse and only gets action from sets that beat you; flat-call to keep bluffs in. Call.", zh: "加注赶走更差、只被打赢你的三条跟注；平跟留住诈唬。应跟注。" },
+      },
+    },
+    {
+      s: { en: "Flop, you c-bet half pot and face a check-raise. You hold an underpair with no draw. Best action?", zh: "翻牌，你持续下注半池后面对 check-raise。你持欠对无听牌。最佳行动？" },
+      lbl: { en: "T♦T♣ underpair", zh: "T♦T♣ 欠对" },
+      board: ["Qs","9c","4h"], pot: 7, bet: 5, pos: "BTN (IP)", hand: ["Td","Tc"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Pocket tens are an underpair to the queen and behind a check-raising range of queens, sets and two pair; calling chases. Fold.", zh: "口袋 TT 是低于 Q 的欠对，落后于 Q、三条、两对的 check-raise 范围；跟注是追打。应弃牌。" },
+        raise: { en: "Raising an underpair as a bluff folds out worse and gets called by everything better. Fold.", zh: "欠对当诈唬加注赶走更差、被更好牌跟住。应弃牌。" },
+      },
+    },
+    {
+      s: { en: "River, you bet and face a raise. You hold the nut flush. Best action?", zh: "河牌，你下注后面对加注。你持有坚果同花。最佳行动？" },
+      lbl: { en: "A♠6♠ nut flush", zh: "A♠6♠ 坚果同花" },
+      board: ["Ks","9s","4s","Jd","2c"], pot: 30, bet: 22, pos: "BTN (IP)", hand: ["As","6s"],
+      street: "river",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        call: { en: "With the nut flush you can never be beaten by a flush — raise to extract maximum value from worse flushes and two pair.", zh: "持坚果同花永远不会输给同花 — 加注从更差同花、两对榨取最大价值。" },
+        fold: { en: "Folding the absolute nuts is a catastrophic error; you cannot lose. Raise.", zh: "弃掉绝对坚果是灾难性错误；你不可能输。应加注。" },
+      },
+    },
+    {
+      s: { en: "Flop, you c-bet and villain check-raises. You hold a gutshot to the nuts with two overcards. Best action?", zh: "翻牌，你持续下注后对手 check-raise。你持补坚果的卡顺加两张超牌。最佳行动？" },
+      lbl: { en: "A♥K♥ gutshot + overs", zh: "A♥K♥ 卡顺+超牌" },
+      board: ["Qd","Jc","5s"], pot: 10, bet: 8, pos: "BTN (IP)", hand: ["Ah","Kh"],
+      actions: FACE, correct: ["raise"], leak: "indifference",
+      fb: {
+        fold: { en: "A gutshot to the nut straight plus two overcards and a backdoor flush has enough equity and fold equity to semi-bluff — folding is too tight. Raise.", zh: "补坚果顺子的卡顺加两张超牌加后门同花，有足够权益与弃牌率半诈唬 — 弃牌过紧。应加注。" },
+        call: { en: "Calling is okay, but raising as a semi-bluff pressures their range and can win immediately. Raise.", zh: "平跟尚可，但半诈唬加注施压对手范围、还能立即拿下。应加注。" },
+      },
+    },
+    {
+      s: { en: "Turn, you bet and villain raises. You hold top pair top kicker but the board got very wet. Best action?", zh: "转牌，你下注后对手加注。你持顶对顶踢脚，但牌面变得很湿。最佳行动？" },
+      lbl: { en: "A♣K♣ TPTK", zh: "A♣K♣ 顶对顶踢" },
+      board: ["Ah","Td","9c","8s"], pot: 24, bet: 18, pos: "BTN (IP)", hand: ["Ac","Kc"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair top kicker still beats many worse value bets and bluffs; one turn raise is not enough to fold the best kicker. Call.", zh: "顶对顶踢脚仍打赢许多更差价值下注和诈唬；一次转牌加注不足以弃掉最佳踢脚。应跟注。" },
+        raise: { en: "Raising bloats the pot as a one-pair hand against a range now heavy with straights and two pair; just call.", zh: "在已满是顺子、两对的范围前，单对加注做大底池；平跟即可。" },
+      },
+    },
+    {
+      s: { en: "Flop, villain check-raises your c-bet. You hold a pure bluff with no pair and no draw on a paired board. Best action?", zh: "翻牌，对手 check-raise 你的持续下注。你在对子牌面持无对无听牌的纯诈唬。最佳行动？" },
+      lbl: { en: "A♦Q♠ air", zh: "A♦Q♠ 空气" },
+      board: ["Th","Tc","4d"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["Ad","Qs"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ace-high with no pair and no draw has near-zero equity versus a check-raise on a paired board; calling is pure burn. Fold.", zh: "对子牌面上无对无听牌的 A 高，对 check-raise 几乎零权益；跟注纯烧钱。应弃牌。" },
+        raise: { en: "Re-bluffing into a range that just check-raised a paired board rarely folds out trips; abandon the hand. Fold.", zh: "向刚在对子面 check-raise 的范围再诈唬很难赶走三条；放弃这手。应弃牌。" },
+      },
+    },
+    {
+      s: { en: "River, you bet and face a raise. You hold the second nut straight. Best action?", zh: "河牌，你下注后面对加注。你持第二坚果顺子。最佳行动？" },
+      lbl: { en: "K♥Q♦ second nut straight", zh: "K♥Q♦ 第二坚果顺子" },
+      board: ["Js","Tc","9d","4s","2h"], pot: 26, bet: 20, pos: "BTN (IP)", hand: ["Kh","Qd"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "The second nut straight beats every worse straight and all bluffs; only AK has you beat, so folding is too tight. Call.", zh: "第二坚果顺子打赢所有更差顺子和全部诈唬；只有 AK 压你，弃掉过紧。应跟注。" },
+        raise: { en: "Raising only gets called by the AK that beats you and folds out the worse straights you'd profit from; just call.", zh: "加注只被压你的 AK 跟住，赶走能让你盈利的更差顺子；平跟即可。" },
+      },
+    },
   ]);
   QUESTIONS.c16 = buildSpots("c16", "concept.three_bet", [
     {
@@ -1013,6 +1139,129 @@
         raise: { en: "Already all-in — call.", zh: "已全压 — 跟注。" },
       },
     },
+    {
+      s: { en: "3-bet pot. Flop K-7-2 rainbow, you hold A♠A♥ overpair, checked to you. Best action?", zh: "3-bet 底池。翻牌 K-7-2 彩虹，你持 A♠A♥ 超对，对手过牌给你。最佳行动？" },
+      lbl: { en: "A♠A♥ overpair, 3bp", zh: "A♠A♥ 超对，3bp" },
+      board: ["Kd","7s","2c"], pot: 18, bet: 0, pos: "BTN (IP)", hand: ["As","Ah"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Checking back the nuts in a low-SPR 3-bet pot wastes value — bet to build the pot now.", zh: "低 SPR 3-bet 底池过牌放走价值 — 立即下注建池。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Flop Q-J-4 rainbow, you hold A♥K♥ (two overcards + gutshot), checked to you. Best action?", zh: "3-bet 底池。翻牌 Q-J-4 彩虹，你持 A♥K♥（两张超牌+卡顺），对手过牌。最佳行动？" },
+      lbl: { en: "A♥K♥ overs+gutshot, 3bp", zh: "A♥K♥ 超牌+卡顺，3bp" },
+      board: ["Qd","Js","4c"], pot: 17, bet: 0, pos: "BTN (IP)", hand: ["Ah","Kh"],
+      actions: ACT, correct: ["bet"], leak: "cbet",
+      fb: {
+        check: { en: "With range advantage plus a gutshot and two overcards, c-betting is far better than checking.", zh: "拥有范围优势加卡顺加两张超牌，持续下注远好过过牌。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot, you are the 3-bettor OOP. Flop 9-7-2 rainbow, you hold 9♥9♦ (a set), first to act. Best action?", zh: "3-bet 底池，你是 OOP 3-bet 方。翻牌 9-7-2 彩虹，你持 9♥9♦（三条），由你先行动。最佳行动？" },
+      lbl: { en: "9♥9♦ set, 3bp", zh: "9♥9♦ 三条，3bp" },
+      board: ["9s","7d","2c"], pot: 18, bet: 0, pos: "BB (OOP)", hand: ["9h","9d"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "A set in a low-SPR 3-bet pot wants to build the pot immediately — lead out, don't slow-play.", zh: "低 SPR 3-bet 底池三条要立刻做大底池 — 主动下注，别慢打。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot, SPR ~2. Flop A-8-3 rainbow, you hold A♣K♦ (TPTK), you c-bet and villain check-raises. Best action?", zh: "3-bet 底池，SPR 约 2。翻牌 A-8-3 彩虹，你持 A♣K♦（顶对顶踢），你持续下注后对手 check-raise。最佳行动？" },
+      lbl: { en: "A♣K♦ TPTK, 3bp", zh: "A♣K♦ 顶对顶踢，3bp" },
+      board: ["Ad","8s","3c"], pot: 16, bet: 12, pos: "BTN (IP)", hand: ["Ac","Kd"],
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair top kicker at SPR ~2 is committed — folding to a check-raise here is far too tight.", zh: "SPR 约 2 顶对顶踢已承诺 — 面对 check-raise 弃牌过紧。" },
+        raise: { en: "Calling keeps villain's bluffs in; jamming over the raise only folds out worse and isolates you against better.", zh: "跟注留住对手诈唬；再加注全压只赶走更差、把你隔离到更强牌前。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Turn J-6-3-2, you hold K♠K♥ overpair, villain jams. Best action?", zh: "3-bet 底池。转牌 J-6-3-2，你持 K♠K♥ 超对，对手全压。最佳行动？" },
+      lbl: { en: "K♠K♥ overpair, 3bp", zh: "K♠K♥ 超对，3bp" },
+      board: ["Jd","6s","3c","2h"], pot: 20, bet: 24, pos: "BTN (IP)", hand: ["Ks","Kh"],
+      street: "turn",
+      allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "KK is an overpair to a brick turn at low SPR — calling the jam is mandatory.", zh: "KK 是无关转牌的超对且低 SPR — 跟注全压是必须。" },
+        raise: { en: "Already all-in — the decision is fold or call, and KK calls.", zh: "已全压 — 只能弃或跟，KK 跟注。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. River A-J-6-3-2, you hold A♥J♦ (top two pair), villain raises. Best action?", zh: "3-bet 底池。河牌 A-J-6-3-2，你持 A♥J♦（顶两对），对手加注。最佳行动？" },
+      lbl: { en: "A♥J♦ two pair, 3bp", zh: "A♥J♦ 两对，3bp" },
+      board: ["Ad","Js","6c","3h","2s"], pot: 30, bet: 22, pos: "BTN (IP)", hand: ["Ah","Jd"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top two pair beats every bluff and worse value — folding to a river raise is far too weak.", zh: "顶两对打赢所有诈唬和更差价值 — 面对河牌加注弃牌太弱。" },
+        raise: { en: "Re-raising only gets called by sets and straights that beat you; just call to catch bluffs.", zh: "再加注只被打赢你的三条和顺子跟住；平跟抓诈唬即可。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Flop A-K-Q, you hold 8♥8♦ (underpair), villain bets. Best action?", zh: "3-bet 底池。翻牌 A-K-Q，你持 8♥8♦（欠对），对手下注。最佳行动？" },
+      lbl: { en: "8♥8♦ underpair, 3bp", zh: "8♥8♦ 欠对，3bp" },
+      board: ["Ad","Ks","Qc"], pot: 16, bet: 12, pos: "BB (OOP)", hand: ["8h","8d"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Pocket eights are an underpair on a triple-broadway board with no draw — vs a bet you are crushed. Fold.", zh: "三张大牌面上口袋 88 是无听欠对 — 面对下注被碾压。应弃。" },
+        raise: { en: "Bluff-raising into an A-K-Q board that smashes villain's 3-bet range is spew.", zh: "在击中对手 3-bet 范围的 A-K-Q 面诈唬加注是乱送。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Flop 9-7-3 rainbow, you hold A♥Q♦ (two overcards, no draw), villain bets. Best action?", zh: "3-bet 底池。翻牌 9-7-3 彩虹，你持 A♥Q♦（两张超牌，无听牌），对手下注。最佳行动？" },
+      lbl: { en: "A♥Q♦ two overcards, 3bp", zh: "A♥Q♦ 两张超牌，3bp" },
+      board: ["9d","7s","3c"], pot: 17, bet: 13, pos: "BB (OOP)", hand: ["Ah","Qd"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ace-high with no pair and no draw has too little equity vs a value bet in a 3-bet pot — fold.", zh: "无对无听的 A 高对 3-bet 底池的价值下注权益太低 — 应弃。" },
+        raise: { en: "Raising as a pure bluff with no equity just builds a pot you'll lose.", zh: "无权益纯诈唬加注只是做大你会输的底池。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Turn A-9-7-2, you hold 6♥6♦ (underpair), villain jams. Best action?", zh: "3-bet 底池。转牌 A-9-7-2，你持 6♥6♦（欠对），对手全压。最佳行动？" },
+      lbl: { en: "6♥6♦ underpair, 3bp", zh: "6♥6♦ 欠对，3bp" },
+      board: ["Ad","9s","7c","2h"], pot: 22, bet: 26, pos: "BTN (IP)", hand: ["6h","6d"],
+      street: "turn",
+      allIn: true,
+      actions: FACE_CALL, correct: ["fold"], leak: "mdf",
+      fb: {
+        call: { en: "Pocket sixes are an underpair to the ace and below much of villain's value — calling a jam burns your stack. Fold.", zh: "口袋 66 是低于 A 的欠对，落后对手大量价值 — 跟全压是烧光筹码。应弃。" },
+        raise: { en: "Already all-in — fold or call, and 66 is not nearly strong enough to call.", zh: "已全压 — 只能弃或跟，66 远不够跟注。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Flop Q-7-3 rainbow, you hold 7♥7♦ (a set), villain bets. Best action?", zh: "3-bet 底池。翻牌 Q-7-3 彩虹，你持 7♥7♦（三条），对手下注。最佳行动？" },
+      lbl: { en: "7♥7♦ set, 3bp", zh: "7♥7♦ 三条，3bp" },
+      board: ["Qd","7s","3c"], pot: 16, bet: 10, pos: "BTN (IP)", hand: ["7h","7d"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "Folding a set is unthinkable — you have one of the best hands possible. Raise.", zh: "弃掉三条不可思议 — 你是最强牌型之一。应加注。" },
+        call: { en: "At low SPR a set wants the money in now — raise to get stacks in before scare cards.", zh: "低 SPR 三条要立刻进钱 — 加注在吓人牌前把筹码打进去。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Flop K-8-3 two-tone, you hold A♥Q♥ (nut flush draw + overcard), villain bets. Best action?", zh: "3-bet 底池。翻牌 K-8-3 双花，你持 A♥Q♥（坚果花听+超牌），对手下注。最佳行动？" },
+      lbl: { en: "A♥Q♥ nut FD+over, 3bp", zh: "A♥Q♥ 坚果花听+超牌，3bp" },
+      board: ["Kh","8h","3c"], pot: 14, bet: 10, pos: "BB (OOP)", hand: ["Ah","Qh"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A nut flush draw plus an overcard at low SPR has the equity and fold equity to jam — never fold.", zh: "低 SPR 坚果花听加超牌有足够权益与弃牌率全压 — 绝不弃。" },
+        call: { en: "Raising as a semi-bluff at low SPR gets stacks in with big equity and fold equity; better than a passive call.", zh: "低 SPR 半诈唬加注用巨大权益与弃牌率把筹码打进去；优于被动跟。" },
+      },
+    },
+    {
+      s: { en: "3-bet pot. Turn K-Q-5-2, you hold K♥Q♦ (top two pair), villain bets. Best action?", zh: "3-bet 底池。转牌 K-Q-5-2，你持 K♥Q♦（顶两对），对手下注。最佳行动？" },
+      lbl: { en: "K♥Q♦ two pair, 3bp", zh: "K♥Q♦ 两对，3bp" },
+      board: ["Kd","Qs","5c","2h"], pot: 20, bet: 14, pos: "BTN (IP)", hand: ["Kh","Qd"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "Top two pair is far too strong to fold — raise for value and protection at low SPR.", zh: "顶两对太强不能弃 — 低 SPR 加注价值与保护。" },
+        call: { en: "Flatting lets draws see a free river; raise to charge them and get value from worse.", zh: "平跟会让听牌免费看河；加注向其收费并从更差牌拿价值。" },
+      },
+    },
   ]);
   QUESTIONS.c17 = buildSpots("c17", "concept.pot_control", [
     {
@@ -1134,6 +1383,128 @@
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
         check: { en: "Top set on the river is a clear value bet — never pot control the nuts.", zh: "河牌顶三条明确价值下注 — 绝不用坚果控池。" },
+      },
+    },
+    {
+      s: { en: "You hold K♥7♥, a weak top pair, on turn K-9-6-4. Villain checks to you. Best action?", zh: "你持 K♥7♥ 弱顶对，转牌 K-9-6-4。对手过牌给你。最佳行动？" },
+      lbl: { en: "K♥7♥ weak top pair", zh: "K♥7♥ 弱顶对" },
+      board: ["Ks","9d","6c","4h"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Kh","7h"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Betting a weak kicker bloats the pot and gets check-raised by better; check back to keep it small and reach showdown.", zh: "用弱踢脚下注做大底池、被更好牌 check-raise；过牌控小池、走到摊牌。" },
+      },
+    },
+    {
+      s: { en: "You hold T♥9♥, second pair, on river A-T-7-4-2. Checked to you. Best action?", zh: "你持 T♥9♥ 第二对，河牌 A-T-7-4-2。对手过牌给你。最佳行动？" },
+      lbl: { en: "T♥9♥ second pair", zh: "T♥9♥ 第二对" },
+      board: ["Ad","Ts","7c","4d","2h"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Th","9h"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Value-betting second pair only gets called by better and folds out worse; check back to realize your showdown value.", zh: "用第二对价值下注只被更好牌跟、把更差赶走；过牌实现摊牌价值。" },
+      },
+    },
+    {
+      s: { en: "You hold 9♥8♥, second pair, on flop K-9-5. You are OOP, first to act. Best action?", zh: "你持 9♥8♥ 第二对，翻牌 K-9-5。你在 OOP，先行动。最佳行动？" },
+      lbl: { en: "9♥8♥ second pair", zh: "9♥8♥ 第二对" },
+      board: ["Kd","9s","5c"], pot: 6, bet: 0, pos: "BB (OOP)", hand: ["9h","8h"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Donking a marginal pair builds a pot OOP with a hand that doesn't want one; check to control and plan a check-call.", zh: "用边缘对子 OOP donk 建池，而这手牌并不想做大底池；过牌控池、计划 check-call。" },
+      },
+    },
+    {
+      s: { en: "You hold 8♥7♥, second pair, on flop Q-8-5. Villain checks to you. Best action?", zh: "你持 8♥7♥ 第二对，翻牌 Q-8-5。对手过牌给你。最佳行动？" },
+      lbl: { en: "8♥7♥ second pair", zh: "8♥7♥ 第二对" },
+      board: ["Qs","8d","5c"], pot: 6, bet: 0, pos: "BTN (IP)", hand: ["8h","7h"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Second pair bets get raised by better and fold out worse; check back to control the pot and see a cheap turn.", zh: "第二对下注被更好牌加注、把更差赶走；过牌控池、便宜看转牌。" },
+      },
+    },
+    {
+      s: { en: "You hold K♣9♣, a weak top pair, on turn K-8-5-3. Villain bets one-third pot. Best action?", zh: "你持 K♣9♣ 弱顶对，转牌 K-8-5-3。对手下注三分之一池。最佳行动？" },
+      lbl: { en: "K♣9♣ weak top pair", zh: "K♣9♣ 弱顶对" },
+      board: ["Kd","8s","5c","3h"], pot: 12, bet: 4, pos: "BTN (IP)", hand: ["Kc","9c"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair is too strong to fold to a small turn bet; you beat all bluffs and worse pairs. Call.", zh: "顶对太强不能弃给小转牌注；你打赢全部诈唬与更差对子。应跟。" },
+        raise: { en: "Raising a weak kicker bloats the pot and folds out everything you beat; call to keep bluffs in and control the pot.", zh: "用弱踢脚加注做大底池、赶走所有你打赢的牌；跟注留住诈唬、控池。" },
+      },
+    },
+    {
+      s: { en: "You hold T♣9♣, second pair, on river A-T-6-4-2. Villain bets half pot. Best action?", zh: "你持 T♣9♣ 第二对，河牌 A-T-6-4-2。对手下注半池。最佳行动？" },
+      lbl: { en: "T♣9♣ second pair", zh: "T♣9♣ 第二对" },
+      board: ["As","Td","6c","4h","2s"], pot: 14, bet: 7, pos: "BTN (IP)", hand: ["Tc","9c"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Second pair is a bluff-catcher here; villain bluffs missed draws often enough that folding is too tight. Call.", zh: "第二对在这里是抓诈唬牌；对手用没成的听牌诈唬足够多，弃牌过紧。应跟。" },
+        raise: { en: "Raising turns a bluff-catcher into a bluff and folds out all the worse hands; just call.", zh: "加注把抓诈唬牌变成诈唬、赶走所有更差牌；平跟即可。" },
+      },
+    },
+    {
+      s: { en: "You hold Q♣8♣, a weak top pair, on flop Q-7-3. Villain bets. You are OOP. Best action?", zh: "你持 Q♣8♣ 弱顶对，翻牌 Q-7-3。对手下注。你在 OOP。最佳行动？" },
+      lbl: { en: "Q♣8♣ weak top pair", zh: "Q♣8♣ 弱顶对" },
+      board: ["Qd","7s","3c"], pot: 7, bet: 5, pos: "BB (OOP)", hand: ["Qc","8c"],
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair on a dry board beats villain's bluffs and worse pairs; folding is far too weak. Call.", zh: "干燥面顶对打赢对手诈唬与更差对子；弃牌太弱。应跟。" },
+        raise: { en: "Check-raising a weak kicker bloats the pot OOP and only gets action from better; flat to control.", zh: "用弱踢脚 check-raise 在 OOP 做大底池、只被更好牌跟；平跟控池。" },
+      },
+    },
+    {
+      s: { en: "You hold K♥Q♥, top pair good kicker, on river K-9-5-4-2 (dry). Checked to you. Best action?", zh: "你持 K♥Q♥ 顶对好踢，河牌 K-9-5-4-2（干燥）。对手过牌给你。最佳行动？" },
+      lbl: { en: "K♥Q♥ top pair good kicker", zh: "K♥Q♥ 顶对好踢" },
+      board: ["Kd","9s","5c","4h","2d"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "A small value bet extracts from worse kings and nine-x; checking back leaves money on the table. Bet small.", zh: "小额价值下注从更差的 K 和 9-x 榨取；过牌放走价值。应小注。" },
+      },
+    },
+    {
+      s: { en: "You hold A♣7♣, a weak top pair, on river A-9-6-3-2. You are OOP, first to act. Best action?", zh: "你持 A♣7♣ 弱顶对，河牌 A-9-6-3-2。你在 OOP，先行动。最佳行动？" },
+      lbl: { en: "A♣7♣ weak top pair", zh: "A♣7♣ 弱顶对" },
+      board: ["Ad","9s","6c","3h","2s"], pot: 13, bet: 0, pos: "BB (OOP)", hand: ["Ac","7c"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "A weak kicker only gets called by better aces and folds out worse; check to control and plan a check-call.", zh: "弱踢脚只被更好的 A 跟、把更差赶走；过牌控池、计划 check-call。" },
+      },
+    },
+    {
+      s: { en: "You hold 8♣7♣, second pair, on turn K-8-5-2. Villain bets. You are OOP. Best action?", zh: "你持 8♣7♣ 第二对，转牌 K-8-5-2。对手下注。你在 OOP。最佳行动？" },
+      lbl: { en: "8♣7♣ second pair", zh: "8♣7♣ 第二对" },
+      board: ["Ks","8d","5c","2h"], pot: 14, bet: 5, pos: "BB (OOP)", hand: ["8c","7c"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Second pair has enough showdown value to call one turn bet; folding to a single barrel is too tight. Call.", zh: "第二对有足够摊牌价值跟一注；面对单次下注弃牌过紧。应跟。" },
+        raise: { en: "Raising a middle pair OOP builds a pot and folds out worse; call to control and bluff-catch.", zh: "用中对 OOP 加注建池、把更差赶走；跟注控池、抓诈唬。" },
+      },
+    },
+    {
+      s: { en: "You hold 9♥8♥, third pair, on turn A-K-9-7. Villain bets near pot. Best action?", zh: "你持 9♥8♥ 第三对，转牌 A-K-9-7。对手接近底池下注。最佳行动？" },
+      lbl: { en: "9♥8♥ third pair", zh: "9♥8♥ 第三对" },
+      board: ["Ad","Ks","9c","7h"], pot: 16, bet: 13, pos: "BTN (IP)", hand: ["9h","8h"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "You wanted to keep the pot small, but a near-pot turn bet on an A-K-high board crushes third pair; calling chases. Fold.", zh: "你想控小池，但 A-K 高面接近底池的转牌注碾压第三对；跟注是追打。应弃。" },
+        raise: { en: "Bluff-raising third pair into a strong betting range gets you stacked; give up. Fold.", zh: "用第三对向强下注范围诈唬加注会被打光；放弃。应弃。" },
+      },
+    },
+    {
+      s: { en: "You hold Q♣9♣, a weak top pair, on river Q-T-6-5-3. Checked to you. Best action?", zh: "你持 Q♣9♣ 弱顶对，河牌 Q-T-6-5-3。对手过牌给你。最佳行动？" },
+      lbl: { en: "Q♣9♣ weak top pair", zh: "Q♣9♣ 弱顶对" },
+      board: ["Qd","Ts","6c","5h","3s"], pot: 13, bet: 0, pos: "BTN (IP)", hand: ["Qc","9c"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "A weak top pair value-bets into better queens and folds out worse; check back to realize showdown value.", zh: "弱顶对价值下注会撞上更好的 Q、把更差赶走；过牌实现摊牌价值。" },
       },
     },
   ]);
@@ -1268,6 +1639,138 @@
         raise: { en: "Raising second pair into a turn barrel is spew.", zh: "用第二对对转牌第二枪加注是乱送。" },
       },
     },
+    {
+      s: { en: "Turn K-9-5-2. You hold K♥Q♥ (top pair top kicker). Villain fires a second barrel, two-thirds pot. Best action?", zh: "转牌 K-9-5-2。你持 K♥Q♥（顶对顶踢）。对手开第二枪，下注三分之二池。最佳行动？" },
+      lbl: { en: "K♥Q♥ TPTK", zh: "K♥Q♥ 顶对顶踢" },
+      board: ["Ks","9d","5c","2h"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair top kicker beats a turn barreling range full of worse value and bluffs; folding is far too tight. Call.", zh: "顶对顶踢打赢满是更差价值和诈唬的转牌开枪范围；弃牌过紧。应跟。" },
+        raise: { en: "Raising bloats the pot and folds out the bluffs you beat; flat-call to defend and let villain keep bluffing.", zh: "加注做大底池、赶走你打赢的诈唬；平跟防守、让对手继续诈唬。" },
+      },
+    },
+    {
+      s: { en: "Turn A-K-8-4. You hold 8♥7♥ (third pair). Villain bets big. Best action?", zh: "转牌 A-K-8-4。你持 8♥7♥（第三对）。对手大注。最佳行动？" },
+      lbl: { en: "8♥7♥ third pair", zh: "8♥7♥ 第三对" },
+      board: ["As","Kd","8c","4h"], pot: 20, bet: 16, pos: "BB (OOP)", hand: ["8h","7h"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Third pair on an ace-king board has too little equity versus a big turn barrel; calling just bleeds off chips. Fold.", zh: "A-K 面上第三对对大转牌枪权益太低；跟注只是流血送筹码。应弃。" },
+        raise: { en: "Bluff-raising a weak made hand into a strong range gets you blown off your equity for no reason. Fold.", zh: "用弱成手向强范围诈唬加注会无理由被赶走。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn T-9-4-2, two hearts. You hold K♥Q♥ (flush draw + gutshot). Villain bets. Best action?", zh: "转牌 T-9-4-2，两张红桃。你持 K♥Q♥（同花听+卡顺）。对手下注。最佳行动？" },
+      lbl: { en: "K♥Q♥ FD+gutshot", zh: "K♥Q♥ 同花听+卡顺" },
+      board: ["Th","9h","4c","2s"], pot: 14, bet: 10, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A flush draw plus a gutshot and two overcards has huge equity and fold equity — folding throws away a profitable semi-bluff. Raise.", zh: "同花听加卡顺加两张超牌权益与弃牌率都很高 — 弃掉等于丢掉盈利半诈唬。应加注。" },
+        call: { en: "Calling is fine, but raising as a semi-bluff applies pressure and can win the pot now with big backup equity. Raise.", zh: "平跟可行，但半诈唬加注施压、能立即拿下底池且有强后备权益。应加注。" },
+      },
+    },
+    {
+      s: { en: "Turn A-T-6-3. You hold T♣9♣ (second pair). Villain bets one-third pot. Best action?", zh: "转牌 A-T-6-3。你持 T♣9♣（第二对）。对手下注三分之一池。最佳行动？" },
+      lbl: { en: "T♣9♣ second pair", zh: "T♣9♣ 第二对" },
+      board: ["As","Td","6c","3h"], pot: 15, bet: 5, pos: "BTN (IP)", hand: ["Tc","9c"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "mdf",
+      fb: {
+        fold: { en: "Folding second pair to a tiny turn bet over-folds and lets villain barrel any two cards profitably; defend. Call.", zh: "对极小转牌注弃第二对会过度弃牌、让对手任意两张牌都能盈利开枪；应防守。应跟。" },
+        raise: { en: "Raising a thin made hand turns it into a bluff and folds out worse; just call to defend.", zh: "用薄成手加注把它变成诈唬、赶走更差；平跟防守即可。" },
+      },
+    },
+    {
+      s: { en: "Turn Q-J-9-4 (coordinated). You hold Q♣6♣ (weak top pair). Villain bets big. Best action?", zh: "转牌 Q-J-9-4（协调）。你持 Q♣6♣（弱顶对）。对手大注。最佳行动？" },
+      lbl: { en: "Q♣6♣ weak top pair", zh: "Q♣6♣ 弱顶对" },
+      board: ["Qs","Jd","9c","4h"], pot: 18, bet: 15, pos: "BB (OOP)", hand: ["Qc","6c"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "On Q-J-9 a big turn barrel is loaded with straights and two pair that crush a weak-kicker top pair; calling chases. Fold.", zh: "Q-J-9 面上大转牌枪满是碾压弱踢顶对的顺子与两对；跟注是追打。应弃。" },
+        raise: { en: "Raising a weak top pair into a coordinated, strong range is spew. Fold.", zh: "在协调强范围前用弱顶对加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn J-8-5-2. You hold 9♥8♥ (second pair). Villain bets half pot. Best action?", zh: "转牌 J-8-5-2。你持 9♥8♥（第二对）。对手下注半池。最佳行动？" },
+      lbl: { en: "9♥8♥ second pair", zh: "9♥8♥ 第二对" },
+      board: ["Js","8d","5c","2h"], pot: 16, bet: 8, pos: "BTN (IP)", hand: ["9h","8h"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Second pair beats all the bluffs in a half-pot barreling range; folding here over-folds. Call.", zh: "第二对打赢半池开枪范围里的全部诈唬；这里弃牌过度。应跟。" },
+        raise: { en: "Raising second pair folds out worse and bloats the pot with a medium hand; flat to defend.", zh: "用第二对加注赶走更差、用中等牌做大底池；平跟防守。" },
+      },
+    },
+    {
+      s: { en: "Turn K-T-6-3. You hold K♥T♠ (top two pair). Villain bets. Best action?", zh: "转牌 K-T-6-3。你持 K♥T♠（顶两对）。对手下注。最佳行动？" },
+      lbl: { en: "K♥T♠ top two pair", zh: "K♥T♠ 顶两对" },
+      board: ["Ks","Td","6c","3h"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Kh","Ts"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "Top two pair is a clear value hand — folding to a turn bet is unthinkable. Raise.", zh: "顶两对是明确价值牌 — 面对转牌注弃牌不可思议。应加注。" },
+        call: { en: "Just calling lets draws realize equity cheaply; raise for value and to charge the many draws on K-T-6.", zh: "只跟会让听牌便宜实现权益；加注价值并向 K-T-6 上的众多听牌收费。" },
+      },
+    },
+    {
+      s: { en: "Turn A-Q-8-3. You hold J♥T♥ (gutshot only). Villain bets near pot. Best action?", zh: "转牌 A-Q-8-3。你持 J♥T♥（仅卡顺）。对手接近底池下注。最佳行动？" },
+      lbl: { en: "J♥T♥ gutshot", zh: "J♥T♥ 卡顺" },
+      board: ["As","Qd","8c","3h"], pot: 20, bet: 18, pos: "BB (OOP)", hand: ["Jh","Th"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "mdf",
+      fb: {
+        call: { en: "A bare gutshot (four outs) versus a near-pot turn bet doesn't have the odds to continue; calling is a losing chase. Fold.", zh: "光卡顺（4 张补牌）对接近底池的转牌注没有赔率续打；跟注是亏钱追打。应弃。" },
+        raise: { en: "Semi-bluff raising with only four outs and no showdown value risks too much; give up. Fold.", zh: "仅 4 张补牌且无摊牌价值时半诈唬加注风险过大；放弃。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn Q-7-4-2 (dry). You hold A♣Q♣ (top pair top kicker). Villain bets big. Best action?", zh: "转牌 Q-7-4-2（干燥）。你持 A♣Q♣（顶对顶踢）。对手大注。最佳行动？" },
+      lbl: { en: "A♣Q♣ TPTK", zh: "A♣Q♣ 顶对顶踢" },
+      board: ["Qs","7d","4c","2h"], pot: 20, bet: 16, pos: "BTN (IP)", hand: ["Ac","Qc"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair top kicker on a dry board beats every bluff and worse queen; folding to one big barrel is too tight. Call.", zh: "干燥面顶对顶踢打赢所有诈唬与更差的 Q；面对一次大枪弃牌过紧。应跟。" },
+        raise: { en: "Raising folds out worse and only gets value from sets; flat-call to keep the bluffs in. Call.", zh: "加注赶走更差、只从三条拿价值；平跟留住诈唬。应跟。" },
+      },
+    },
+    {
+      s: { en: "Turn K-9-4-2 with two spades. You hold A♠J♠ (nut flush draw). Villain bets a small one-quarter pot. Best action?", zh: "转牌 K-9-4-2 带两张黑桃。你持 A♠J♠（坚果同花听）。对手下注很小的四分之一池。最佳行动？" },
+      lbl: { en: "A♠J♠ nut flush draw", zh: "A♠J♠ 坚果同花听" },
+      board: ["Ks","9s","4d","2h"], pot: 16, bet: 4, pos: "BTN (IP)", hand: ["As","Js"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A nut flush draw getting a great price has far too much equity to fold; calling is mandatory. Call.", zh: "坚果同花听拿到很好赔率，权益太高不能弃；跟注是必须。应跟。" },
+        raise: { en: "Raising is defensible, but flat-calling a tiny bet keeps villain's bluffs and worse value in while you draw to the nuts. Call.", zh: "加注可辩护，但平跟小注能留住对手诈唬与更差价值，同时你听坚果。应跟。" },
+      },
+    },
+    {
+      s: { en: "Turn T-9-7-2 (coordinated). You hold 6♥6♦ (underpair). Villain bets. Best action?", zh: "转牌 T-9-7-2（协调）。你持 6♥6♦（欠对）。对手下注。最佳行动？" },
+      lbl: { en: "6♥6♦ underpair", zh: "6♥6♦ 欠对" },
+      board: ["Ts","9d","7c","2h"], pot: 18, bet: 14, pos: "BB (OOP)", hand: ["6h","6d"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Pocket sixes are below the board and drawing nearly dead on a T-9-7 board crawling with straights and bigger pairs; calling chases. Fold.", zh: "口袋 66 低于牌面，在满是顺子与更大对子的 T-9-7 面几乎听死；跟注是追打。应弃。" },
+        raise: { en: "Bluff-raising an underpair on a coordinated board into a betting range gets you stacked. Fold.", zh: "在协调面用欠对向下注范围诈唬加注会被打光。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn J-9-5-8 (now coordinated). You hold 5♠5♥ (a set). Villain bets. Best action?", zh: "转牌 J-9-5-8（已变协调）。你持 5♠5♥（三条）。对手下注。最佳行动？" },
+      lbl: { en: "5♠5♥ set", zh: "5♠5♥ 三条" },
+      board: ["Js","9d","5c","8h"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["5s","5h"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A set is far too strong to fold — you have one of the best hands possible. Raise.", zh: "三条太强不能弃 — 你是最强牌型之一。应加注。" },
+        call: { en: "On J-9-5-8 with straight draws everywhere, just calling lets a free river complete a straight; raise to charge them and build the pot.", zh: "J-9-5-8 到处是顺听，只跟会让免费河牌补顺；加注收费并做大底池。应加注。" },
+      },
+    },
   ]);
   QUESTIONS.c19 = buildSpots("c19", "concept.float", [
     {
@@ -1388,6 +1891,132 @@
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
         check: { en: "Villain capped and called turn — value bet river with top pair.", zh: "对手封顶且跟了转牌 — 用顶对河牌价值下注。" },
+      },
+    },
+    {
+      s: { en: "Flop Q-8-3. You hold A♥J♥ (two overcards, backdoor flush), in position. Villain c-bets. Best action?", zh: "翻牌 Q-8-3。你持 A♥J♥（两张超牌+后门同花），你在 IP。对手持续下注。最佳行动？" },
+      lbl: { en: "A♥J♥ overcards (float)", zh: "A♥J♥ 超牌（浮动）" },
+      board: ["Qs","8d","3c"], pot: 8, bet: 5, pos: "BTN (IP)", hand: ["Ah","Jh"],
+      actions: FACE, correct: ["call"], leak: "street_plan",
+      fb: {
+        fold: { en: "Folding two overcards with backdoors to one c-bet is too tight — float (call) IP to realize equity and steal on later streets.", zh: "对一次持续下注弃掉两张带后门的超牌过紧 — IP 浮动（跟注）以实现权益、后续街夺池。" },
+        raise: { en: "Raising turns your hand into a bluff with no made-hand value yet; floating keeps villain's bluffs in and lets you take it away later.", zh: "加注把手牌变成尚无成手价值的诈唬；浮动留住对手诈唬、让你后续夺池。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop. Turn K-7-2-5, villain checks. You hold A♣J♣ (ace-high). Best action?", zh: "你浮动了翻牌。转牌 K-7-2-5，对手过牌。你持 A♣J♣（A 高）。最佳行动？" },
+      lbl: { en: "A♣J♣ ace-high (steal)", zh: "A♣J♣ A 高（夺池）" },
+      board: ["Ks","7d","2c","5h"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Ac","Jc"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Villain's flop bet then turn check screams weakness; with little showdown value, bet to take the pot now — that was the plan when you floated.", zh: "对手翻牌下注、转牌过牌强烈示弱；你摊牌价值很小，应下注立刻夺池 — 这正是你浮动时的计划。" },
+      },
+    },
+    {
+      s: { en: "You checked back the flop to keep villain's range wide. Turn 9-6-3-2, villain checks again. You hold A♠9♥ (top pair). Best action?", zh: "你为保持对手范围宽而过牌了翻牌。转牌 9-6-3-2，对手再次过牌。你持 A♠9♥（顶对）。最佳行动？" },
+      lbl: { en: "A♠9♥ top pair (delayed value)", zh: "A♠9♥ 顶对（延迟价值）" },
+      board: ["9s","6d","3c","2h"], pot: 10, bet: 0, pos: "BTN (IP)", hand: ["As","9h"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "You delayed for one street; now value bet top pair on the turn before scare cards or a check-down cost you value.", zh: "你延迟了一条街；现在在吓人牌或过牌摊牌损失价值前，于转牌用顶对价值下注。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop with overcards. Turn Q-8-3-5, you bricked. You hold J♥T♥ (no pair, no draw). Villain fires a second barrel. Best action?", zh: "你用超牌浮动了翻牌。转牌 Q-8-3-5，你没改善。你持 J♥T♥（无对无听）。对手开第二枪。最佳行动？" },
+      lbl: { en: "J♥T♥ air (float busted)", zh: "J♥T♥ 空气（浮动落空）" },
+      board: ["Qs","8d","3c","5h"], pot: 18, bet: 13, pos: "BTN (IP)", hand: ["Jh","Th"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Your float missed and villain double-barreled into you; with no pair and no draw you have nothing to continue with. Fold.", zh: "你的浮动落空、对手对你开了第二枪；无对无听没有任何续打理由。应弃。" },
+        raise: { en: "Bluff-raising with zero equity into a range that fired twice is burning chips. Fold.", zh: "对开了两枪的范围用零权益诈唬加注是烧筹码。应弃。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop. Turn K-8-4-J gives you an open-ended straight draw. You hold Q♥T♥. Villain checks. Best action?", zh: "你浮动了翻牌。转牌 K-8-4-J 给了你两头顺听。你持 Q♥T♥。对手过牌。最佳行动？" },
+      lbl: { en: "Q♥T♥ OESD (semi-bluff)", zh: "Q♥T♥ 两头顺听（半诈唬）" },
+      board: ["Ks","8d","4c","Jh"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Qh","Th"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "With an open-ended draw and fold equity after villain checks, betting (a semi-bluff / delayed barrel) is far better than checking back.", zh: "拥有两头顺听且对手过牌后有弃牌率，下注（半诈唬/延迟开枪）远好过过牌。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop. Turn Q-9-4-6 (two hearts) gives you the nut flush draw. You hold A♥T♥. Villain barrels again. Best action?", zh: "你浮动了翻牌。转牌 Q-9-4-6（两张红桃）给了你坚果同花听。你持 A♥T♥。对手再次开枪。最佳行动？" },
+      lbl: { en: "A♥T♥ nut FD + overcard", zh: "A♥T♥ 坚果同花听+超牌" },
+      board: ["Qs","9h","4c","6h"], pot: 16, bet: 10, pos: "BTN (IP)", hand: ["Ah","Th"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "street_plan",
+      fb: {
+        fold: { en: "The turn handed you the nut flush draw plus an overcard — huge equity. Folding to a barrel now is a big mistake. Call.", zh: "转牌给了你坚果同花听加一张超牌 — 巨大权益。此时面对开枪弃牌是大错。应跟。" },
+        raise: { en: "Raising is fine occasionally, but flat-calling keeps villain barreling with worse and realizes your equity cheaply. Call.", zh: "偶尔加注可行，但平跟让对手用更差牌继续开枪、并便宜实现你的权益。应跟。" },
+      },
+    },
+    {
+      s: { en: "You checked back the flop. Turn 8-6-3-K pairs your king for top pair. You hold K♣J♣. Villain checks. Best action?", zh: "你过牌了翻牌。转牌 8-6-3-K 配上你的 K 成顶对。你持 K♣J♣。对手过牌。最佳行动？" },
+      lbl: { en: "K♣J♣ top pair (delayed value)", zh: "K♣J♣ 顶对（延迟价值）" },
+      board: ["8s","6d","3c","Kh"], pot: 10, bet: 0, pos: "BTN (IP)", hand: ["Kc","Jc"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Checking the flop kept the pot small; now that you've turned top pair, bet for value rather than checking it down.", zh: "过牌翻牌控小了底池；既然转牌击中顶对，应价值下注而非过牌摊牌。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop. Turn Q-9-5-2, you hold K♥9♥ (second pair). Villain checks. Best action?", zh: "你浮动了翻牌。转牌 Q-9-5-2，你持 K♥9♥（第二对）。对手过牌。最佳行动？" },
+      lbl: { en: "K♥9♥ second pair (showdown)", zh: "K♥9♥ 第二对（摊牌）" },
+      board: ["Qs","9d","5c","2h"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Kh","9h"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Second pair has showdown value but betting only folds out worse and gets called by better queens; check back to realize showdown value.", zh: "第二对有摊牌价值，但下注只赶走更差、被更好的 Q 跟；过牌实现摊牌价值。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop with ace-high. Turn T-6-2-T pairs the board. You hold A♣J♣. Villain barrels. Best action?", zh: "你用 A 高浮动了翻牌。转牌 T-6-2-T 让公共牌成对。你持 A♣J♣。对手开枪。最佳行动？" },
+      lbl: { en: "A♣J♣ ace-high (paired board)", zh: "A♣J♣ A 高（对子面）" },
+      board: ["Ts","6d","2c","Th"], pot: 16, bet: 12, pos: "BTN (IP)", hand: ["Ac","Jc"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "A paired turn is terrible for a float — villain's barrel range now includes trips and you hold only ace-high with no draw. Fold.", zh: "对子转牌对浮动极糟 — 对手开枪范围现含三条，而你只有无听的 A 高。应弃。" },
+        raise: { en: "Bluff-raising into a board that just paired, with no equity, gets you stacked. Fold.", zh: "在刚成对的牌面无权益诈唬加注会被打光。应弃。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop. Turn 9-8-4-J (two hearts) gives you the nut flush draw plus an open-ender. You hold A♥T♥. Villain barrels. Best action?", zh: "你浮动了翻牌。转牌 9-8-4-J（两张红桃）给了你坚果同花听加两头顺听。你持 A♥T♥。对手开枪。最佳行动？" },
+      lbl: { en: "A♥T♥ nut FD + OESD", zh: "A♥T♥ 坚果同花听+两头顺听" },
+      board: ["9h","8s","4c","Jh"], pot: 16, bet: 12, pos: "BTN (IP)", hand: ["Ah","Th"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A nut flush draw plus an open-ended straight draw is a monster (~15 outs) — folding is unthinkable. Raise.", zh: "坚果同花听加两头顺听是巨怪（约 15 张补牌）— 弃牌不可思议。应加注。" },
+        call: { en: "With ~15 outs and big fold equity, raising as a semi-bluff maximizes value; calling is too passive with this much equity. Raise.", zh: "约 15 张补牌加大弃牌率，半诈唬加注最大化价值；这么大权益只跟太被动。应加注。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop. Turn T-8-3-Q gives you an open-ended straight draw. You hold K♥J♥. Villain barrels. Best action?", zh: "你浮动了翻牌。转牌 T-8-3-Q 给了你两头顺听。你持 K♥J♥。对手开枪。最佳行动？" },
+      lbl: { en: "K♥J♥ OESD", zh: "K♥J♥ 两头顺听" },
+      board: ["Ts","8d","3c","Qh"], pot: 16, bet: 11, pos: "BTN (IP)", hand: ["Kh","Jh"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "street_plan",
+      fb: {
+        fold: { en: "An open-ended straight draw (eight outs) with two overcards has plenty of equity to continue versus a barrel. Call.", zh: "两头顺听（8 张补牌）加两张超牌对开枪有充足权益续打。应跟。" },
+        raise: { en: "Raising is an option, but calling keeps villain's bluffs in and realizes your strong draw cheaply. Call.", zh: "加注是一个选项，但平跟留住对手诈唬、便宜实现你的强听牌。应跟。" },
+      },
+    },
+    {
+      s: { en: "You floated the flop. Turn Q-J-4-7, you hold A♣T♣ (gutshot to Broadway only). Villain bets big. Best action?", zh: "你浮动了翻牌。转牌 Q-J-4-7，你持 A♣T♣（仅补 Broadway 的卡顺）。对手大注。最佳行动？" },
+      lbl: { en: "A♣T♣ gutshot only", zh: "A♣T♣ 仅卡顺" },
+      board: ["Qs","Jd","4c","7h"], pot: 20, bet: 17, pos: "BTN (IP)", hand: ["Ac","Tc"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "mdf",
+      fb: {
+        call: { en: "A bare gutshot (four outs) against a big turn barrel lacks the odds to continue; ace-high alone won't get there. Fold.", zh: "光卡顺（4 张补牌）对大转牌枪没有续打赔率；单凭 A 高无法成牌。应弃。" },
+        raise: { en: "Semi-bluffing four outs into a big barrel risks far too much; abandon the float. Fold.", zh: "用 4 张补牌对大枪半诈唬风险过大；放弃浮动。应弃。" },
       },
     },
   ]);
@@ -1517,6 +2146,135 @@
         raise: { en: "Raising TPTK into an overbet isolates you against better.", zh: "用顶对顶踢对超池加注会被更好牌孤立。" },
       },
     },
+    {
+      s: { en: "River K♠-9♠-4♠-7-2 (three spades). You hold A♠Q♠ — the nut flush. Checked to you. Best action?", zh: "河牌 K♠-9♠-4♠-7-2（三张黑桃）。你持 A♠Q♠ —— 坚果同花。对手过牌给你。最佳行动？" },
+      lbl: { en: "A♠Q♠ nut flush", zh: "A♠Q♠ 坚果同花" },
+      board: ["Ks","9s","4s","7d","2c"], pot: 20, bet: 0, pos: "BTN (IP)", hand: ["As","Qs"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "With the nut flush on a board nobody can beat, a big overbet extracts maximum value from worse flushes and two pair; checking wastes a huge value spot. Bet.", zh: "在无人能赢的牌面持坚果同花，大超池从更差同花与两对榨取最大价值；过牌浪费巨大价值。应下注。" },
+      },
+    },
+    {
+      s: { en: "River Q-J-T-6-2. You hold A♥K♦ — Broadway, the nut straight. Checked to you. Best action?", zh: "河牌 Q-J-T-6-2。你持 A♥K♦ —— Broadway 坚果顺子。对手过牌给你。最佳行动？" },
+      lbl: { en: "A♥K♦ nut straight", zh: "A♥K♦ 坚果顺子" },
+      board: ["Qs","Jd","Tc","6h","2s"], pot: 22, bet: 0, pos: "BTN (IP)", hand: ["Ah","Kd"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "The nut straight on a board with worse straights and two pair is a premium overbet — bet big for value rather than checking back.", zh: "在有更差顺子与两对的牌面持坚果顺子是顶级超池牌 — 应大注价值而非过牌。" },
+      },
+    },
+    {
+      s: { en: "Turn J-T-8-2, a wet board. You hold J♥J♦ (a set). Checked to you. Best action?", zh: "转牌 J-T-8-2，湿润牌面。你持 J♥J♦（三条）。对手过牌给你。最佳行动？" },
+      lbl: { en: "J♥J♦ set", zh: "J♥J♦ 三条" },
+      board: ["Js","Td","8c","2h"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Jh","Jd"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "A set on a draw-heavy J-T-8 board wants to charge the many straight and flush draws — a big bet (even an overbet) builds the pot and protects. Checking lets draws hit free.", zh: "在多听牌的 J-T-8 面持三条要向众多顺听花听收费 — 大注（甚至超池）做大底池并保护。过牌让听牌免费命中。" },
+      },
+    },
+    {
+      s: { en: "River A-K-9-4-2. You hold 9♥8♥ (third pair). Villain overbets 1.5x pot. Best action?", zh: "河牌 A-K-9-4-2。你持 9♥8♥（第三对）。对手超池下注 1.5 倍底池。最佳行动？" },
+      lbl: { en: "9♥8♥ third pair", zh: "9♥8♥ 第三对" },
+      board: ["Ad","Ks","9c","4h","2s"], pot: 20, bet: 30, pos: "BB (OOP)", hand: ["9h","8h"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Against a 1.5x-pot overbet the range is nuts-or-air, and third pair beats none of the value while the price is steep; over-folding is correct here. Fold.", zh: "面对 1.5 倍超池，范围非坚果即空气，第三对打不赢任何价值且价格高昂；这里多弃才对。应弃。" },
+        raise: { en: "Raising third pair as a bluff into a nutted overbet range is spew. Fold.", zh: "用第三对向坚果超池范围诈唬加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "River A-K-8-7-3. You hold Q♥J♥ (busted straight draw, no pair). Villain overbets. Best action?", zh: "河牌 A-K-8-7-3。你持 Q♥J♥（落空的顺听，无对）。对手超池下注。最佳行动？" },
+      lbl: { en: "Q♥J♥ busted draw", zh: "Q♥J♥ 落空听牌" },
+      board: ["As","Kd","8c","7h","3s"], pot: 20, bet: 30, pos: "BTN (IP)", hand: ["Qh","Jh"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "A busted gutshot has no showdown value — it can only win by bluffing, not by calling. Calling an overbet with queen-high is lighting money on fire. Fold.", zh: "落空的卡顺没有摊牌价值 — 只能靠诈唬取胜、不能靠跟注。用 Q 高跟超池是烧钱。应弃。" },
+        raise: { en: "Turning a busted draw into a bluff-raise can occasionally work, but as a default versus an overbet you simply fold. Fold.", zh: "把落空听牌变成诈唬加注偶尔可行，但作为面对超池的默认就是弃牌。应弃。" },
+      },
+    },
+    {
+      s: { en: "River K-Q-8-5-2. You hold A♥J♥ (ace-high, no pair). Villain overbets. Best action?", zh: "河牌 K-Q-8-5-2。你持 A♥J♥（A 高，无对）。对手超池下注。最佳行动？" },
+      lbl: { en: "A♥J♥ ace-high", zh: "A♥J♥ A 高" },
+      board: ["Kd","Qs","8c","5h","2d"], pot: 18, bet: 27, pos: "BTN (IP)", hand: ["Ah","Jh"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ace-high has no value versus a polarized overbet — you beat only the bluffs and the price demands far more equity than ace-high holds. Fold.", zh: "A 高对极化超池毫无价值 — 你只打赢诈唬，而价格要求的权益远高于 A 高所有。应弃。" },
+        raise: { en: "Bluff-raising ace-high into an overbet range that is nuts-or-nothing accomplishes nothing. Fold.", zh: "用 A 高向非坚果即空气的超池范围诈唬加注毫无意义。应弃。" },
+      },
+    },
+    {
+      s: { en: "River J♠-T♠-9♠-6-2 (monotone, connected). You hold J♦9♦ (two pair). Villain overbets. Best action?", zh: "河牌 J♠-T♠-9♠-6-2（同花、连接）。你持 J♦9♦（两对）。对手超池下注。最佳行动？" },
+      lbl: { en: "J♦9♦ two pair", zh: "J♦9♦ 两对" },
+      board: ["Js","Ts","9s","6d","2c"], pot: 20, bet: 30, pos: "BTN (IP)", hand: ["Jd","9d"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "On a monotone, straight-completing board a 1.5x overbet reps flushes and straights that crush two pair; your jacks-and-nines are far behind that range. Fold.", zh: "在同花、补顺的牌面，1.5 倍超池代表碾压两对的同花与顺子；你的 J-9 两对远落后该范围。应弃。" },
+        raise: { en: "Raising two pair into a board full of made flushes and straights gets you stacked. Fold.", zh: "在满是成同花与顺子的牌面用两对加注会被打光。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn K-Q-7-3. You hold K♥Q♥ (top two pair). Villain overbets the turn 1.5x. Best action?", zh: "转牌 K-Q-7-3。你持 K♥Q♥（顶两对）。对手在转牌超池下注 1.5 倍。最佳行动？" },
+      lbl: { en: "K♥Q♥ top two pair", zh: "K♥Q♥ 顶两对" },
+      board: ["Ks","Qd","7c","3h"], pot: 16, bet: 24, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top two pair is far too strong to fold to a turn overbet — you beat all bluffs and many worse value hands, and you still have a river to navigate. Call.", zh: "顶两对太强不能弃给转牌超池 — 你打赢所有诈唬与许多更差价值，且还有河牌可走。应跟。" },
+        raise: { en: "Raising commits you and bloats the pot against a polarized range that has you beat when it's value; call to keep bluffs in and control the river. Call.", zh: "加注让你承诺并对极化范围做大底池、价值端压你；跟注留住诈唬、控制河牌。应跟。" },
+      },
+    },
+    {
+      s: { en: "River A-J-6-3-2. You hold 6♥6♦ (a set). Villain overbets. Best action?", zh: "河牌 A-J-6-3-2。你持 6♥6♦（三条）。对手超池下注。最佳行动？" },
+      lbl: { en: "6♥6♦ set", zh: "6♥6♦ 三条" },
+      board: ["As","Jd","6c","3h","2s"], pot: 20, bet: 30, pos: "BTN (IP)", hand: ["6h","6d"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A set is a clear bluff-catcher-plus against a polarized overbet — you beat every bluff and most thin value. Folding is far too tight. Call.", zh: "三条对极化超池是明确的抓诈唬偏强牌 — 你打赢所有诈唬与多数薄价值。弃牌过紧。应跟。" },
+        raise: { en: "Raising folds out all the bluffs you beat and only gets called by better; just call to capture the bluffs. Call.", zh: "加注赶走你打赢的所有诈唬、只被更好牌跟；平跟抓诈唬。应跟。" },
+      },
+    },
+    {
+      s: { en: "River K♠-J♠-6♠-8-3. You hold K♠9♠ (the second nut flush). Villain overbets 1.5x. Best action?", zh: "河牌 K♠-J♠-6♠-8-3。你持 K♠9♠（第二坚果同花）。对手超池下注 1.5 倍。最佳行动？" },
+      lbl: { en: "K♠9♠ second nut flush", zh: "K♠9♠ 第二坚果同花" },
+      board: ["Qs","Js","6s","8d","3c"], pot: 20, bet: 30, pos: "BTN (IP)", hand: ["Ks","9s"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "The second nut flush beats every bluff and worse flush; only the lone ace-high flush beats you. Folding to an overbet is too tight. Call.", zh: "第二坚果同花打赢所有诈唬与更差同花；只有唯一的 A 高同花压你。面对超池弃牌过紧。应跟。" },
+        raise: { en: "Raising risks running into the one hand that beats you (the nut flush) while folding out all the bluffs; just call. Call.", zh: "加注有撞上唯一压你的牌（坚果同花）的风险、又赶走所有诈唬；平跟即可。应跟。" },
+      },
+    },
+    {
+      s: { en: "River K♠-9♠-2♠-7-4. You hold A♠J♠ (the nut flush). Villain bets two-thirds pot (a normal bet). Best action?", zh: "河牌 K♠-9♠-2♠-7-4。你持 A♠J♠（坚果同花）。对手下注三分之二池（普通注）。最佳行动？" },
+      lbl: { en: "A♠J♠ nut flush", zh: "A♠J♠ 坚果同花" },
+      board: ["Ks","9s","2s","7d","4h"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["As","Js"],
+      street: "river",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "You hold the nut flush — folding is impossible. Raise for value.", zh: "你持坚果同花 — 弃牌不可能。应加注价值。" },
+        call: { en: "Against a normal-sized bet, raise the nuts for value — worse flushes, sets and two pair will pay off a raise. Flat-calling leaves money behind.", zh: "面对普通尺寸下注，用坚果加注价值 — 更差同花、三条、两对会支付加注。平跟会少赚。" },
+      },
+    },
+    {
+      s: { en: "River 9-8-7-4-2. You hold J♥T♥ (the nut straight). Villain bets two-thirds pot. Best action?", zh: "河牌 9-8-7-4-2。你持 J♥T♥（坚果顺子）。对手下注三分之二池。最佳行动？" },
+      lbl: { en: "J♥T♥ nut straight", zh: "J♥T♥ 坚果顺子" },
+      board: ["9s","8d","7c","4h","2s"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Jh","Th"],
+      street: "river",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "The nut straight cannot be folded — raise for value.", zh: "坚果顺子不能弃 — 应加注价值。" },
+        call: { en: "Versus a normal bet, raise the nut straight for value; worse straights, sets and two pair will call. Just calling wins less.", zh: "面对普通下注，用坚果顺子加注价值；更差顺子、三条、两对会跟。只跟赢得更少。" },
+      },
+    },
   ]);
   QUESTIONS.c21 = buildSpots("c21", "concept.donk", [
     {
@@ -1629,6 +2387,133 @@
       actions: ACT, correct: ["check"], leak: "street_plan",
       fb: {
         bet: { en: "A-high board favors the raiser — don't donk middle pair. Check and let them act.", zh: "A 高面利于加注者 — 别用中对领先。过牌让对手行动。" },
+      },
+    },
+    {
+      s: { en: "Flop 6-5-4, you called the c-bet OOP. Turn 3 completes your range. You hold 8♠7♠ (the nut straight), first to act. Best action?", zh: "翻牌 6-5-4，你 OOP 跟注持续下注。转牌 3 补全你的范围。你持 8♠7♠（坚果顺子），先行动。最佳行动？" },
+      lbl: { en: "8♠7♠ nut straight", zh: "8♠7♠ 坚果顺子" },
+      board: ["6s","5d","4c","3h"], pot: 12, bet: 0, pos: "BB (OOP)", hand: ["8s","7s"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "The turn smashes your low-board calling range and you hold the nut straight; leading (donking) for value beats checking and letting the IP player check back. Bet.", zh: "转牌击中你低牌面的跟注范围、你持坚果顺子；主动领打（donk）价值胜过过牌让 IP 玩家过牌看牌。应下注。" },
+      },
+    },
+    {
+      s: { en: "Flop A-J-5 (favors the aggressor). Turn 2. You hold 5♥4♥ (bottom pair), OOP, first to act. Best action?", zh: "翻牌 A-J-5（偏向进攻方）。转牌 2。你持 5♥4♥（底对），OOP，先行动。最佳行动？" },
+      lbl: { en: "5♥4♥ bottom pair", zh: "5♥4♥ 底对" },
+      board: ["As","Jd","5c","2h"], pot: 10, bet: 0, pos: "BB (OOP)", hand: ["5h","4h"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "On an ace-high board that favors the preflop aggressor, donking a weak bottom pair into their strong range bleeds chips; check and play check-call or give up. Check.", zh: "在偏向翻前进攻方的 A 高面，用弱底对向其强范围领打是流血；过牌走 check-call 或放弃。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Turn 9-7-2-5. Villain leads into you (a donk bet). You hold 9♥9♦ (a set). Best action?", zh: "转牌 9-7-2-5。对手向你领打（donk 下注）。你持 9♥9♦（三条）。最佳行动？" },
+      lbl: { en: "9♥9♦ set", zh: "9♥9♦ 三条" },
+      board: ["9s","7d","2c","5h"], pot: 12, bet: 8, pos: "BTN (IP)", hand: ["9h","9d"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "Folding a set to a donk lead is absurd — you have a huge hand. Raise for value.", zh: "对领打弃掉三条荒谬 — 你有巨牌。应加注价值。" },
+        call: { en: "Just calling a donk with a set lets draws see cheap cards and misses value; raise to charge them and build the pot.", zh: "用三条只跟领打会让听牌便宜看牌、错失价值；加注收费并做大底池。" },
+      },
+    },
+    {
+      s: { en: "River K-9-5-3-2. Villain donk-leads half pot into you. You hold K♥Q♥ (top pair, good kicker). Best action?", zh: "河牌 K-9-5-3-2。对手向你领打半池。你持 K♥Q♥（顶对好踢）。最佳行动？" },
+      lbl: { en: "K♥Q♥ top pair", zh: "K♥Q♥ 顶对" },
+      board: ["Ks","9d","5c","3h","2s"], pot: 18, bet: 9, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A river donk lead is often capped or polarized; top pair with a good kicker beats the bluffs and worse value in that range. Folding is too tight. Call.", zh: "河牌领打常是封顶或极化的；顶对好踢打赢其中的诈唬与更差价值。弃牌过紧。应跟。" },
+        raise: { en: "Raising turns top pair into a bluff and folds out the worse hands you beat; just call to capture bluffs. Call.", zh: "加注把顶对变成诈唬、赶走你打赢的更差牌；平跟抓诈唬。应跟。" },
+      },
+    },
+    {
+      s: { en: "Turn Q-J-T-8 (super coordinated). Villain donk-leads big. You hold A♣3♣ (a gutshot). Best action?", zh: "转牌 Q-J-T-8（超协调）。对手大额领打。你持 A♣3♣（卡顺）。最佳行动？" },
+      lbl: { en: "A♣3♣ gutshot", zh: "A♣3♣ 卡顺" },
+      board: ["Qs","Jd","Tc","8h"], pot: 16, bet: 14, pos: "BTN (IP)", hand: ["Ac","3c"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ace-high with just a gutshot on a super-coordinated board, facing a big donk lead that reps straights and two pair, lacks the equity to continue. Fold.", zh: "在超协调面只有卡顺的 A 高，面对代表顺子两对的大领打，缺乏续打权益。应弃。" },
+        raise: { en: "Bluff-raising into a donk lead on Q-J-T-8 runs into a range full of made straights. Fold.", zh: "在 Q-J-T-8 向领打诈唬加注会撞上满是成顺的范围。应弃。" },
+      },
+    },
+    {
+      s: { en: "River K♠-9♠-4♥-7-2♠ — the river completes the flush. You hold A♠5♠ (the nut flush), OOP, first to act. Best action?", zh: "河牌 K♠-9♠-4♥-7-2♠ —— 河牌补全同花。你持 A♠5♠（坚果同花），OOP，先行动。最佳行动？" },
+      lbl: { en: "A♠5♠ nut flush", zh: "A♠5♠ 坚果同花" },
+      board: ["Ks","9s","4h","7d","2s"], pot: 18, bet: 0, pos: "BB (OOP)", hand: ["As","5s"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "The river completed your flush and you hold the nuts; leading (donking) for value is better than checking and risking the IP player checks back. Bet.", zh: "河牌补全了你的同花、你持坚果；主动领打价值好过过牌冒 IP 玩家过牌看牌的风险。应下注。" },
+      },
+    },
+    {
+      s: { en: "Turn J♠-8♠-4-3. Villain donk-leads one-third pot. You hold A♠T♠ (nut flush draw). Best action?", zh: "转牌 J♠-8♠-4-3。对手领打三分之一池。你持 A♠T♠（坚果同花听）。最佳行动？" },
+      lbl: { en: "A♠T♠ nut flush draw", zh: "A♠T♠ 坚果同花听" },
+      board: ["Js","8s","4d","3c"], pot: 12, bet: 4, pos: "BTN (IP)", hand: ["As","Ts"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A nut flush draw getting roughly 4-to-1 on a small donk has far too much equity to fold. Call.", zh: "坚果同花听拿到约 4 比 1 赔率对小领打权益太高不能弃。应跟。" },
+        raise: { en: "Raising is an option, but flat-calling a tiny donk keeps villain's range wide and realizes your draw cheaply. Call.", zh: "加注是一个选项，但平跟小领打保持对手范围宽、便宜实现你的听牌。应跟。" },
+      },
+    },
+    {
+      s: { en: "Turn A-K-7-2 (favors the aggressor). You hold 7♠6♠ (third pair), OOP, first to act. Best action?", zh: "转牌 A-K-7-2（偏向进攻方）。你持 7♠6♠（第三对），OOP，先行动。最佳行动？" },
+      lbl: { en: "7♠6♠ third pair", zh: "7♠6♠ 第三对" },
+      board: ["As","Kd","7h","2c"], pot: 10, bet: 0, pos: "BB (OOP)", hand: ["7s","6s"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "On an A-K-high board that favors the aggressor, leading a weak third pair into their strong range is spew; check and look to bluff-catch or give up. Check.", zh: "在偏向进攻方的 A-K 高面，用弱第三对向其强范围领打是乱送；过牌伺机抓诈或放弃。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Turn T-9-8-2. Villain donk-leads into you. You hold Q♥J♥ (the nut straight). Best action?", zh: "转牌 T-9-8-2。对手向你领打。你持 Q♥J♥（坚果顺子）。最佳行动？" },
+      lbl: { en: "Q♥J♥ nut straight", zh: "Q♥J♥ 坚果顺子" },
+      board: ["Ts","9d","8c","2h"], pot: 14, bet: 9, pos: "BTN (IP)", hand: ["Qh","Jh"],
+      street: "turn",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "You hold the nut straight — folding is impossible. Raise for value.", zh: "你持坚果顺子 — 弃牌不可能。应加注价值。" },
+        call: { en: "Just calling the nut straight on a wet board lets a flush draw see the river cheaply and misses value; raise to charge them. Raise.", zh: "在湿板用坚果顺子只跟会让花听便宜看河、错失价值；加注收费。应加注。" },
+      },
+    },
+    {
+      s: { en: "River A-Q-9-6-3. Villain donk-leads big. You hold J♥T♥ (no pair). Best action?", zh: "河牌 A-Q-9-6-3。对手大额领打。你持 J♥T♥（无对）。最佳行动？" },
+      lbl: { en: "J♥T♥ no pair", zh: "J♥T♥ 无对" },
+      board: ["Ad","Qs","9c","6h","3s"], pot: 18, bet: 16, pos: "BTN (IP)", hand: ["Jh","Th"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Jack-high with no pair has no showdown value versus a big river donk lead; calling cannot win. Fold.", zh: "无对的 J 高对河牌大领打没有摊牌价值；跟注无法取胜。应弃。" },
+        raise: { en: "Bluff-raising into a strong donk range with no equity is burning chips. Fold.", zh: "无权益向强领打范围诈唬加注是烧筹码。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn 9-7-4-2 (dry). Villain donk-leads into you. You hold A♥A♦ (an overpair). Best action?", zh: "转牌 9-7-4-2（干燥）。对手向你领打。你持 A♥A♦（超对）。最佳行动？" },
+      lbl: { en: "A♥A♦ overpair", zh: "A♥A♦ 超对" },
+      board: ["9s","7d","4c","2h"], pot: 14, bet: 9, pos: "BTN (IP)", hand: ["Ah","Ad"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "An overpair is far too strong to fold to a turn donk lead on a dry board — you beat the draws and worse pairs that donk here. Call.", zh: "干燥面超对太强不能弃给转牌领打 — 你打赢在此领打的听牌与更差对子。应跟。" },
+        raise: { en: "Raising an overpair into a donk can be fine, but flatting keeps villain's bluffs and draws in and avoids bloating versus the occasional set. Call.", zh: "用超对向领打加注可行，但平跟留住对手诈唬听牌、避免对偶尔的三条做大底池。应跟。" },
+      },
+    },
+    {
+      s: { en: "Turn 8-8-5-2 (paired). You hold A♠8♥ (trips, top kicker), OOP, first to act. Best action?", zh: "转牌 8-8-5-2（对子面）。你持 A♠8♥（三条，顶踢脚），OOP，先行动。最佳行动？" },
+      lbl: { en: "A♠8♥ trips", zh: "A♠8♥ 三条" },
+      board: ["8s","8d","5c","2h"], pot: 12, bet: 0, pos: "BB (OOP)", hand: ["As","8h"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "On a paired board you hold trips with a top kicker and the IP player will often check back; leading (donking) for value extracts chips that checking would forfeit. Bet.", zh: "在对子面你持带顶踢脚的三条、IP 玩家常会过牌看牌；主动领打价值榨取过牌会放弃的筹码。应下注。" },
       },
     },
   ]);
@@ -1754,6 +2639,129 @@
         check: { en: "Second pair on a low board vs capped range — thin value bet. Bet small.", zh: "低面第二对对封顶范围 — 薄价值小注。" },
       },
     },
+    {
+      s: { en: "River K-8-5-3-2 (dry). You hold K♣9♣ (top pair). Checked to you. Best action?", zh: "河牌 K-8-5-3-2（干燥）。你持 K♣9♣（顶对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "K♣9♣ top pair", zh: "K♣9♣ 顶对" },
+      board: ["Kd","8s","5c","3h","2d"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Kc","9c"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "A small value bet gets called by worse pairs (eights, fives) and busted draws; checking back forfeits that thin value. Bet small.", zh: "小额价值下注会被更差对子（8、5）与落空听牌跟；过牌放弃这份薄价值。应小注。" },
+      },
+    },
+    {
+      s: { en: "River A-T-7-4-2 (dry). You hold T♣9♣ (second pair). Checked to you. Best action?", zh: "河牌 A-T-7-4-2（干燥）。你持 T♣9♣（第二对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "T♣9♣ second pair", zh: "T♣9♣ 第二对" },
+      board: ["As","Td","7c","4h","2s"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Tc","9c"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "Second pair can still bet small for thin value — worse pairs (sevens, fours) and missed draws call. Checking gives up that value. Bet small.", zh: "第二对仍可小注薄价值 — 更差对子（7、4）与没成的听牌会跟。过牌放弃价值。应小注。" },
+      },
+    },
+    {
+      s: { en: "River A-Q-9-5-2. You hold 9♥8♥ (third pair). Checked to you. Best action?", zh: "河牌 A-Q-9-5-2。你持 9♥8♥（第三对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "9♥8♥ third pair", zh: "9♥8♥ 第三对" },
+      board: ["As","Qd","9c","5h","2s"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["9h","8h"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Betting third pair gets no value from worse — better aces and queens call, weaker hands fold. Check back to realize showdown value.", zh: "用第三对下注从更差牌拿不到价值 — 更好的 A、Q 会跟，更弱的弃。过牌实现摊牌价值。" },
+      },
+    },
+    {
+      s: { en: "River A-T-6-4-2. You hold T♥9♥ (second pair). Villain bets small. Best action?", zh: "河牌 A-T-6-4-2。你持 T♥9♥（第二对）。对手小注。最佳行动？" },
+      lbl: { en: "T♥9♥ second pair", zh: "T♥9♥ 第二对" },
+      board: ["As","Td","6c","4h","2s"], pot: 14, bet: 4, pos: "BTN (IP)", hand: ["Th","9h"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Second pair beats the bluffs and worse pairs a small bet is built on; folding over-folds. Call.", zh: "第二对打赢小注所基于的诈唬与更差对子；弃牌过度。应跟。" },
+        raise: { en: "Raising second pair turns it into a bluff and folds out the worse hands you beat; just call.", zh: "用第二对加注把它变成诈唬、赶走你打赢的更差牌；平跟即可。" },
+      },
+    },
+    {
+      s: { en: "River K-Q-8-5-2. You hold K♥9♥ (top pair). Villain bets small. Best action?", zh: "河牌 K-Q-8-5-2。你持 K♥9♥（顶对）。对手小注。最佳行动？" },
+      lbl: { en: "K♥9♥ top pair", zh: "K♥9♥ 顶对" },
+      board: ["Kd","Qs","8c","5h","2d"], pot: 16, bet: 5, pos: "BTN (IP)", hand: ["Kh","9h"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair beats the worse pairs and bluffs in a small betting range; folding is far too tight. Call.", zh: "顶对打赢小注范围里的更差对子与诈唬；弃牌过紧。应跟。" },
+        raise: { en: "Raising a medium top pair folds out worse and only gets called by better; just call.", zh: "用中等顶对加注赶走更差、只被更好牌跟；平跟即可。" },
+      },
+    },
+    {
+      s: { en: "River A-J-6-3-2. You hold A♣J♣ (top two pair). Checked to you. Best action?", zh: "河牌 A-J-6-3-2。你持 A♣J♣（顶两对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "A♣J♣ top two pair", zh: "A♣J♣ 顶两对" },
+      board: ["As","Jd","6h","3c","2s"], pot: 16, bet: 0, pos: "BTN (IP)", hand: ["Ac","Jc"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Top two pair is a clear value bet — worse aces, jacks and two pair call. Checking back wastes a strong value hand. Bet.", zh: "顶两对是明确价值下注 — 更差的 A、J、两对会跟。过牌浪费强价值牌。应下注。" },
+      },
+    },
+    {
+      s: { en: "River A-K-Q-5-2. You hold J♥J♦ (an underpair). Checked to you. Best action?", zh: "河牌 A-K-Q-5-2。你持 J♥J♦（欠对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "J♥J♦ underpair", zh: "J♥J♦ 欠对" },
+      board: ["As","Kd","Qc","5h","2s"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Jh","Jd"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Pocket jacks are below three broadway cards; betting only gets called by better and folds out worse. Check to bluff-catch or give up. Check.", zh: "口袋 J 低于三张大牌；下注只被更好牌跟、赶走更差。过牌抓诈或放弃。应过牌。" },
+      },
+    },
+    {
+      s: { en: "River 8-6-4-3-2 (dry, low). You hold T♣T♦ (an overpair). Checked to you. Best action?", zh: "河牌 8-6-4-3-2（低干燥）。你持 T♣T♦（超对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "T♣T♦ overpair", zh: "T♣T♦ 超对" },
+      board: ["8s","6d","4c","3h","2s"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Tc","Td"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "An overpair on a low, dry board value bets — worse pairs (eights, sixes) and busted draws call a reasonable bet. Bet for value.", zh: "低干面超对应价值下注 — 更差对子（8、6）与落空听牌会跟合理下注。应价值下注。" },
+      },
+    },
+    {
+      s: { en: "River K-9-5-4-2. You hold A♣K♣ (top pair top kicker). Checked to you. Best action?", zh: "河牌 K-9-5-4-2。你持 A♣K♣（顶对顶踢）。对手过牌给你。最佳行动？" },
+      lbl: { en: "A♣K♣ top pair top kicker", zh: "A♣K♣ 顶对顶踢" },
+      board: ["Ks","9d","5h","4c","2s"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Ac","Kc"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Top pair top kicker is a premium river value hand — worse kings, nines and pairs call. Bet for value.", zh: "顶对顶踢是顶级河牌价值牌 — 更差的 K、9 与对子会跟。应价值下注。" },
+      },
+    },
+    {
+      s: { en: "River A-K-9-5-2. You hold Q♥9♥ (third pair). Villain bets two-thirds pot. Best action?", zh: "河牌 A-K-9-5-2。你持 Q♥9♥（第三对）。对手下注三分之二池。最佳行动？" },
+      lbl: { en: "Q♥9♥ third pair", zh: "Q♥9♥ 第三对" },
+      board: ["Ad","Ks","9c","5h","2s"], pot: 16, bet: 11, pos: "BTN (IP)", hand: ["Qh","9h"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Third pair on an ace-king board is behind a two-thirds-pot value range; calling chases. Fold.", zh: "A-K 面上第三对落后于三分之二池的价值范围；跟注是追打。应弃。" },
+        raise: { en: "Raising third pair into a value bet is spew. Fold.", zh: "用第三对向价值下注加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn Q-7-4-2 (dry). You hold Q♣9♣ (top pair). Checked to you. Best action?", zh: "转牌 Q-7-4-2（干燥）。你持 Q♣9♣（顶对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "Q♣9♣ top pair", zh: "Q♣9♣ 顶对" },
+      board: ["Qd","7s","4h","2c"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Qc","9c"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "Top pair on a dry turn bets for value and protection — worse pairs and draws call or pay to continue. Bet.", zh: "干燥转牌顶对应价值下注并保护 — 更差对子与听牌会跟或付费续打。应下注。" },
+      },
+    },
+    {
+      s: { en: "River K-Q-8-5-2. You hold 8♥7♥ (third pair). Checked to you. Best action?", zh: "河牌 K-Q-8-5-2。你持 8♥7♥（第三对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "8♥7♥ third pair", zh: "8♥7♥ 第三对" },
+      board: ["Ks","Qd","8c","5h","2s"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["8h","7h"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Betting third pair gets called only by better and folds out worse — no thin value here. Check to showdown.", zh: "用第三对下注只被更好牌跟、赶走更差 — 这里没有薄价值。过牌摊牌。" },
+      },
+    },
   ]);
   QUESTIONS.c23 = buildSpots("c23", "concept.semi_bluff", [
     {
@@ -1875,6 +2883,130 @@
       fb: {
         fold: { en: "Two overs plus backdoor vs small bet — call, not raise (semi-bluff needs more equity).", zh: "两高张加后门对小注 — 跟注非加注（半诈唬需更多胜率）。" },
         raise: { en: "Semi-bluff raising with only backdoors is too weak — call.", zh: "仅后门半诈唬加注太弱 — 跟注。" },
+      },
+    },
+    {
+      s: { en: "Flop 9-8-4 (two spades). You hold J♠T♠ (flush draw + open-ended straight draw). Villain bets. Best action?", zh: "翻牌 9-8-4（两张黑桃）。你持 J♠T♠（同花听+两头顺听）。对手下注。最佳行动？" },
+      lbl: { en: "J♠T♠ flush draw + OESD", zh: "J♠T♠ 同花听+两头顺听" },
+      board: ["9s","8s","4d"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["Js","Ts"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A 15-out monster draw (flush draw plus open-ender) is far too strong to fold — raise as a semi-bluff. Raise.", zh: "15 张补牌的巨怪听牌（同花听加两头顺听）太强不能弃 — 半诈唬加注。应加注。" },
+        call: { en: "Calling is fine, but with this much equity and fold equity, raising as a semi-bluff builds the pot and can win immediately. Raise.", zh: "平跟可行，但这么大权益与弃牌率下，半诈唬加注做大底池且能立即取胜。应加注。" },
+      },
+    },
+    {
+      s: { en: "Turn K-9-8-2. You hold J♥T♥ (an open-ended straight draw). Villain bets half pot. Best action?", zh: "转牌 K-9-8-2。你持 J♥T♥（两头顺听）。对手下注半池。最佳行动？" },
+      lbl: { en: "J♥T♥ OESD", zh: "J♥T♥ 两头顺听" },
+      board: ["Ks","9d","8c","2h"], pot: 14, bet: 7, pos: "BTN (IP)", hand: ["Jh","Th"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "An open-ended straight draw with eight outs has the odds to continue versus a half-pot turn bet. Call.", zh: "两头顺听 8 张补牌对半池转牌注有赔率续打。应跟。" },
+        raise: { en: "Raising is an option, but flat-calling keeps villain's bluffs in and realizes your draw cheaply on the river. Call.", zh: "加注是一个选项，但平跟留住对手诈唬、在河牌便宜实现你的听牌。应跟。" },
+      },
+    },
+    {
+      s: { en: "Turn A-K-7-2. You hold Q♥J♥ (a gutshot to Broadway). Villain bets big. Best action?", zh: "转牌 A-K-7-2。你持 Q♥J♥（补 Broadway 的卡顺）。对手大注。最佳行动？" },
+      lbl: { en: "Q♥J♥ gutshot", zh: "Q♥J♥ 卡顺" },
+      board: ["As","Kd","7c","2h"], pot: 16, bet: 14, pos: "BTN (IP)", hand: ["Qh","Jh"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "mdf",
+      fb: {
+        call: { en: "A four-out gutshot does not have the odds to call a big turn bet; the implied odds can't bridge the gap. Fold.", zh: "4 张补牌的卡顺没有赔率跟大转牌注；隐含赔率也补不上差距。应弃。" },
+        raise: { en: "Semi-bluff raising a bare gutshot with so few outs risks too much. Fold.", zh: "用补牌极少的光卡顺半诈唬加注风险过大。应弃。" },
+      },
+    },
+    {
+      s: { en: "Flop T-9-4 (two spades). You hold A♠K♠ (nut flush draw + two overcards). Villain checks to you. Best action?", zh: "翻牌 T-9-4（两张黑桃）。你持 A♠K♠（坚果同花听+两张超牌）。对手过牌给你。最佳行动？" },
+      lbl: { en: "A♠K♠ nut flush draw + overcards", zh: "A♠K♠ 坚果同花听+超牌" },
+      board: ["Ts","9s","4d"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["As","Ks"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "A nut flush draw with two overcards has huge equity and fold equity; betting as a semi-bluff is far better than checking back. Bet.", zh: "坚果同花听加两张超牌权益与弃牌率都很高；半诈唬下注远好过过牌。应下注。" },
+      },
+    },
+    {
+      s: { en: "Flop J-T-5. You hold K♥Q♥ (open-ended straight draw + two overcards). Villain bets. Best action?", zh: "翻牌 J-T-5。你持 K♥Q♥（两头顺听+两张超牌）。对手下注。最佳行动？" },
+      lbl: { en: "K♥Q♥ OESD + overcards", zh: "K♥Q♥ 两头顺听+超牌" },
+      board: ["Js","Td","5c"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "An open-ended straight draw plus two overcards (and a backdoor flush) is a powerful semi-bluff — far too much equity to fold. Raise.", zh: "两头顺听加两张超牌（加后门同花）是强力半诈唬 — 权益太高不能弃。应加注。" },
+        call: { en: "Calling is okay, but raising as a semi-bluff pressures villain and can win the pot now with big backup equity. Raise.", zh: "平跟尚可，但半诈唬加注施压对手、能立即拿下底池且有强后备权益。应加注。" },
+      },
+    },
+    {
+      s: { en: "Turn A-8-4-2 (two hearts). You hold T♥9♥ (a flush draw). Villain bets half pot. Best action?", zh: "转牌 A-8-4-2（两张红桃）。你持 T♥9♥（同花听）。对手下注半池。最佳行动？" },
+      lbl: { en: "T♥9♥ flush draw", zh: "T♥9♥ 同花听" },
+      board: ["Ah","8h","4c","2d"], pot: 14, bet: 7, pos: "BTN (IP)", hand: ["Th","9h"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A nine-out flush draw has the equity and odds to continue versus a half-pot turn bet. Call.", zh: "9 张补牌的同花听对半池转牌注有权益与赔率续打。应跟。" },
+        raise: { en: "Raising is an option, but flatting keeps villain barreling with worse and realizes your draw cheaply. Call.", zh: "加注是一个选项，但平跟让对手用更差牌继续开枪、便宜实现你的听牌。应跟。" },
+      },
+    },
+    {
+      s: { en: "Flop K-J-4 (two spades). You hold A♠T♠ (nut flush draw + gutshot). Villain bets. Best action?", zh: "翻牌 K-J-4（两张黑桃）。你持 A♠T♠（坚果同花听+卡顺）。对手下注。最佳行动？" },
+      lbl: { en: "A♠T♠ nut flush draw + gutshot", zh: "A♠T♠ 坚果同花听+卡顺" },
+      board: ["Ks","Js","4d"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["As","Ts"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "The nut flush draw plus a gutshot to Broadway is a powerful 12-out semi-bluff — far too strong to fold. Raise.", zh: "坚果同花听加补 Broadway 的卡顺是强力的 12 张补牌半诈唬 — 太强不能弃。应加注。" },
+        call: { en: "Calling is fine, but raising as a semi-bluff with the nut draw maximizes fold equity and value. Raise.", zh: "平跟可行，但用坚果听牌半诈唬加注最大化弃牌率与价值。应加注。" },
+      },
+    },
+    {
+      s: { en: "Flop T-8-5. You hold 9♥7♥ (an open-ended straight draw). Villain checks to you. Best action?", zh: "翻牌 T-8-5。你持 9♥7♥（两头顺听）。对手过牌给你。最佳行动？" },
+      lbl: { en: "9♥7♥ OESD", zh: "9♥7♥ 两头顺听" },
+      board: ["Td","8c","5s"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["9h","7h"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "An open-ended straight draw with eight outs and a backdoor flush is a clear semi-bluff bet when checked to — far better than checking back. Bet.", zh: "两头顺听 8 张补牌加后门同花，对手过牌时是明确的半诈唬下注 — 远好过过牌。应下注。" },
+      },
+    },
+    {
+      s: { en: "Flop J-9-4 (two diamonds). You hold Q♦T♦ (flush draw + open-ended straight draw). Villain bets. Best action?", zh: "翻牌 J-9-4（两张方块）。你持 Q♦T♦（同花听+两头顺听）。对手下注。最佳行动？" },
+      lbl: { en: "Q♦T♦ flush draw + OESD", zh: "Q♦T♦ 同花听+两头顺听" },
+      board: ["Jd","9d","4c"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["Qd","Td"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A combo draw (flush draw plus open-ended straight draw) has ~15 outs — folding a monster draw is unthinkable. Raise.", zh: "组合听牌（同花听加两头顺听）约 15 张补牌 — 弃掉巨怪听牌不可思议。应加注。" },
+        call: { en: "With this much equity, raising as a semi-bluff is more profitable than a passive call. Raise.", zh: "这么大权益下，半诈唬加注比被动跟更盈利。应加注。" },
+      },
+    },
+    {
+      s: { en: "Turn 8-7-3-2. You hold T♣9♣ (an open-ended straight draw). Villain bets half pot. Best action?", zh: "转牌 8-7-3-2。你持 T♣9♣（两头顺听）。对手下注半池。最佳行动？" },
+      lbl: { en: "T♣9♣ OESD", zh: "T♣9♣ 两头顺听" },
+      board: ["8s","7d","3c","2h"], pot: 14, bet: 7, pos: "BTN (IP)", hand: ["Tc","9c"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "An open-ended straight draw has eight outs and the odds to continue versus a half-pot bet. Call.", zh: "两头顺听有 8 张补牌与赔率对半池注续打。应跟。" },
+        raise: { en: "Raising is fine, but calling keeps villain's range wide and draws cheaply to the river. Call.", zh: "加注可行，但平跟保持对手范围宽、便宜听到河牌。应跟。" },
+      },
+    },
+    {
+      s: { en: "Turn A-Q-8-3. You hold K♥J♥ (a gutshot to Broadway). Villain bets near pot. Best action?", zh: "转牌 A-Q-8-3。你持 K♥J♥（补 Broadway 的卡顺）。对手接近底池下注。最佳行动？" },
+      lbl: { en: "K♥J♥ gutshot", zh: "K♥J♥ 卡顺" },
+      board: ["As","Qd","8c","3h"], pot: 16, bet: 14, pos: "BTN (IP)", hand: ["Kh","Jh"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "mdf",
+      fb: {
+        call: { en: "A four-out gutshot facing a near-pot turn bet lacks the odds to continue. Fold.", zh: "4 张补牌的卡顺面对接近底池的转牌注没有赔率续打。应弃。" },
+        raise: { en: "Semi-bluffing a bare four-out gutshot into a big bet risks far too much. Fold.", zh: "用光卡顺 4 张补牌向大注半诈唬风险过大。应弃。" },
+      },
+    },
+    {
+      s: { en: "Turn A-K-7-3 (two diamonds). You hold Q♦J♦ (flush draw + gutshot). Villain bets half pot. Best action?", zh: "转牌 A-K-7-3（两张方块）。你持 Q♦J♦（同花听+卡顺）。对手下注半池。最佳行动？" },
+      lbl: { en: "Q♦J♦ flush draw + gutshot", zh: "Q♦J♦ 同花听+卡顺" },
+      board: ["Ad","Kd","7c","3h"], pot: 14, bet: 7, pos: "BTN (IP)", hand: ["Qd","Jd"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A flush draw plus a gutshot (12 outs) easily has the equity to continue versus a half-pot turn bet. Call.", zh: "同花听加卡顺（12 张补牌）轻松有权益对半池转牌注续打。应跟。" },
+        raise: { en: "Raising is reasonable with a strong draw, but calling keeps bluffs in and realizes equity cheaply. Call.", zh: "用强听牌加注合理，但平跟留住诈唬、便宜实现权益。应跟。" },
       },
     },
   ]);
@@ -2010,6 +3142,138 @@
         call: { en: "Raise for value — you're near the nuts.", zh: "加注价值 — 你接近坚果。" },
       },
     },
+    {
+      s: { en: "River K-9-5-3-2 (dry). You hold K♣J♣ (top pair, good kicker). Villain bets two-thirds pot. Best action?", zh: "河牌 K-9-5-3-2（干燥）。你持 K♣J♣（顶对好踢）。对手下注三分之二池。最佳行动？" },
+      lbl: { en: "K♣J♣ top pair", zh: "K♣J♣ 顶对" },
+      board: ["Kd","9s","5h","3c","2d"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Kc","Jc"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair with a good kicker beats the bluffs and worse value in a two-thirds-pot betting range; folding over-folds. Call.", zh: "顶对好踢打赢 2/3 池下注范围里的诈唬与更差价值；弃牌过度。应跟。" },
+        raise: { en: "Raising turns a bluff-catcher into a bluff and only gets called by better; just call. Call.", zh: "加注把抓诈唬牌变成诈唬、只被更好牌跟；平跟即可。应跟。" },
+      },
+    },
+    {
+      s: { en: "River A-K-8-5-2. You hold 8♥7♥ (third pair). Villain bets two-thirds pot. Best action?", zh: "河牌 A-K-8-5-2。你持 8♥7♥（第三对）。对手下注三分之二池。最佳行动？" },
+      lbl: { en: "8♥7♥ third pair", zh: "8♥7♥ 第三对" },
+      board: ["As","Kd","8c","5h","2s"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["8h","7h"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Third pair on an ace-king-high board is behind a two-thirds-pot value range and beats too few bluffs; calling loses. Fold.", zh: "A-K 高面上第三对落后于 2/3 池价值范围、打赢的诈唬太少；跟注亏损。应弃。" },
+        raise: { en: "Raising third pair into a value-heavy river range is spew. Fold.", zh: "用第三对向价值为主的河牌范围加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "River 9-8-7-6-2. You hold J♥T♥ (the nut straight). Villain bets. Best action?", zh: "河牌 9-8-7-6-2。你持 J♥T♥（坚果顺子）。对手下注。最佳行动？" },
+      lbl: { en: "J♥T♥ nut straight", zh: "J♥T♥ 坚果顺子" },
+      board: ["9s","8d","7c","6h","2s"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Jh","Th"],
+      street: "river",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "You hold the nut straight (jack-high) — folding is impossible. Raise for value.", zh: "你持坚果顺子（J 高）— 弃牌不可能。应加注价值。" },
+        call: { en: "Versus a bet, raise the nut straight for value — worse straights (a lone ten) and two pair will pay. Just calling wins less.", zh: "面对下注，用坚果顺子加注价值 — 更差顺子（单 T）与两对会支付。只跟赢得更少。" },
+      },
+    },
+    {
+      s: { en: "River A-J-6-3-2. You hold A♣T♣ (top pair). Villain bets half pot. Best action?", zh: "河牌 A-J-6-3-2。你持 A♣T♣（顶对）。对手下注半池。最佳行动？" },
+      lbl: { en: "A♣T♣ top pair", zh: "A♣T♣ 顶对" },
+      board: ["Ad","Js","6h","3d","2s"], pot: 16, bet: 8, pos: "BTN (IP)", hand: ["Ac","Tc"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair beats the bluffs and worse aces a half-pot bet is built on; folding is too tight. Call.", zh: "顶对打赢半池注所基于的诈唬与更差的 A；弃牌过紧。应跟。" },
+        raise: { en: "Raising folds out worse and only gets called by better aces and two pair; just call. Call.", zh: "加注赶走更差、只被更好的 A 与两对跟；平跟即可。应跟。" },
+      },
+    },
+    {
+      s: { en: "River K-Q-8-5-2. You hold A♥T♥ (ace-high, no pair). Villain bets half pot. Best action?", zh: "河牌 K-Q-8-5-2。你持 A♥T♥（A 高，无对）。对手下注半池。最佳行动？" },
+      lbl: { en: "A♥T♥ ace-high", zh: "A♥T♥ A 高" },
+      board: ["Ks","Qd","8c","5h","2s"], pot: 16, bet: 8, pos: "BTN (IP)", hand: ["Ah","Th"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ace-high beats only pure bluffs and loses to every pair; versus a half-pot value-and-bluff range it doesn't have enough to call. Fold.", zh: "A 高只打赢纯诈唬、输给所有对子；面对半池的价值加诈唬范围不够跟。应弃。" },
+        raise: { en: "Bluff-raising ace-high with no equity into a river range is burning chips. Fold.", zh: "用无权益的 A 高向河牌范围诈唬加注是烧筹码。应弃。" },
+      },
+    },
+    {
+      s: { en: "River Q-7-4-3-2. You hold A♣Q♣ (top pair top kicker). Villain bets three-quarters pot. Best action?", zh: "河牌 Q-7-4-3-2。你持 A♣Q♣（顶对顶踢）。对手下注四分之三池。最佳行动？" },
+      lbl: { en: "A♣Q♣ top pair top kicker", zh: "A♣Q♣ 顶对顶踢" },
+      board: ["Qs","7d","4h","3c","2s"], pot: 16, bet: 12, pos: "BTN (IP)", hand: ["Ac","Qc"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair top kicker on a dry board beats worse queens, busted draws and bluffs; folding to three-quarters pot is too tight. Call.", zh: "干燥面顶对顶踢打赢更差的 Q、落空听牌与诈唬；面对 3/4 池弃牌过紧。应跟。" },
+        raise: { en: "Raising only gets called by two pair and sets that beat you while folding out bluffs; just call. Call.", zh: "加注只被打赢你的两对、三条跟、又赶走诈唬；平跟即可。应跟。" },
+      },
+    },
+    {
+      s: { en: "River 8-6-4-K-2 (no flush, no straight possible). You hold 8♥8♦ (a set). Villain bets. Best action?", zh: "河牌 8-6-4-K-2（无同花、无顺子可能）。你持 8♥8♦（三条）。对手下注。最佳行动？" },
+      lbl: { en: "8♥8♦ set", zh: "8♥8♦ 三条" },
+      board: ["8s","6d","4c","Kh","2s"], pot: 16, bet: 10, pos: "BTN (IP)", hand: ["8h","8d"],
+      street: "river",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A set on a board with no straight or flush possible is a near-lock — folding is absurd. Raise for value.", zh: "在无顺无花可能的牌面持三条近乎锁牌 — 弃牌荒谬。应加注价值。" },
+        call: { en: "Raise for value — worse made hands (two pair, K-x, worse) will call. Flat-calling leaves money behind.", zh: "应加注价值 — 更差成手（两对、K-x、更差）会跟。平跟会少赚。" },
+      },
+    },
+    {
+      s: { en: "River K-J-8-5-2. You hold T♥9♥ (no pair, missed draw). Villain bets half pot. Best action?", zh: "河牌 K-J-8-5-2。你持 T♥9♥（无对，听牌落空）。对手下注半池。最佳行动？" },
+      lbl: { en: "T♥9♥ no pair", zh: "T♥9♥ 无对" },
+      board: ["Ks","Jd","8c","5h","2s"], pot: 16, bet: 8, pos: "BTN (IP)", hand: ["Th","9h"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ten-high with a busted draw has no showdown value — it can only win by bluffing, not by calling. Fold.", zh: "落空听牌的 T 高没有摊牌价值 — 只能靠诈唬取胜、不能靠跟注。应弃。" },
+        raise: { en: "Turning a busted draw into a bluff-raise is a play, but as a default you simply fold. Fold.", zh: "把落空听牌变成诈唬加注是一种打法，但作为默认就是弃牌。应弃。" },
+      },
+    },
+    {
+      s: { en: "River 8-6-4-3-2 (low). You hold A♣A♦ (an overpair). Villain bets two-thirds pot. Best action?", zh: "河牌 8-6-4-3-2（低）。你持 A♣A♦（超对）。对手下注三分之二池。最佳行动？" },
+      lbl: { en: "A♣A♦ overpair", zh: "A♣A♦ 超对" },
+      board: ["8s","6d","4c","3h","2s"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Ac","Ad"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Aces are an overpair to a low board; you beat every bluff and worse pair, losing only to a few straights and sets. Folding is far too tight. Call.", zh: "A 是低牌面的超对；你打赢所有诈唬与更差对子，只输给少数顺子与三条。弃牌过紧。应跟。" },
+        raise: { en: "Raising folds out the bluffs you beat and gets called only by the straights and sets that have you beat; just call. Call.", zh: "加注赶走你打赢的诈唬、只被打赢你的顺子三条跟；平跟即可。应跟。" },
+      },
+    },
+    {
+      s: { en: "River A-J-9-5-2. You hold J♣T♣ (second pair). Villain overbets 1.3x pot. Best action?", zh: "河牌 A-J-9-5-2。你持 J♣T♣（第二对）。对手超池下注 1.3 倍。最佳行动？" },
+      lbl: { en: "J♣T♣ second pair", zh: "J♣T♣ 第二对" },
+      board: ["As","Jd","9h","5c","2d"], pot: 16, bet: 21, pos: "BTN (IP)", hand: ["Jc","Tc"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Against an overbet (a nuts-or-air range), second pair beats none of the value and the price is steep; over-folding is correct. Fold.", zh: "面对超池（非坚果即空气的范围），第二对打不赢任何价值且价格高昂；多弃才对。应弃。" },
+        raise: { en: "Raising second pair into an overbet range is spew. Fold.", zh: "用第二对向超池范围加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "River K-T-7-4-2. You hold K♥9♥ (top pair). Villain bets one-third pot (small). Best action?", zh: "河牌 K-T-7-4-2。你持 K♥9♥（顶对）。对手下注三分之一池（小注）。最佳行动？" },
+      lbl: { en: "K♥9♥ top pair", zh: "K♥9♥ 顶对" },
+      board: ["Ks","Td","7c","4h","2s"], pot: 15, bet: 5, pos: "BTN (IP)", hand: ["Kh","9h"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Folding top pair to a small one-third-pot bet massively over-folds and lets villain bet any two cards profitably. Call.", zh: "对 1/3 池小注弃顶对会严重过度弃牌、让对手任意两张牌都能盈利下注。应跟。" },
+        raise: { en: "A small bet is built on thin value and bluffs; raising folds out worse and isolates you. Just call. Call.", zh: "小注建立在薄价值与诈唬上；加注赶走更差、把你隔离。平跟即可。应跟。" },
+      },
+    },
+    {
+      s: { en: "River J-9-5-3-2 (dry). You hold J♥9♥ (top two pair). Villain bets. Best action?", zh: "河牌 J-9-5-3-2（干燥）。你持 J♥9♥（顶两对）。对手下注。最佳行动？" },
+      lbl: { en: "J♥9♥ top two pair", zh: "J♥9♥ 顶两对" },
+      board: ["Js","9d","5c","3h","2s"], pot: 16, bet: 10, pos: "BTN (IP)", hand: ["Jh","9h"],
+      street: "river",
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "Top two pair on a dry board with no straight or flush is a strong value hand — folding is far too weak. Raise.", zh: "无顺无花的干燥面顶两对是强价值牌 — 弃牌太弱。应加注。" },
+        call: { en: "Raise for value — worse two pair, J-x and 9-x will pay off. Flat-calling on a dry board wins less.", zh: "应加注价值 — 更差两对、J-x、9-x 会支付。干燥面平跟赢得更少。" },
+      },
+    },
   ]);
   QUESTIONS.c25 = buildSpots("c25", "concept.multiway", [
     {
@@ -2125,6 +3389,122 @@
       actions: ACT, correct: ["bet"], leak: "street_plan",
       fb: {
         check: { en: "Overpair multiway IP — bet for value and protection.", zh: "多人有位置超对 — 价值与保护下注。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop Q-8-3. You hold Q♣9♣ (top pair, weak kicker), OOP. Best action?", zh: "三人底池。翻牌 Q-8-3。你持 Q♣9♣（顶对，弱踢脚），OOP。最佳行动？" },
+      lbl: { en: "Q♣9♣ top pair (3-way)", zh: "Q♣9♣ 顶对（多人）" },
+      board: ["Qs","8d","3h"], pot: 9, bet: 0, pos: "BB (OOP)", hand: ["Qc","9c"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Multiway, ranges are tighter and a weak top pair OOP into two players gets called by better and raised by sets/two pair; check to control. Check.", zh: "多人池范围更紧，OOP 用弱顶对向两名对手下注会被更好牌跟、被三条两对加注；过牌控制。应过牌。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop K-9-4, checked to you. You hold 9♥9♦ (a set), IP. Best action?", zh: "三人底池。翻牌 K-9-4，对手过牌给你。你持 9♥9♦（三条），IP。最佳行动？" },
+      lbl: { en: "9♥9♦ set (3-way)", zh: "9♥9♦ 三条（多人）" },
+      board: ["Ks","9c","4d"], pot: 9, bet: 0, pos: "BTN (IP)", hand: ["9h","9d"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "A set value bets even multiway — with two opponents and draws around, bet to build the pot and charge them. Bet.", zh: "三条即使多人也价值下注 — 两名对手且有听牌时，下注做大底池并收费。应下注。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop A-K-7. You hold 8♥8♦ (a pair below the board). Villain bets. Best action?", zh: "三人底池。翻牌 A-K-7。你持 8♥8♦（低于牌面的对子）。对手下注。最佳行动？" },
+      lbl: { en: "8♥8♦ underpair (3-way)", zh: "8♥8♦ 欠对（多人）" },
+      board: ["As","Kd","7c"], pot: 9, bet: 6, pos: "BTN (IP)", hand: ["8h","8d"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Multiway on A-K-high, a bet is very likely an ace or king; pocket eights are an underpair drawing thin. Fold.", zh: "多人 A-K 高面，下注极可能是 A 或 K；口袋 88 是听得很薄的欠对。应弃。" },
+        raise: { en: "Bluff-raising an underpair into a multiway range that connects with A-K is spew. Fold.", zh: "在击中 A-K 的多人范围里用欠对诈唬加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop J-7-2, checked to you. You hold A♥5♥ (ace-high, backdoor flush), IP. Best action?", zh: "三人底池。翻牌 J-7-2，对手过牌给你。你持 A♥5♥（A 高，后门同花），IP。最佳行动？" },
+      lbl: { en: "A♥5♥ ace-high (3-way)", zh: "A♥5♥ A 高（多人）" },
+      board: ["Js","7d","2c"], pot: 9, bet: 0, pos: "BTN (IP)", hand: ["Ah","5h"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Bluffing into two players rarely works — at least one will continue. With no pair and no real draw, check and take a free card. Check.", zh: "向两名玩家诈唬很少奏效 — 至少一人会续打。无对无真听，过牌看免费牌。应过牌。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop K-Q-5, checked to you. You hold K♦Q♠ (top two pair), IP. Best action?", zh: "三人底池。翻牌 K-Q-5，对手过牌给你。你持 K♦Q♠（顶两对），IP。最佳行动？" },
+      lbl: { en: "K♦Q♠ top two pair (3-way)", zh: "K♦Q♠ 顶两对（多人）" },
+      board: ["Kc","Qh","5s"], pot: 9, bet: 0, pos: "BTN (IP)", hand: ["Kd","Qs"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Top two pair is a clear value bet even multiway — charge the draws and worse pairs across two opponents. Bet.", zh: "顶两对即使多人也是明确价值下注 — 向两名对手的听牌与更差对子收费。应下注。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop J♠T♠4♦. You hold A♠K♠ (nut flush draw + two overcards). Villain bets. Best action?", zh: "三人底池。翻牌 J♠T♠4♦。你持 A♠K♠（坚果同花听+两张超牌）。对手下注。最佳行动？" },
+      lbl: { en: "A♠K♠ nut flush draw (3-way)", zh: "A♠K♠ 坚果同花听（多人）" },
+      board: ["Js","Ts","4d"], pot: 12, bet: 6, pos: "BTN (IP)", hand: ["As","Ks"],
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A nut flush draw with two overcards and a gutshot has huge equity and great multiway implied odds; folding is a big mistake. Call.", zh: "坚果同花听加两张超牌加卡顺权益巨大、多人隐含赔率极好；弃牌是大错。应跟。" },
+        raise: { en: "Multiway, flat-calling keeps both opponents in to pay you off when you hit, rather than raising and folding them out. Call.", zh: "多人池平跟留住两名对手在你成牌时支付，而非加注把他们赶走。应跟。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Turn A-Q-9-3. You hold Q♥J♥ (second pair). Villain bets. Best action?", zh: "三人底池。转牌 A-Q-9-3。你持 Q♥J♥（第二对）。对手下注。最佳行动？" },
+      lbl: { en: "Q♥J♥ second pair (3-way)", zh: "Q♥J♥ 第二对（多人）" },
+      board: ["As","Qd","9c","3h"], pot: 14, bet: 10, pos: "BTN (IP)", hand: ["Qh","Jh"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Multiway, a turn bet on an ace-high board is rarely a bluff with this many players; second pair is well behind. Fold.", zh: "多人池 A 高面的转牌注在这么多玩家时很少是诈唬；第二对远落后。应弃。" },
+        raise: { en: "Raising second pair multiway into a value-heavy range is spew. Fold.", zh: "多人池用第二对向价值为主的范围加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop T-8-5. You hold T♦9♦ (top pair, weak kicker), OOP. Best action?", zh: "三人底池。翻牌 T-8-5。你持 T♦9♦（顶对，弱踢脚），OOP。最佳行动？" },
+      lbl: { en: "T♦9♦ top pair (3-way)", zh: "T♦9♦ 顶对（多人）" },
+      board: ["Ts","8h","5c"], pot: 9, bet: 0, pos: "BB (OOP)", hand: ["Td","9d"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Leading a weak top pair OOP into two players on a coordinated board gets you raised by draws and better; check to control and keep the pot small. Check.", zh: "在协调面用弱顶对 OOP 向两名玩家领打会被听牌与更好牌加注；过牌控制、控小底池。应过牌。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop A-7-3, checked to you. You hold A♦K♦ (top pair top kicker), IP. Best action?", zh: "三人底池。翻牌 A-7-3，对手过牌给你。你持 A♦K♦（顶对顶踢），IP。最佳行动？" },
+      lbl: { en: "A♦K♦ top pair top kicker (3-way)", zh: "A♦K♦ 顶对顶踢（多人）" },
+      board: ["As","7c","3h"], pot: 9, bet: 0, pos: "BTN (IP)", hand: ["Ad","Kd"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Top pair top kicker is strong enough to value bet even into two players — get value from worse aces and draws. Bet.", zh: "顶对顶踢足够强，即使面对两名玩家也价值下注 — 从更差的 A 与听牌拿价值。应下注。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Flop J-9-4. You bet and one player raises. You hold Q♣Q♦ (an overpair). Best action?", zh: "三人底池。翻牌 J-9-4。你下注后一名玩家加注。你持 Q♣Q♦（超对）。最佳行动？" },
+      lbl: { en: "Q♣Q♦ overpair (3-way)", zh: "Q♣Q♦ 超对（多人）" },
+      board: ["Js","9d","4c"], pot: 12, bet: 9, pos: "BTN (IP)", hand: ["Qc","Qd"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Multiway, a raise on a coordinated J-9-4 board reps sets, two pair and strong draws; your overpair is often behind and folding is the disciplined play. Fold.", zh: "多人池在协调的 J-9-4 面加注代表三条、两对与强听牌；你的超对常落后，弃牌是纪律性打法。应弃。" },
+        raise: { en: "Re-raising an overpair into a multiway raising range that crushes you is spew. Fold.", zh: "在碾压你的多人加注范围里用超对再加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Turn K-9-5-2. You hold K♥Q♥ (top pair top kicker). Villain bets. Best action?", zh: "三人底池。转牌 K-9-5-2。你持 K♥Q♥（顶对顶踢）。对手下注。最佳行动？" },
+      lbl: { en: "K♥Q♥ top pair top kicker (3-way)", zh: "K♥Q♥ 顶对顶踢（多人）" },
+      board: ["Ks","9d","5c","2h"], pot: 14, bet: 9, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair top kicker beats the bluffs and worse value; multiway it's still a clear call, just not strong enough to raise. Call.", zh: "顶对顶踢打赢诈唬与更差价值；多人池仍是明确跟注，只是不够强到加注。应跟。" },
+        raise: { en: "Raising multiway bloats the pot and only gets called by better; flat-call to control. Call.", zh: "多人池加注做大底池、只被更好牌跟；平跟控制。应跟。" },
+      },
+    },
+    {
+      s: { en: "3-way pot. Turn Q-J-8-3, checked to you. You hold Q♦T♦ (top pair, weak kicker), IP. Best action?", zh: "三人底池。转牌 Q-J-8-3，对手过牌给你。你持 Q♦T♦（顶对，弱踢脚），IP。最佳行动？" },
+      lbl: { en: "Q♦T♦ top pair (3-way)", zh: "Q♦T♦ 顶对（多人）" },
+      board: ["Qs","Jh","8c","3d"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Qd","Td"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "On a coordinated Q-J-8 board multiway, a weak-kicker top pair bets into too many better hands and draws; check back to control the pot. Check.", zh: "多人池在协调的 Q-J-8 面，弱踢顶对会向太多更好牌与听牌下注；过牌控池。应过牌。" },
       },
     },
   ]);
@@ -2249,6 +3629,127 @@
         check: { en: "Station calls — bet for value. Don't check.", zh: "跟注站会跟 — 价值下注。别过牌。" },
       },
     },
+    {
+      s: { en: "Villain folds far too often to c-bets. Flop K-8-3, checked to you. You hold Q♥J♥ (no pair). Best action?", zh: "对手太常弃持续下注。翻牌 K-8-3，对手过牌给你。你持 Q♥J♥（无对）。最佳行动？" },
+      lbl: { en: "Q♥J♥ air vs overfolder", zh: "Q♥J♥ 空气（对手太常弃）" },
+      board: ["Ks","8d","3c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Qh","Jh"],
+      actions: ACT, correct: ["bet"], leak: "cbet",
+      fb: {
+        check: { en: "Against an opponent who overfolds to c-bets, betting any two cards prints money — exploit the leak and bet, even with air. Bet.", zh: "面对过度弃持续下注的对手，任意两张牌下注都印钱 — 剥削漏洞，即使空气也下注。应下注。" },
+      },
+    },
+    {
+      s: { en: "Villain is a calling station who never folds. Flop A-9-4, checked to you. You hold T♥8♥ (no pair). Best action?", zh: "对手是从不弃牌的跟注站。翻牌 A-9-4，对手过牌给你。你持 T♥8♥（无对）。最佳行动？" },
+      lbl: { en: "T♥8♥ air vs station", zh: "T♥8♥ 空气（跟注站）" },
+      board: ["As","9d","4c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Th","8h"],
+      actions: ACT, correct: ["check"], leak: "concept_gap",
+      fb: {
+        bet: { en: "Bluffing a calling station who never folds just burns chips — they call with any pair or ace. Check and give up the bluff. Check.", zh: "向从不弃牌的跟注站诈唬只是烧筹码 — 他们用任何对子或 A 跟。过牌放弃诈唬。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Villain is a calling station. Flop K-7-2, checked to you. You hold K♣T♣ (top pair). Best action?", zh: "对手是跟注站。翻牌 K-7-2，对手过牌给你。你持 K♣T♣（顶对）。最佳行动？" },
+      lbl: { en: "K♣T♣ top pair vs station", zh: "K♣T♣ 顶对（跟注站）" },
+      board: ["Ks","7d","2h"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Kc","Tc"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Against a calling station, value bet your strong made hands relentlessly — top pair gets paid by all their worse calls. Bet.", zh: "面对跟注站，不断价值下注你的强成手 — 顶对会被他们所有更差跟注支付。应下注。" },
+      },
+    },
+    {
+      s: { en: "Villain bluffs far too much (over-aggressive). River Q-9-5-3-2. You hold 9♥8♥ (second pair). Villain bets. Best action?", zh: "对手诈唬太多（过度激进）。河牌 Q-9-5-3-2。你持 9♥8♥（第二对）。对手下注。最佳行动？" },
+      lbl: { en: "9♥8♥ second pair vs over-bluffer", zh: "9♥8♥ 第二对（过度诈唬者）" },
+      board: ["Qs","9d","5c","3h","2s"], pot: 16, bet: 11, pos: "BTN (IP)", hand: ["9h","8h"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Against an opponent who over-bluffs, second pair becomes a profitable call — they bet far more bluffs than your hand needs to beat. Call.", zh: "面对过度诈唬的对手，第二对变成盈利跟注 — 他们下注的诈唬远多于你需要打赢的。应跟。" },
+        raise: { en: "Just call to capture the bluffs — raising folds them out and only gets called by better. Call.", zh: "平跟抓诈唬即可 — 加注把诈唬赶走、只被更好牌跟。应跟。" },
+      },
+    },
+    {
+      s: { en: "Villain is a tight nit who only bets strong hands. River K-Q-8-5-2. You hold K♥J♥ (top pair). Villain bets big. Best action?", zh: "对手是只用强牌下注的紧凶 nit。河牌 K-Q-8-5-2。你持 K♥J♥（顶对）。对手大注。最佳行动？" },
+      lbl: { en: "K♥J♥ top pair vs nit", zh: "K♥J♥ 顶对（紧凶 nit）" },
+      board: ["Ks","Qd","8c","5h","2s"], pot: 16, bet: 14, pos: "BTN (IP)", hand: ["Kh","Jh"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "A tight nit's big river bet is almost never a bluff; your top pair good kicker is beaten by their value range. Exploit by folding. Fold.", zh: "紧凶 nit 的河牌大注几乎从不是诈唬；你的顶对好踢被其价值范围压制。剥削性弃牌。应弃。" },
+        raise: { en: "Raising into a nit's value-only range is throwing money away. Fold.", zh: "向 nit 的纯价值范围加注是扔钱。应弃。" },
+      },
+    },
+    {
+      s: { en: "Villain folds far too often to raises. Flop J-8-3. You hold T♥9♥ (open-ended straight draw). Villain bets. Best action?", zh: "对手太常弃加注。翻牌 J-8-3。你持 T♥9♥（两头顺听）。对手下注。最佳行动？" },
+      lbl: { en: "T♥9♥ OESD vs overfolder", zh: "T♥9♥ 两头顺听（对手太常弃加注）" },
+      board: ["Js","8d","3c"], pot: 9, bet: 6, pos: "BTN (IP)", hand: ["Th","9h"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "With an open-ended draw against an opponent who overfolds to raises, raising is a high-equity semi-bluff that prints — never fold. Raise.", zh: "持两头顺听面对过度弃牌加注的对手，加注是高权益半诈唬且印钱 — 绝不弃。应加注。" },
+        call: { en: "Calling is fine normally, but the overfold tendency makes raising far more profitable — take the pot now. Raise.", zh: "通常平跟可行，但过度弃牌倾向让加注更盈利 — 现在拿下底池。应加注。" },
+      },
+    },
+    {
+      s: { en: "Villain bluffs rivers far too much. River K-Q-7-5-2. You hold A♥T♥ (ace-high, no pair). Villain bets. Best action?", zh: "对手河牌诈唬太多。河牌 K-Q-7-5-2。你持 A♥T♥（A 高，无对）。对手下注。最佳行动？" },
+      lbl: { en: "A♥T♥ ace-high vs over-bluffer", zh: "A♥T♥ A 高（过度诈唬者）" },
+      board: ["Ks","Qd","7c","5h","2s"], pot: 16, bet: 10, pos: "BTN (IP)", hand: ["Ah","Th"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Against a heavy river over-bluffer, even ace-high catches enough bluffs to call profitably — they bet far too many busted hands. Call.", zh: "面对严重的河牌过度诈唬者，连 A 高都能抓到足够诈唬盈利跟注 — 他们下注太多落空牌。应跟。" },
+        raise: { en: "Ace-high can't raise for value; just call to bluff-catch. Call.", zh: "A 高不能价值加注；平跟抓诈即可。应跟。" },
+      },
+    },
+    {
+      s: { en: "Villain calls far too wide on the river (a station). River A-J-6-3-2. You hold A♣T♣ (top pair). Checked to you. Best action?", zh: "对手河牌跟注太宽（跟注站）。河牌 A-J-6-3-2。你持 A♣T♣（顶对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "A♣T♣ top pair vs station", zh: "A♣T♣ 顶对（跟注站）" },
+      board: ["As","Jd","6c","3h","2s"], pot: 14, bet: 0, pos: "BTN (IP)", hand: ["Ac","Tc"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "A river calling station pays off thin value — bet your top pair, they call with worse aces, jacks and pairs. Bet.", zh: "河牌跟注站会支付薄价值 — 下注你的顶对，他们用更差的 A、J、对子跟。应下注。" },
+      },
+    },
+    {
+      s: { en: "Villain is a passive nit who never bluff-raises. Turn 9-8-7-4. You bet and villain raises. You hold A♠A♦ (an overpair). Best action?", zh: "对手是从不诈唬加注的被动 nit。转牌 9-8-7-4。你下注后对手加注。你持 A♠A♦（超对）。最佳行动？" },
+      lbl: { en: "A♠A♦ overpair vs nit raise", zh: "A♠A♦ 超对（nit 加注）" },
+      board: ["9s","8d","7c","4h"], pot: 14, bet: 10, pos: "BTN (IP)", hand: ["As","Ad"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "A passive nit who never bluff-raises has a straight or set here; your aces are a clear fold against that range. Fold.", zh: "从不诈唬加注的被动 nit 在这里有顺子或三条；面对该范围你的 AA 明确弃牌。应弃。" },
+        raise: { en: "Re-raising into a nit's nutted raising range is spew. Fold.", zh: "向 nit 的坚果加注范围再加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "Villain folds too much on the flop. Flop A-K-4, checked to you. You hold 6♥5♥ (no pair). Best action?", zh: "对手翻牌弃太多。翻牌 A-K-4，对手过牌给你。你持 6♥5♥（无对）。最佳行动？" },
+      lbl: { en: "6♥5♥ air vs overfolder", zh: "6♥5♥ 空气（对手太常弃）" },
+      board: ["As","Kd","4c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["6h","5h"],
+      actions: ACT, correct: ["bet"], leak: "cbet",
+      fb: {
+        check: { en: "On an ace-king board against an opponent who overfolds, a c-bet takes it down far too often to pass up — bet as a bluff. Bet.", zh: "在 A-K 面对过度弃牌的对手，持续下注夺池频率太高不容错过 — 诈唬下注。应下注。" },
+      },
+    },
+    {
+      s: { en: "Villain bluffs too much. River K-9-5-3-2. You hold K♥T♥ (top pair), OOP, first to act. Best action?", zh: "对手诈唬太多。河牌 K-9-5-3-2。你持 K♥T♥（顶对），OOP，先行动。最佳行动？" },
+      lbl: { en: "K♥T♥ top pair vs over-bluffer", zh: "K♥T♥ 顶对（诱诈过度诈唬者）" },
+      board: ["Ks","9d","5c","3h","2s"], pot: 16, bet: 0, pos: "BB (OOP)", hand: ["Kh","Th"],
+      street: "river",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Against an opponent who bluffs too much, checking your top pair OOP induces their bluffs — then you call. Betting folds out the bluffs and only gets called by better. Check.", zh: "面对过度诈唬的对手，OOP 过牌你的顶对诱使其诈唬 — 然后跟注。下注会赶走诈唬、只被更好牌跟。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Villain over-bluffs rivers. River K-J-9-5-2. You hold K♥Q♥ (top pair). Villain overbets. Best action?", zh: "对手河牌过度诈唬。河牌 K-J-9-5-2。你持 K♥Q♥（顶对）。对手超池下注。最佳行动？" },
+      lbl: { en: "K♥Q♥ top pair vs over-bluffer", zh: "K♥Q♥ 顶对（过度诈唬者）" },
+      board: ["Ks","Jd","9h","5c","2s"], pot: 16, bet: 20, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A normal player's overbet is value-heavy, but this villain over-bluffs — top pair good kicker becomes a profitable call against their inflated bluffing range. Call.", zh: "普通玩家的超池偏价值，但此对手过度诈唬 — 面对其膨胀的诈唬范围，顶对好踢变成盈利跟注。应跟。" },
+        raise: { en: "Just call to capture the bluffs — raising folds them out. Call.", zh: "平跟抓诈唬即可 — 加注把诈唬赶走。应跟。" },
+      },
+    },
   ]);
   QUESTIONS.c27 = buildSpots("c27", "concept.tournament", [
     {
@@ -2369,6 +3870,133 @@
       fb: {
         fold: { en: "At 20bb, weak top pair vs half-pot is a call — bluff-catcher.", zh: "20bb 弱顶对对半池应跟 — 抓诈。" },
         raise: { en: "Calling is correct.", zh: "跟注正确。" },
+      },
+    },
+    {
+      s: { en: "Short stack, SPR ~1.5. Flop 8-5-2. You hold A♥A♦ (an overpair). Villain jams. Best action?", zh: "短码，SPR 约 1.5。翻牌 8-5-2。你持 A♥A♦（超对）。对手全压。最佳行动？" },
+      lbl: { en: "A♥A♦ overpair (short)", zh: "A♥A♦ 超对（短码）" },
+      board: ["8s","5d","2c"], pot: 12, bet: 18, pos: "BTN (IP)", hand: ["Ah","Ad"],
+      allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Aces are a massive overpair at low SPR — calling a jam is automatic. Folding is unthinkable. Call.", zh: "低 SPR 下 AA 是巨大超对 — 跟全压是必然。弃牌不可思议。应跟。" },
+      },
+    },
+    {
+      s: { en: "Short stack, low SPR. Flop A-7-3. You hold A♣K♦ (top pair top kicker). Villain bets. Best action?", zh: "短码，低 SPR。翻牌 A-7-3。你持 A♣K♦（顶对顶踢）。对手下注。最佳行动？" },
+      lbl: { en: "A♣K♦ top pair top kicker (short)", zh: "A♣K♦ 顶对顶踢（短码）" },
+      board: ["As","7d","3c"], pot: 12, bet: 6, pos: "BTN (IP)", hand: ["Ac","Kd"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "Top pair top kicker at low SPR is committed — folding is far too tight. Raise to get it in. Raise.", zh: "低 SPR 顶对顶踢已承诺 — 弃牌过紧。应加注把筹码打进去。应加注。" },
+        call: { en: "With a short stack, raise to get all-in now rather than flat-calling and facing a tough turn. Raise.", zh: "短码时加注立刻全压，而非平跟后在转牌面对难题。应加注。" },
+      },
+    },
+    {
+      s: { en: "On the money bubble (pay jumps are huge). Flop K-9-4. You hold T♥T♦ (an underpair). Villain jams. Best action?", zh: "正处奖金泡沫期（奖金跳跃巨大）。翻牌 K-9-4。你持 T♥T♦（欠对）。对手全压。最佳行动？" },
+      lbl: { en: "T♥T♦ underpair (ICM bubble)", zh: "T♥T♦ 欠对（ICM 泡沫）" },
+      board: ["Ks","9d","4c"], pot: 14, bet: 20, pos: "BTN (IP)", hand: ["Th","Td"],
+      allIn: true,
+      actions: FACE_CALL, correct: ["fold"], leak: "mdf",
+      fb: {
+        call: { en: "On the bubble with huge pay jumps, an underpair to the king is a clear ICM fold — busting here is a disaster. Fold.", zh: "泡沫期奖金跳跃巨大，低于 K 的欠对是明确的 ICM 弃牌 — 此时出局是灾难。应弃。" },
+        raise: { en: "Already all-in — the choice is fold or call, and ICM says fold the underpair. Fold.", zh: "已全压 — 只能弃或跟，ICM 要求弃掉欠对。应弃。" },
+      },
+    },
+    {
+      s: { en: "Short stack. Flop Q♠8♠3♦. You hold A♠K♠ (nut flush draw + two overcards). Villain bets. Best action?", zh: "短码。翻牌 Q♠8♠3♦。你持 A♠K♠（坚果同花听+两张超牌）。对手下注。最佳行动？" },
+      lbl: { en: "A♠K♠ nut flush draw (short)", zh: "A♠K♠ 坚果同花听（短码）" },
+      board: ["Qs","8s","3d"], pot: 10, bet: 6, pos: "BTN (IP)", hand: ["As","Ks"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A nut flush draw with two overcards has huge equity plus fold equity — jam it. Folding throws away a profitable shove. Raise.", zh: "坚果同花听加两张超牌权益巨大且有弃牌率 — 全压。弃牌等于丢掉盈利的全压。应加注。" },
+        call: { en: "With a short stack, raise to get it in now — your draw plus fold equity makes jamming more profitable than calling. Raise.", zh: "短码时加注立刻进钱 — 你的听牌加弃牌率使全压比跟注更盈利。应加注。" },
+      },
+    },
+    {
+      s: { en: "Short stack. Turn K-9-5-2. You hold K♣Q♦ (top pair, good kicker). Villain jams. Best action?", zh: "短码。转牌 K-9-5-2。你持 K♣Q♦（顶对好踢）。对手全压。最佳行动？" },
+      lbl: { en: "K♣Q♦ top pair (short)", zh: "K♣Q♦ 顶对（短码）" },
+      board: ["Ks","9d","5c","2h"], pot: 16, bet: 14, pos: "BTN (IP)", hand: ["Kc","Qd"],
+      street: "turn",
+      allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair with a good kicker at low SPR is pot-committed — calling the jam is correct, folding is far too tight. Call.", zh: "低 SPR 顶对好踢已对底池承诺 — 跟全压正确，弃牌过紧。应跟。" },
+      },
+    },
+    {
+      s: { en: "Short stack. Flop A-K-7. You hold 9♥9♦ (an underpair). Villain jams. Best action?", zh: "短码。翻牌 A-K-7。你持 9♥9♦（欠对）。对手全压。最佳行动？" },
+      lbl: { en: "9♥9♦ underpair (short)", zh: "9♥9♦ 欠对（短码）" },
+      board: ["As","Kd","7c"], pot: 12, bet: 16, pos: "BTN (IP)", hand: ["9h","9d"],
+      allIn: true,
+      actions: FACE_CALL, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Pocket nines are an underpair to an A-K board and crushed by a jamming range of aces, kings and better; calling burns your tournament life. Fold.", zh: "口袋 99 是低于 A-K 面的欠对，被 A、K 及更好的全压范围碾压；跟注葬送你的锦标赛生命。应弃。" },
+        raise: { en: "Already all-in — fold or call, and 99 is far too weak to call here. Fold.", zh: "已全压 — 弃或跟，99 在这里远不够跟注。应弃。" },
+      },
+    },
+    {
+      s: { en: "Short stack, low SPR. Flop J-9-4. You hold 9♥9♣ (a set). Villain bets. Best action?", zh: "短码，低 SPR。翻牌 J-9-4。你持 9♥9♣（三条）。对手下注。最佳行动？" },
+      lbl: { en: "9♥9♣ set (short)", zh: "9♥9♣ 三条（短码）" },
+      board: ["Js","9d","4c"], pot: 12, bet: 8, pos: "BTN (IP)", hand: ["9h","9c"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A set is a monster — folding is absurd. Raise to get all-in for value. Raise.", zh: "三条是巨牌 — 弃牌荒谬。应加注全压价值。应加注。" },
+        call: { en: "At low SPR, raise to get stacks in now with your set rather than risking a scare card. Raise.", zh: "低 SPR 用三条加注立刻把筹码打进去，而非冒吓人牌风险。应加注。" },
+      },
+    },
+    {
+      s: { en: "Short stack. River A-T-6-3-2. You hold A♣Q♣ (top pair top kicker). Villain jams. Best action?", zh: "短码。河牌 A-T-6-3-2。你持 A♣Q♣（顶对顶踢）。对手全压。最佳行动？" },
+      lbl: { en: "A♣Q♣ top pair top kicker (short)", zh: "A♣Q♣ 顶对顶踢（短码）" },
+      board: ["As","Td","6c","3h","2s"], pot: 18, bet: 14, pos: "BTN (IP)", hand: ["Ac","Qc"],
+      street: "river",
+      allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair top kicker on a dry runout at low SPR beats enough of a jamming range to call. Folding is too tight. Call.", zh: "低 SPR 干燥牌面顶对顶踢打赢足够的全压范围可跟。弃牌过紧。应跟。" },
+      },
+    },
+    {
+      s: { en: "Pay jumps are huge (deep ICM). Flop J-T-4. You hold Q♣Q♦ (an overpair). Villain jams. Best action?", zh: "奖金跳跃巨大（深度 ICM）。翻牌 J-T-4。你持 Q♣Q♦（超对）。对手全压。最佳行动？" },
+      lbl: { en: "Q♣Q♦ overpair (ICM)", zh: "Q♣Q♦ 超对（ICM）" },
+      board: ["Js","Td","4c"], pot: 14, bet: 20, pos: "BTN (IP)", hand: ["Qc","Qd"],
+      allIn: true,
+      actions: FACE_CALL, correct: ["fold"], leak: "mdf",
+      fb: {
+        call: { en: "Under heavy ICM pressure on a coordinated J-T-4 board, even an overpair is a fold to a jam — chip EV would call, but ICM makes survival worth more. Fold.", zh: "在协调的 J-T-4 面承受重 ICM 压力，即使超对也弃全压 — 筹码 EV 会跟，但 ICM 让生存更值钱。应弃。" },
+        raise: { en: "Already all-in — the choice is fold or call, and ICM dictates folding here. Fold.", zh: "已全压 — 只能弃或跟，ICM 要求在此弃牌。应弃。" },
+      },
+    },
+    {
+      s: { en: "Short stack. Flop T♠9♠4♦. You hold J♠8♠ (flush draw + open-ended straight draw). Villain bets. Best action?", zh: "短码。翻牌 T♠9♠4♦。你持 J♠8♠（同花听+两头顺听）。对手下注。最佳行动？" },
+      lbl: { en: "J♠8♠ flush draw + OESD (short)", zh: "J♠8♠ 同花听+两头顺听（短码）" },
+      board: ["Ts","9s","4d"], pot: 10, bet: 6, pos: "BTN (IP)", hand: ["Js","8s"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A combo draw (flush draw plus open-ender, ~15 outs) is a massive favorite to jam — folding wastes huge equity. Raise.", zh: "组合听牌（同花听加两头顺听，约 15 张补牌）全压是大热门 — 弃牌浪费巨大权益。应加注。" },
+        call: { en: "With ~15 outs and fold equity, jamming is far better than a passive call at low SPR. Raise.", zh: "约 15 张补牌加弃牌率，低 SPR 全压远好过被动跟。应加注。" },
+      },
+    },
+    {
+      s: { en: "Short stack. Turn K-Q-5-2. You hold K♥Q♠ (top two pair). Villain jams. Best action?", zh: "短码。转牌 K-Q-5-2。你持 K♥Q♠（顶两对）。对手全压。最佳行动？" },
+      lbl: { en: "K♥Q♠ top two pair (short)", zh: "K♥Q♠ 顶两对（短码）" },
+      board: ["Ks","Qd","5c","2h"], pot: 16, bet: 14, pos: "BTN (IP)", hand: ["Kh","Qs"],
+      street: "turn",
+      allIn: true,
+      actions: FACE_CALL, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top two pair at low SPR is far too strong to fold to a jam; you beat most of the jamming range. Call.", zh: "低 SPR 顶两对太强不能弃给全压；你打赢全压范围的多数。应跟。" },
+      },
+    },
+    {
+      s: { en: "Short stack. Flop K-8-4. You hold A♥J♥ (ace-high, no pair). Villain jams. Best action?", zh: "短码。翻牌 K-8-4。你持 A♥J♥（A 高，无对）。对手全压。最佳行动？" },
+      lbl: { en: "A♥J♥ ace-high (short)", zh: "A♥J♥ A 高（短码）" },
+      board: ["Ks","8d","4c"], pot: 12, bet: 16, pos: "BTN (IP)", hand: ["Ah","Jh"],
+      allIn: true,
+      actions: FACE_CALL, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ace-high with no pair and no draw cannot call a jam — you are behind the entire value range with little equity. Fold.", zh: "无对无听的 A 高不能跟全压 — 你落后整个价值范围且权益很少。应弃。" },
+        raise: { en: "Already all-in — fold or call, and ace-high is a clear fold. Fold.", zh: "已全压 — 弃或跟，A 高明确弃牌。应弃。" },
       },
     },
   ]);
@@ -2492,6 +4120,120 @@
         check: { en: "Two pair — bet flop. Plan turn and river value.", zh: "两对 — 翻牌下注。规划转牌与河牌价值。" },
       },
     },
+    {
+      s: { en: "Flop 8-5-2, checked to you. You hold A♥A♦ (an overpair). You want to stack villain over three streets. Best action?", zh: "翻牌 8-5-2，对手过牌给你。你持 A♥A♦（超对）。你想用三街打光对手。最佳行动？" },
+      lbl: { en: "A♥A♦ overpair (plan)", zh: "A♥A♦ 超对（规划）" },
+      board: ["8s","5d","2c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Ah","Ad"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "To win three streets of value with aces, you must start betting now — checking wastes a street and lets free cards in. Bet.", zh: "用 AA 赢三街价值必须现在开始下注 — 过牌浪费一条街、给出免费牌。应下注。" },
+      },
+    },
+    {
+      s: { en: "Flop Q-8-3, checked to you. You hold Q♣9♣ (weak top pair). You want to keep the pot small to showdown. Best action?", zh: "翻牌 Q-8-3，对手过牌给你。你持 Q♣9♣（弱顶对）。你想控小底池走到摊牌。最佳行动？" },
+      lbl: { en: "Q♣9♣ weak top pair (plan)", zh: "Q♣9♣ 弱顶对（规划）" },
+      board: ["Qs","8d","3h"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Qc","9c"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "With a weak-kicker top pair, the plan is a small showdown-bound pot; betting builds a pot you don't want and gets raised by better. Check.", zh: "弱踢顶对的计划是走向摊牌的小底池；下注做大你不想要的底池、被更好牌加注。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Flop J♠T♠4♦. You hold A♠K♠ (nut flush draw + two overcards). You plan to semi-bluff and barrel turns. Best action?", zh: "翻牌 J♠T♠4♦。你持 A♠K♠（坚果同花听+两张超牌）。你计划半诈唬并在转牌开枪。最佳行动？" },
+      lbl: { en: "A♠K♠ nut flush draw (plan)", zh: "A♠K♠ 坚果同花听（规划）" },
+      board: ["Js","Ts","4d"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["As","Ks"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "With a huge draw and a plan to barrel, start the semi-bluff now — betting builds the pot for when you hit and applies pressure. Bet.", zh: "持巨大听牌且计划开枪，现在开始半诈唬 — 下注为成牌做大底池并施压。应下注。" },
+      },
+    },
+    {
+      s: { en: "Flop K-9-4, checked to you. You hold 9♥9♦ (a set). You want to build a big pot to get stacks in. Best action?", zh: "翻牌 K-9-4，对手过牌给你。你持 9♥9♦（三条）。你想做大底池打进筹码。最佳行动？" },
+      lbl: { en: "9♥9♦ set (plan)", zh: "9♥9♦ 三条（规划）" },
+      board: ["Ks","9c","4d"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["9h","9d"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "A set wants to build the pot across streets to get stacks in — start betting now rather than slow-playing and missing value. Bet.", zh: "三条要跨街做大底池以打进筹码 — 现在开始下注，而非慢打错失价值。应下注。" },
+      },
+    },
+    {
+      s: { en: "Turn J-8-5-2. You hold 8♥7♥ (middle pair). Your plan is to control the pot and reach showdown cheaply. Best action?", zh: "转牌 J-8-5-2。你持 8♥7♥（中对）。你的计划是控池、便宜走到摊牌。最佳行动？" },
+      lbl: { en: "8♥7♥ middle pair (plan)", zh: "8♥7♥ 中对（规划）" },
+      board: ["Js","8d","5c","2h"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["8h","7h"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Middle pair wants a cheap showdown; betting bloats the pot and gets raised or called by better. Check to control. Check.", zh: "中对想要便宜摊牌；下注做大底池、被更好牌加注或跟。过牌控制。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Flop K-Q-5, checked to you. You hold K♥Q♦ (top two pair). You want to charge draws and set up a big river. Best action?", zh: "翻牌 K-Q-5，对手过牌给你。你持 K♥Q♦（顶两对）。你想向听牌收费并铺垫大河牌。最佳行动？" },
+      lbl: { en: "K♥Q♦ top two pair (plan)", zh: "K♥Q♦ 顶两对（规划）" },
+      board: ["Kc","Qh","5s"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Kh","Qd"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Top two on a coordinated board wants to bet now — charge the draws and build the pot so the river bet is large for value. Bet.", zh: "协调面顶两对要现在下注 — 向听牌收费、做大底池让河牌价值注更大。应下注。" },
+      },
+    },
+    {
+      s: { en: "Flop Q-8-3. You hold A♥J♥ (two overcards, backdoor flush). Villain bets. You plan to float and take it away on a later street. Best action?", zh: "翻牌 Q-8-3。你持 A♥J♥（两张超牌+后门同花）。对手下注。你计划浮动、后续街夺池。最佳行动？" },
+      lbl: { en: "A♥J♥ overcards (float plan)", zh: "A♥J♥ 超牌（浮动计划）" },
+      board: ["Qs","8d","3c"], pot: 9, bet: 6, pos: "BTN (IP)", hand: ["Ah","Jh"],
+      actions: FACE, correct: ["call"], leak: "street_plan",
+      fb: {
+        fold: { en: "Two overcards with a backdoor have enough equity to float and steal later; folding abandons a profitable multi-street plan. Call.", zh: "两张超牌加后门有足够权益浮动、后续夺池；弃牌放弃盈利的多街计划。应跟。" },
+        raise: { en: "Raising commits you with no made hand yet; the plan is to float and apply pressure later. Call.", zh: "加注让你在尚无成手时承诺；计划是浮动、后续施压。应跟。" },
+      },
+    },
+    {
+      s: { en: "Flop A-7-3, checked to you. You hold A♣K♦ (top pair top kicker). You plan to value bet across all three streets. Best action?", zh: "翻牌 A-7-3，对手过牌给你。你持 A♣K♦（顶对顶踢）。你计划三街价值下注。最佳行动？" },
+      lbl: { en: "A♣K♦ top pair top kicker (plan)", zh: "A♣K♦ 顶对顶踢（规划）" },
+      board: ["As","7d","3c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Ac","Kd"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Top pair top kicker on a dry board is a three-street value hand — start betting to build the pot. Checking forfeits value. Bet.", zh: "干燥面顶对顶踢是三街价值牌 — 开始下注做大底池。过牌放弃价值。应下注。" },
+      },
+    },
+    {
+      s: { en: "Turn K-Q-8-2. You c-bet the flop as a bluff and bricked. You hold 7♥6♥ (no pair, no draw). Best action?", zh: "转牌 K-Q-8-2。你翻牌诈唬持续下注后没改善。你持 7♥6♥（无对无听）。最佳行动？" },
+      lbl: { en: "7♥6♥ air (give up)", zh: "7♥6♥ 空气（放弃）" },
+      board: ["Ks","Qd","8c","2h"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["7h","6h"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Your bluff has no equity and the turn helped nothing — firing a second barrel with no story and no outs just burns chips. Check and give up. Check.", zh: "你的诈唬无权益、转牌毫无帮助 — 无故事无补牌开第二枪只是烧筹码。过牌放弃。应过牌。" },
+      },
+    },
+    {
+      s: { en: "River Q-8-3-J-2. You floated flop and turn with a draw that bricked. You hold T♥9♥ (no pair). Villain bets. Best action?", zh: "河牌 Q-8-3-J-2。你用一手落空的听牌浮动了翻牌和转牌。你持 T♥9♥（无对）。对手下注。最佳行动？" },
+      lbl: { en: "T♥9♥ busted (plan failed)", zh: "T♥9♥ 落空（计划失败）" },
+      board: ["Qs","8d","3c","Jh","2s"], pot: 16, bet: 10, pos: "BTN (IP)", hand: ["Th","9h"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Your float plan failed — the draw bricked and you have no showdown value. Calling a river bet with ten-high cannot win. Fold.", zh: "你的浮动计划失败 — 听牌落空、无摊牌价值。用 T 高跟河牌注无法取胜。应弃。" },
+        raise: { en: "Bluff-raising the river as the last resort of a busted plan is high-variance spew here; just fold. Fold.", zh: "作为失败计划最后手段诈唬加注河牌在此是高方差乱送；弃牌即可。应弃。" },
+      },
+    },
+    {
+      s: { en: "Flop T-8-5. You hold T♦9♦ (top pair, weak kicker), OOP. You plan a check-call line to control the pot. Best action?", zh: "翻牌 T-8-5。你持 T♦9♦（顶对，弱踢脚），OOP。你计划走 check-call 控池。最佳行动？" },
+      lbl: { en: "T♦9♦ top pair (check-call plan)", zh: "T♦9♦ 顶对（check-call 计划）" },
+      board: ["Ts","8h","5c"], pot: 8, bet: 0, pos: "BB (OOP)", hand: ["Td","9d"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "A weak-kicker top pair OOP on a coordinated board plays best as a check-call — leading bloats the pot and gets raised by draws and better. Check.", zh: "协调面 OOP 弱踢顶对最适合走 check-call — 领打做大底池、被听牌与更好牌加注。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Turn 7♠6♠3♦K♥. You hold 9♠8♠ (flush draw + open-ended straight draw). You c-bet the flop and plan to keep barreling. Best action?", zh: "转牌 7♠6♠3♦K♥。你持 9♠8♠（同花听+两头顺听）。你翻牌持续下注并计划继续开枪。最佳行动？" },
+      lbl: { en: "9♠8♠ flush draw + OESD (plan)", zh: "9♠8♠ 同花听+两头顺听（规划）" },
+      board: ["7s","6s","3d","Kh"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["9s","8s"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "A 15-out combo draw with a plan to barrel should keep betting — huge equity plus fold equity makes a second barrel highly profitable. Bet.", zh: "15 张补牌组合听牌且计划开枪应继续下注 — 巨大权益加弃牌率使第二枪高度盈利。应下注。" },
+      },
+    },
   ]);
   QUESTIONS.c29 = buildSpots("c29", "concept.special_board", [
     {
@@ -2609,6 +4351,119 @@
       fb: {
         fold: { en: "Full house on trips board — never fold.", zh: "三条面葫芦 — 绝不弃。" },
         call: { en: "Raise for value.", zh: "加注价值。" },
+      },
+    },
+    {
+      s: { en: "Paired board: K-K-4 (rainbow). Checked to you. You hold Q♥J♥ (no pair). Best action?", zh: "对子面：K-K-4（彩虹）。对手过牌给你。你持 Q♥J♥（无对）。最佳行动？" },
+      lbl: { en: "Q♥J♥ on a paired board", zh: "Q♥J♥（对子面）" },
+      board: ["Ks","Kd","4c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Qh","Jh"],
+      actions: ACT, correct: ["bet"], leak: "cbet",
+      fb: {
+        check: { en: "Paired boards heavily favor the aggressor — neither player connects often, so a c-bet takes it down a high percentage of the time. Bet.", zh: "对子面大幅偏向进攻方 — 双方都很难击中，持续下注夺池频率很高。应下注。" },
+      },
+    },
+    {
+      s: { en: "A-high dry board: A-8-3 (rainbow). Checked to you. You hold K♥Q♥ (no pair). Best action?", zh: "A 高干面：A-8-3（彩虹）。对手过牌给你。你持 K♥Q♥（无对）。最佳行动？" },
+      lbl: { en: "K♥Q♥ on an A-high board", zh: "K♥Q♥（A 高面）" },
+      board: ["As","8d","3c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Kh","Qh"],
+      actions: ACT, correct: ["bet"], leak: "cbet",
+      fb: {
+        check: { en: "An ace-high board favors the preflop aggressor's range; a c-bet pressures villain's many missed hands. Bet.", zh: "A 高面偏向翻前进攻方范围；持续下注施压对手大量没击中的牌。应下注。" },
+      },
+    },
+    {
+      s: { en: "Monotone board: J♠9♠4♠ (all spades). Checked to you. You hold K♥Q♦ (no spade, overcards). Best action?", zh: "单色面：J♠9♠4♠（全黑桃）。对手过牌给你。你持 K♥Q♦（无黑桃，超牌）。最佳行动？" },
+      lbl: { en: "K♥Q♦ on a monotone board", zh: "K♥Q♦（单色面）" },
+      board: ["Js","9s","4s"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Kh","Qd"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "On a monotone board with no spade, betting air runs into villain's flushes and flush draws that never fold; check and give up. Check.", zh: "在你无黑桃的单色面，用空气下注会撞上对手从不弃牌的同花与花听；过牌放弃。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Paired board: 8-8-3. Checked to you. You hold A♥8♥ (trips, top kicker). Best action?", zh: "对子面：8-8-3。对手过牌给你。你持 A♥8♥（三条，顶踢脚）。最佳行动？" },
+      lbl: { en: "A♥8♥ trips on a paired board", zh: "A♥8♥ 三条（对子面）" },
+      board: ["8s","8d","3c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Ah","8h"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Trips with the best kicker on a paired board is a strong value hand — bet to get value from overpairs, worse trips and floats. Bet.", zh: "对子面带最佳踢脚的三条是强价值牌 — 下注从超对、更差三条与浮动牌拿价值。应下注。" },
+      },
+    },
+    {
+      s: { en: "Connected broadway board: Q♠J♦T♣. Checked to you. You hold 6♥5♥ (no pair, no draw). Best action?", zh: "连接大牌面：Q♠J♦T♣。对手过牌给你。你持 6♥5♥（无对无听）。最佳行动？" },
+      lbl: { en: "6♥5♥ on a connected board", zh: "6♥5♥（连接面）" },
+      board: ["Qs","Jd","Tc"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["6h","5h"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "Q-J-T smashes villain's calling range with straights and big pairs; betting air with no equity just bloats a pot you'll lose. Check.", zh: "Q-J-T 用顺子与大对子击中对手跟注范围；用无权益的空气下注只是做大你会输的底池。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Connected wet board: 7-6-5. Checked to you. You hold A♣A♦ (an overpair). Best action?", zh: "湿连面：7-6-5。对手过牌给你。你持 A♣A♦（超对）。最佳行动？" },
+      lbl: { en: "A♣A♦ overpair on a wet board", zh: "A♣A♦ 超对（湿连面）" },
+      board: ["7s","6d","5c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Ac","Ad"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "On 7-6-5 with straight draws everywhere, an overpair must bet to charge the draws and deny equity — checking lets free cards beat you. Bet.", zh: "在 7-6-5 到处是顺听的面，超对必须下注向听牌收费、否定权益 — 过牌让免费牌反超。应下注。" },
+      },
+    },
+    {
+      s: { en: "Two-tone board: K♠8♠3♦. You hold A♠5♠ (the nut flush draw). Villain bets. Best action?", zh: "双花面：K♠8♠3♦。你持 A♠5♠（坚果同花听）。对手下注。最佳行动？" },
+      lbl: { en: "A♠5♠ nut flush draw", zh: "A♠5♠ 坚果同花听" },
+      board: ["Ks","8s","3d"], pot: 9, bet: 6, pos: "BTN (IP)", hand: ["As","5s"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A nut flush draw on a two-tone board has nine clean outs to the nuts plus overcard outs; folding throws away big equity. Raise.", zh: "双花面坚果同花听有 9 张干净的坚果补牌加超牌补牌；弃牌丢掉巨大权益。应加注。" },
+        call: { en: "Calling is fine, but on a two-tone board raising the nut draw as a semi-bluff applies pressure with big equity and fold equity. Raise.", zh: "平跟可行，但双花面用坚果听牌半诈唬加注、以大权益与弃牌率施压。应加注。" },
+      },
+    },
+    {
+      s: { en: "Turn K♠9♠5♦2♠ — a flush is now possible. You hold A♣K♣ (top pair top kicker, no spade). Villain bets big. Best action?", zh: "转牌 K♠9♠5♦2♠ —— 现在可能有同花。你持 A♣K♣（顶对顶踢，无黑桃）。对手大注。最佳行动？" },
+      lbl: { en: "A♣K♣ TPTK vs flush", zh: "A♣K♣ 顶对顶踢（防同花）" },
+      board: ["Ks","9s","5d","2s"], pot: 16, bet: 14, pos: "BTN (IP)", hand: ["Ac","Kc"],
+      street: "turn",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "With a flush possible and no spade in hand, a big bet represents a flush you cannot beat; top pair top kicker is now a bluff-catcher that catches too few bluffs. Fold.", zh: "同花已可能、你无黑桃，大注代表你无法击败的同花；顶对顶踢现在是抓诈牌却抓不到足够诈唬。应弃。" },
+        raise: { en: "Raising one pair into a completed-flush range is spew. Fold.", zh: "在完成同花的范围里用单对加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "Low dry board: 6-4-2 (rainbow). Checked to you. You hold K♣K♦ (an overpair). Best action?", zh: "低干面：6-4-2（彩虹）。对手过牌给你。你持 K♣K♦（超对）。最佳行动？" },
+      lbl: { en: "K♣K♦ overpair on a low board", zh: "K♣K♦ 超对（低干面）" },
+      board: ["6s","4d","2c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Kc","Kd"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "A low, disconnected board almost never hits villain's range; your overpair is a clear value bet that gets called by worse pairs and floats. Bet.", zh: "低、不连接的牌面几乎从不击中对手范围；你的超对是明确价值下注，会被更差对子与浮动牌跟。应下注。" },
+      },
+    },
+    {
+      s: { en: "Connected, two-tone board: 9♠8♠7♦. Checked to you. You hold 4♥4♦ (an underpair). Best action?", zh: "连接双花面：9♠8♠7♦。对手过牌给你。你持 4♥4♦（欠对）。最佳行动？" },
+      lbl: { en: "4♥4♦ on a dangerous board", zh: "4♥4♦（危险面）" },
+      board: ["9s","8s","7d"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["4h","4d"],
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "On 9-8-7 two-tone, pocket fours are an underpair drawing nearly dead against the straights, flushes and pairs in villain's range; betting bloats a pot you're behind in. Check.", zh: "在 9-8-7 双花面，口袋 44 是面对对手范围里顺子、同花、对子几乎听死的欠对；下注做大你落后的底池。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Connected board: T♦9♣8♥. You hold Q♠J♠ (the nut straight). Villain bets. Best action?", zh: "连接面：T♦9♣8♥。你持 Q♠J♠（坚果顺子）。对手下注。最佳行动？" },
+      lbl: { en: "Q♠J♠ nut straight", zh: "Q♠J♠ 坚果顺子" },
+      board: ["Td","9c","8h"], pot: 10, bet: 6, pos: "BTN (IP)", hand: ["Qs","Js"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "You hold the nut straight on a wet board full of draws — raise for value and to charge the flush and lower straight draws. Raise.", zh: "你在满是听牌的湿板持坚果顺子 — 加注价值并向花听与更小顺听收费。应加注。" },
+        call: { en: "Just calling lets draws see a cheap card on a board where many turns are bad for you; raise to charge them now. Raise.", zh: "只跟会让听牌在许多转牌对你不利的面便宜看牌；现在加注收费。应加注。" },
+      },
+    },
+    {
+      s: { en: "Monotone board: K♠9♠4♠ (all spades). You hold 9♥8♥ (second pair, no spade). Villain bets big. Best action?", zh: "单色面：K♠9♠4♠（全黑桃）。你持 9♥8♥（第二对，无黑桃）。对手大注。最佳行动？" },
+      lbl: { en: "9♥8♥ on a monotone board", zh: "9♥8♥（单色面）" },
+      board: ["Ks","9s","4s"], pot: 14, bet: 11, pos: "BTN (IP)", hand: ["9h","8h"],
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "On a monotone board with no spade, second pair is behind every flush and most flush draws that bet big; you have no redraw and beat too little. Fold.", zh: "在你无黑桃的单色面，第二对落后于每个同花与多数大注花听；你无再补牌、打赢的太少。应弃。" },
+        raise: { en: "Raising a no-flush one pair into a monotone betting range is spew. Fold.", zh: "在单色面下注范围里用无同花单对加注是乱送。应弃。" },
       },
     },
   ]);
@@ -2733,6 +4588,131 @@
       actions: ACT, correct: ["check"], leak: "street_plan",
       fb: {
         bet: { en: "Ace board, middle pair — pot control. Check.", zh: "A 高面中对 — 控池。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Capstone: flop A-9-4, you hold A♥K♦ (top pair top kicker), checked to you. Best action?", zh: "综合：翻牌 A-9-4，你持 A♥K♦（顶对顶踢），对手过牌给你。最佳行动？" },
+      lbl: { en: "A♥K♦ top pair top kicker", zh: "A♥K♦ 顶对顶踢" },
+      board: ["As","9d","4c"], pot: 8, bet: 0, pos: "BTN (IP)", hand: ["Ah","Kd"],
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "Top pair top kicker on a dry board is a clear value bet — start building the pot. Bet.", zh: "干燥面顶对顶踢是明确价值下注 — 开始建池。应下注。" },
+      },
+    },
+    {
+      s: { en: "Capstone: turn K-9-5-2, you hold K♥Q♣ (top pair). Villain fires a second barrel (two-thirds pot). Best action?", zh: "综合：转牌 K-9-5-2，你持 K♥Q♣（顶对）。对手开第二枪（三分之二池）。最佳行动？" },
+      lbl: { en: "K♥Q♣ top pair", zh: "K♥Q♣ 顶对" },
+      board: ["Ks","9d","5c","2h"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Kh","Qc"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Top pair with a good kicker beats a turn barreling range of worse value and bluffs; folding is too tight. Call.", zh: "顶对好踢打赢更差价值与诈唬的转牌开枪范围；弃牌过紧。应跟。" },
+        raise: { en: "Raising bloats the pot and folds out the bluffs you beat; flat-call. Call.", zh: "加注做大底池、赶走你打赢的诈唬；平跟。应跟。" },
+      },
+    },
+    {
+      s: { en: "Capstone: flop 9-8-4 (two diamonds), you hold Q♦J♦ (flush draw + gutshot). Villain bets. Best action?", zh: "综合：翻牌 9-8-4（两张方块），你持 Q♦J♦（同花听+卡顺）。对手下注。最佳行动？" },
+      lbl: { en: "Q♦J♦ flush draw + gutshot", zh: "Q♦J♦ 同花听+卡顺" },
+      board: ["9d","8d","4c"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["Qd","Jd"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A flush draw plus a gutshot is a strong semi-bluff with big equity and fold equity — never fold. Raise.", zh: "同花听加卡顺是强半诈唬、权益与弃牌率都高 — 绝不弃。应加注。" },
+        call: { en: "Calling is fine, but raising as a semi-bluff applies pressure and can win now. Raise.", zh: "平跟可行，但半诈唬加注施压、能立即取胜。应加注。" },
+      },
+    },
+    {
+      s: { en: "Capstone: river A-K-9-5-2, you hold 9♥8♥ (third pair). Villain bets three-quarters pot. Best action?", zh: "综合：河牌 A-K-9-5-2，你持 9♥8♥（第三对）。对手下注四分之三池。最佳行动？" },
+      lbl: { en: "9♥8♥ third pair", zh: "9♥8♥ 第三对" },
+      board: ["As","Kd","9c","5h","2s"], pot: 16, bet: 12, pos: "BTN (IP)", hand: ["9h","8h"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Third pair on an ace-king-high board is behind a three-quarters-pot value range and beats too few bluffs. Fold.", zh: "A-K 高面第三对落后于 3/4 池价值范围、打赢的诈唬太少。应弃。" },
+        raise: { en: "Raising third pair into a value-heavy range is spew. Fold.", zh: "用第三对向价值为主的范围加注是乱送。应弃。" },
+      },
+    },
+    {
+      s: { en: "Capstone: turn Q-8-5-4, you hold Q♣9♣ (weak top pair). Checked to you. Best action?", zh: "综合：转牌 Q-8-5-4，你持 Q♣9♣（弱顶对）。对手过牌给你。最佳行动？" },
+      lbl: { en: "Q♣9♣ weak top pair", zh: "Q♣9♣ 弱顶对" },
+      board: ["Qs","8d","5c","4h"], pot: 12, bet: 0, pos: "BTN (IP)", hand: ["Qc","9c"],
+      street: "turn",
+      actions: ACT, correct: ["check"], leak: "street_plan",
+      fb: {
+        bet: { en: "A weak-kicker top pair plays best as a pot-control check — betting bloats the pot and gets raised by better. Check.", zh: "弱踢顶对最适合控池过牌 — 下注做大底池、被更好牌加注。应过牌。" },
+      },
+    },
+    {
+      s: { en: "Capstone: river K♠Q♠4♠8♦2♣, you hold A♠5♠ (the nut flush). Checked to you. Best action?", zh: "综合：河牌 K♠Q♠4♠8♦2♣，你持 A♠5♠（坚果同花）。对手过牌给你。最佳行动？" },
+      lbl: { en: "A♠5♠ nut flush", zh: "A♠5♠ 坚果同花" },
+      board: ["Ks","Qs","4s","8d","2c"], pot: 18, bet: 0, pos: "BTN (IP)", hand: ["As","5s"],
+      street: "river",
+      actions: ACT, correct: ["bet"], leak: "sizing",
+      fb: {
+        check: { en: "With the nut flush, a big bet extracts maximum value from worse flushes and two pair; checking wastes it. Bet.", zh: "持坚果同花，大注从更差同花与两对榨取最大价值；过牌浪费。应下注。" },
+      },
+    },
+    {
+      s: { en: "Capstone: turn K♥8♥3♣2♦, you hold A♥Q♥ (nut flush draw + overcard). Villain bets half pot. Best action?", zh: "综合：转牌 K♥8♥3♣2♦，你持 A♥Q♥（坚果同花听+超牌）。对手下注半池。最佳行动？" },
+      lbl: { en: "A♥Q♥ nut flush draw", zh: "A♥Q♥ 坚果同花听" },
+      board: ["Kh","8h","3c","2d"], pot: 14, bet: 7, pos: "BTN (IP)", hand: ["Ah","Qh"],
+      street: "turn",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "A nut flush draw with an overcard has the equity and odds to continue versus a half-pot turn bet. Call.", zh: "坚果同花听加超牌对半池转牌注有权益与赔率续打。应跟。" },
+        raise: { en: "Raising is fine, but flatting keeps villain's bluffs in and draws cheaply. Call.", zh: "加注可行，但平跟留住对手诈唬、便宜听牌。应跟。" },
+      },
+    },
+    {
+      s: { en: "Capstone: 3-bet pot. Flop A-K-7, you hold Q♣Q♦ (an underpair). Villain jams. Best action?", zh: "综合：3-bet 底池。翻牌 A-K-7，你持 Q♣Q♦（欠对）。对手全压。最佳行动？" },
+      lbl: { en: "Q♣Q♦ underpair, 3bp", zh: "Q♣Q♦ 欠对，3bp" },
+      board: ["As","Kd","7c"], pot: 16, bet: 22, pos: "BTN (IP)", hand: ["Qc","Qd"],
+      allIn: true,
+      actions: FACE_CALL, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Queens are an underpair on an A-K board; against a 3-bet-pot jam you are crushed by the aces and kings that get it in. Fold.", zh: "QQ 是 A-K 面的欠对；面对 3-bet 底池全压，被打进来的 A、K 碾压。应弃。" },
+        raise: { en: "Already all-in — fold or call, and QQ is far too weak here. Fold.", zh: "已全压 — 弃或跟，QQ 在此远不够强。应弃。" },
+      },
+    },
+    {
+      s: { en: "Capstone: flop J-T-6, you hold 6♥6♦ (a set). Villain bets. Best action?", zh: "综合：翻牌 J-T-6，你持 6♥6♦（三条）。对手下注。最佳行动？" },
+      lbl: { en: "6♥6♦ set", zh: "6♥6♦ 三条" },
+      board: ["Js","Td","6c"], pot: 8, bet: 6, pos: "BTN (IP)", hand: ["6h","6d"],
+      actions: FACE, correct: ["raise"], leak: "street_plan",
+      fb: {
+        fold: { en: "A set is a monster — folding is absurd. Raise for value and to charge the many draws on J-T-6. Raise.", zh: "三条是巨牌 — 弃牌荒谬。加注价值并向 J-T-6 上众多听牌收费。应加注。" },
+        call: { en: "On a wet board, raise to charge draws and build the pot rather than letting free cards in. Raise.", zh: "湿板上加注向听牌收费、做大底池，而非给免费牌。应加注。" },
+      },
+    },
+    {
+      s: { en: "Capstone: you checked back the flop. Turn 8-5-2-4, you hold A♣8♦ (top pair), villain checks. Best action?", zh: "综合：你过牌了翻牌。转牌 8-5-2-4，你持 A♣8♦（顶对），对手过牌。最佳行动？" },
+      lbl: { en: "A♣8♦ top pair (delayed)", zh: "A♣8♦ 顶对（延迟）" },
+      board: ["8s","5d","2c","4h"], pot: 10, bet: 0, pos: "BTN (IP)", hand: ["Ac","8d"],
+      street: "turn",
+      actions: ACT, correct: ["bet"], leak: "street_plan",
+      fb: {
+        check: { en: "You checked flop to keep villain's range wide; now value bet your top pair with the best kicker. Bet.", zh: "你过牌翻牌保持对手范围宽；现在用带最佳踢脚的顶对价值下注。应下注。" },
+      },
+    },
+    {
+      s: { en: "Capstone: river K-Q-9-5-2, you hold A♥J♥ (ace-high, no pair). Villain bets half pot. Best action?", zh: "综合：河牌 K-Q-9-5-2，你持 A♥J♥（A 高，无对）。对手下注半池。最佳行动？" },
+      lbl: { en: "A♥J♥ ace-high", zh: "A♥J♥ A 高" },
+      board: ["Ks","Qd","9c","5h","2s"], pot: 16, bet: 8, pos: "BTN (IP)", hand: ["Ah","Jh"],
+      street: "river",
+      actions: FACE, correct: ["fold"], leak: "too_loose",
+      fb: {
+        call: { en: "Ace-high beats only pure bluffs and loses to every pair; versus a half-pot value-and-bluff range it can't call. Fold.", zh: "A 高只打赢纯诈唬、输给所有对子；面对半池价值加诈唬范围不够跟。应弃。" },
+        raise: { en: "Bluff-raising ace-high with no equity is burning chips. Fold.", zh: "用无权益的 A 高诈唬加注是烧筹码。应弃。" },
+      },
+    },
+    {
+      s: { en: "Capstone: river 9-7-4-3-2, you hold K♣K♦ (an overpair). Villain bets two-thirds pot. Best action?", zh: "综合：河牌 9-7-4-3-2，你持 K♣K♦（超对）。对手下注三分之二池。最佳行动？" },
+      lbl: { en: "K♣K♦ overpair", zh: "K♣K♦ 超对" },
+      board: ["9s","7d","4c","3h","2s"], pot: 18, bet: 12, pos: "BTN (IP)", hand: ["Kc","Kd"],
+      street: "river",
+      actions: FACE, correct: ["call"], leak: "indifference",
+      fb: {
+        fold: { en: "Kings are an overpair to a low board; you beat every bluff and worse pair, losing only to a few straights and sets. Folding is too tight. Call.", zh: "KK 是低牌面超对；你打赢所有诈唬与更差对子，只输给少数顺子三条。弃牌过紧。应跟。" },
+        raise: { en: "Raising folds out the bluffs you beat and only gets called by better; just call. Call.", zh: "加注赶走你打赢的诈唬、只被更好牌跟；平跟即可。应跟。" },
       },
     },
   ]);
