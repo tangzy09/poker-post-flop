@@ -262,6 +262,41 @@ const Engine = {
     this.save();
   },
 
+  _placementStartCourse: { flop: "c3", odds: "c2", turn: "c9", river: "c10", advanced: "c13" },
+
+  finishPlacementTest(takenAt) {
+    const res = this.testResults;
+    const total = res.length;
+    const score = res.filter((r) => r.ok).length;
+    const byTheme = {}, byStreet = {}, byLeak = {};
+    for (const r of res) {
+      (byTheme[r.theme] = byTheme[r.theme] || { h: 0, c: 0 }).h++;
+      if (r.ok) byTheme[r.theme].c++;
+      (byStreet[r.street] = byStreet[r.street] || { h: 0, c: 0 }).h++;
+      if (r.ok) byStreet[r.street].c++;
+      if (!r.ok) byLeak[r.leak] = (byLeak[r.leak] || 0) + 1;
+    }
+    let weakestTheme = null, worst = 2;
+    for (const t of Object.keys(byTheme)) {
+      const acc = byTheme[t].c / byTheme[t].h;
+      if (acc < worst) { worst = acc; weakestTheme = t; }
+    }
+    const prev = (this.store.placement && this.store.placement.history) || [];
+    this.store.placement = {
+      takenAt: takenAt || 0,
+      score, total,
+      byTheme, byStreet, byLeak,
+      weakestTheme,
+      startCourse: this._placementStartCourse[weakestTheme] || "c2",
+      results: res.slice(),
+      history: prev.concat([{ takenAt: takenAt || 0, score }]),
+    };
+    this.testMode = false;
+    this.testQueue = [];
+    this.screen = "placement-result";
+    this.save();
+  },
+
   startReview(filter) {
     this.reviewFilter = filter || null;
     if (this.screen === "stats") this.reviewReturnTo = "stats";
