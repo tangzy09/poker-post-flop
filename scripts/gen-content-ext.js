@@ -64,7 +64,7 @@ function emitSpotSpec(spec) {
 
 function emitQuestions(course) {
   course.spots.forEach((s, i) => validateSpot(s, course.id, i));
-  if (course.spots.length !== 12) throw new Error(`${course.id}: expected 12 spots, got ${course.spots.length}`);
+  if (course.spots.length !== 12 && course.spots.length !== 24) throw new Error(`${course.id}: expected 12 or 24 spots, got ${course.spots.length}`);
   let out = `  QUESTIONS.${course.id} = buildSpots("${course.id}", "${course.concept}", [\n`;
   for (const spec of course.spots) out += `    {\n${emitSpotSpec(spec)}    },\n`;
   out += `  ]);\n`;
