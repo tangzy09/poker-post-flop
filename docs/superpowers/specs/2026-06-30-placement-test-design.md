@@ -24,6 +24,9 @@
 | 逐题回顾 | 默认折叠,错题自动展开、对题收起 |
 | 推荐起点 | **最弱主题的入门课**(主题 4 题样本够,比"错最多的具体课"稳健) |
 | 首次引导 | 全新用户(无进度)首次进 App 轻提示做摸底,可跳过 |
+| 测试反馈 | **即时反馈**:每题答完显示对错 + 讲解(复用现有 drill→feedback 流程,实现最省) |
+| 重测 | 打乱 20 题的出现顺序(题集不变 → 分数可比;顺序变 → 削弱机械记忆) |
+| 错题衔接 | 评价页提供"把本次错题加入复习堆"按钮,打通测试 → 复习 |
 | 测试与进度 | 测试**不计入**正式课程统计/解锁;单独存最近结果 + 历史分数 |
 
 ## 3. 课程结构变更
@@ -72,9 +75,9 @@ const PLACEMENT_SPEC = [
 
 ## 5. 测试流程(engine `testMode`,仿 `reviewMode`)
 
-- `startPlacementTest()`:按 `PLACEMENT_SPEC` 从各课 `getQuestions` 取题,`Object.assign({}, q, { _courseId, _theme })` 装入 `testQueue`;置 `testMode=true`、`qIdx=0`、`testResults=[]`;`screen="drill"`。
+- `startPlacementTest()`:按 `PLACEMENT_SPEC` 从各课 `getQuestions` 取题,`Object.assign({}, q, { _courseId, _theme })` 装入 `testQueue`;用 `Math.random()` **打乱出现顺序**(题集固定、顺序随机,削弱重测记忆);置 `testMode=true`、`qIdx=0`、`testResults=[]`;`screen="drill"`。
 - `currentQuestions()`:`testMode` 时返回 `testQueue`(改一行)。
-- 跑题复用现有 `grade()` / `feedbackFor()` / drill+feedback 渲染。
+- 跑题复用现有 `grade()` / `feedbackFor()` / drill→feedback 渲染 —— **即时反馈**:每题答完进 feedback 页显示对错+讲解,再 next 到下一题。
 - `recordAnswer()`:`testMode` 与 `reviewMode` 一样**跳过**正式统计写入;另把每题 `{qid, courseId, theme, choice, ok, leak, street}` 收集进 `this.testResults`。
 - `finishPlacementTest()`:由 `testResults` 计算评价对象;写入 `store.placement`;`screen="placement-result"`。
 - 退出/中途返回:测试为一次性,未完成中途退出则丢弃(有确认提示防误触);完成后结果持久化。
@@ -98,10 +101,10 @@ const PLACEMENT_SPEC = [
 自上而下:
 1. **总评**:得分 X/20 + 百分比 + 水平评级(≥85% 高手 / 60–84% 进阶 / <60% 初学);若有历史,显示"上次 X → 这次 Y"。
 2. **主题分**:5 主题正确率条形图,最弱主题高亮。
-3. **复用 stats 卡片**:把本次测试聚合成一个**临时"伪 store"**(`{statsByCourse, statsByStreet, reviewPile}` 由 `testResults` 现场构造,错题进伪 reviewPile),传给现有 `renderProfileCard`/`renderLeakCard`/`renderPlanCard`。漏洞维度错题 <2 时不渲染该条或标"样本不足"。**coach.js 函数签名不变**(若现有函数直接读全局 `Engine.store`,则改为接收一个可选 store 参数,默认仍读全局——向后兼容)。
-4. **推荐起点**:`weakestTheme` → 其入门课卡片 + "从这课开始"跳转按钮。
+3. **复用 stats 卡片(补漏视角)**:把本次测试聚合成一个**临时"伪 store"**(`{statsByCourse, statsByStreet, reviewPile}` 由 `testResults` 现场构造,错题进伪 reviewPile),传给现有 `renderProfileCard`/`renderLeakCard`/`renderPlanCard`。**plan 卡片**呈现"这些**具体错题**去复习"。coach.js 卡片函数向后兼容地加可选 store 参数(默认读全局)。漏洞维度错题 <2 时不渲染该条或标"样本不足"。
+4. **推荐起点(入门视角)**:`weakestTheme` → 其入门课卡片 + "从这课开始"跳转按钮,表达"**系统学习**从这课开始"。与 plan 卡片**分工明确**:plan 卡片 = 补具体漏洞,推荐起点 = 系统入门 —— 文案点明区别,避免两个推荐打架。
 5. **逐题回顾**:20 题列表,每项 牌面+手牌 / 你的选择 / 正确答案 / ✓✗ / 一句点评(题目 `feedback`);**默认折叠,错题展开、对题收起**。
-6. 底部:"重测"(重新开始基准卷)、"返回课程"。
+6. 底部:"**把本次错题加入复习**"(写入正式 reviewPile,衔接复习系统)、"重测"(重新开始基准卷)、"返回课程"。
 
 措辞遵循小样本诚实:用"这次偏…",不用"你的重大漏洞"。
 
