@@ -100,26 +100,36 @@
     var valueRight = q.correct.indexOf("bet") >= 0 || q.correct.indexOf("raise") >= 0;
     var hasDraw = (ev.fd || (ev.sRanks && ev.sRanks.length)) && !STRONG[ev.cat];
 
-    // 1) draw spot with cards to come — full numeric explanation
+    // 1) draw spot facing a bet — compare ONE-card equity (rule of 2) to the price.
+    //    Borderline draws are decided by implied / reverse-implied odds, not raw odds,
+    //    so never assert a false "eq > need" / "eq < need" inequality.
     if (toCome > 0 && hasDraw) {
-      var d = drawTags(ev), e = eq(d.outs, toCome), od = s.bet ? potOdds(s.pot, s.bet) : null;
+      var d = drawTags(ev);
+      var oneCard = Math.min(d.outs * 2 + (d.outs >= 9 ? 1 : 0), 59); // ≈ one-card hit %
+      var od = s.bet ? potOdds(s.pot, s.bet) : null;
       var head = L(
-        "你的牌是 " + d.tags.join(" + ") + "，约 " + d.outs + " 个 outs，" + (toCome === 2 ? "到河牌" : "还一张") + "≈" + e + "% 胜率",
-        "You hold " + d.tags.join(" + ") + " — about " + d.outs + " outs, ≈" + e + "% by the river"
+        "你的牌是 " + d.tags.join(" + ") + "，约 " + d.outs + " 个 outs（一张牌≈" + oneCard + "% 命中）",
+        "You hold " + d.tags.join(" + ") + " — about " + d.outs + " outs (≈" + oneCard + "% to hit on one card)"
       );
       if (od) head += L("，面对 " + s.bet + " 注（底池 " + s.pot + "）需 " + od.need + "%（" + od.ratio + ":1）", ", and facing " + s.bet + " into " + s.pot + " you need " + od.need + "% (" + od.ratio + ":1)");
       head += L("。", ". ");
+      var clears = od && oneCard >= od.need;
       var tailZh, tailEn;
       if (!od) {
-        // no bet faced — hero is leading / barreling; frame as a semi-bluff, not pot odds
         tailZh = ok ? "带强听牌主动下注（半诈唬）兼具弃牌率与命中价值 —— " + rec(q) + " 正确。" : "这是半诈唬下注/继续的好局面 —— 正确是 " + rec(q) + "。";
         tailEn = ok ? "Betting a strong draw (semi-bluff) combines fold equity with your outs — " + rec(q) + " is right." : "This is a semi-bluff spot — the answer is " + rec(q) + ".";
+      } else if (foldRight && !clears) {
+        tailZh = oneCard + "% < 所需 " + od.need + "%，价格不够，" + (ok ? "弃牌正确（" + rec(q) + "）。" : "跟注是 −EV —— 正确是 " + rec(q) + "。");
+        tailEn = oneCard + "% < the " + od.need + "% needed, so " + (ok ? "folding is right (" + rec(q) + ")." : "calling is −EV — the answer is " + rec(q) + ".");
       } else if (foldRight) {
-        tailZh = e + "% 达不到所需 " + od.need + "%，" + (ok ? "弃牌正确（" + rec(q) + "）。" : "跟注是 −EV —— 正确是 " + rec(q) + "。");
-        tailEn = e + "% is below the " + od.need + "% needed, so " + (ok ? "folding is right (" + rec(q) + ")." : "calling is −EV — the answer is " + rec(q) + ".");
+        tailZh = "原始赔率虽够，但这类弱/被压制的同花听命中常输大池（反向隐含赔率）或无位置面对大注 —— " + (ok ? "弃牌正确（" + rec(q) + "）。" : "正确是 " + rec(q) + "。");
+        tailEn = "The raw odds are there, but a weak/dominated draw loses a big pot when it hits (reverse implied) or is OOP vs a big bet — " + (ok ? "folding is right (" + rec(q) + ")." : "the answer is " + rec(q) + ".");
+      } else if (clears) {
+        tailZh = oneCard + "% ≥ 所需 " + od.need + "%，" + (ok ? "继续是明确 +EV（" + rec(q) + "）。" : "弃牌丢掉 +EV 的继续 —— 正确是 " + rec(q) + "。");
+        tailEn = oneCard + "% ≥ the " + od.need + "% needed, so " + (ok ? "continuing is clearly +EV (" + rec(q) + ")." : "folding spills a +EV continue — the answer is " + rec(q) + ".");
       } else {
-        tailZh = e + "% 高于所需 " + od.need + "%，" + (ok ? "继续是明确 +EV（" + rec(q) + "）。" : "弃牌丢掉 +EV 的继续 —— 正确是 " + rec(q) + "。");
-        tailEn = e + "% beats the " + od.need + "% needed, so " + (ok ? "continuing is clearly +EV (" + rec(q) + ")." : "folding spills a +EV continue — the answer is " + rec(q) + ".");
+        tailZh = "单张 " + oneCard + "% 虽不足 " + od.need + "%，但靠隐含赔率与半诈唬弃牌率 —— " + (ok ? "继续（" + rec(q) + "）。" : "正确是 " + rec(q) + "。");
+        tailEn = "The one-card " + oneCard + "% is short of " + od.need + "%, but implied odds plus semi-bluff fold equity favor continuing — " + (ok ? rec(q) + " is right." : "the answer is " + rec(q) + ".");
       }
       return tag(ok) + head + L(tailZh, tailEn);
     }
