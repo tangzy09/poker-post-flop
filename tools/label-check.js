@@ -99,7 +99,7 @@ for (let i = 1; i <= 30; i++) for (const q of getQuestions("c" + i)) {
 
   // 3. trips/set vs two pair
   if (/two pair|两对/.test(text) && (ev.cat === "trips" || ev.tripKind)) flag(q.id, "trips-as-2pair", `实际为 ${ev.tripKind || "trips"}（三条），文案称两对`);
-  if (/(\bset\b|三条|\btrips\b)/.test(text) && ev.cat !== "trips" && !ev.tripKind && ev.cat !== "fullhouse" && ev.cat !== "quads") flag(q.id, "no-trips", `文案称三条/set，但实际为 ${ev.cat}（无三条）`);
+  if (/(\bset\b|三条|\btrips\b)/.test(text.replace(/set[\s-]?up/g, "")) && ev.cat !== "trips" && !ev.tripKind && ev.cat !== "fullhouse" && ev.cat !== "quads") flag(q.id, "no-trips", `文案称三条/set，但实际为 ${ev.cat}（无三条）`);
 
   // 4. full house vs quads
   if (/full house|葫芦|full\b/.test(text) && ev.cat === "quads") flag(q.id, "quads-as-fh", `实际为 quads（四条），文案称葫芦`);
