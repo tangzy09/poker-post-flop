@@ -117,6 +117,13 @@ t("course.questions", { n: 24 });
   - missed draw → **破产听牌**
   - capped villain → **对手（封顶）**
 
+## 反馈引擎（`js/explain.js`）
+
+答题后 `engine.feedbackFor(q, choice, ok)` 先调 `explainFeedback`：从 board+hand 算出成牌/听牌、outs、胜率（**面对下注用单张 ×2**）、底池赔率、MDF，对**答对和答错都**生成双语讲解；算不出（如纯范围题）则回退到题目自带的 `fb` / `reasonKey`。反馈屏答对显示「为什么对」、答错显示「为何不对」。
+
+- 写题时 `fb` 仍要写好 —— 它既是回退兜底，也用于 explain 覆盖不到的局面。
+- 靠隐含 / 反向隐含赔率定夺的局面，explain 只给措辞、**不硬断「+EV/−EV」**，避免印出假数学。
+
 ## 质量检查清单
 
 改内容后按顺序：
@@ -126,9 +133,11 @@ node scripts/gen-content-ext.js   # 仅当改了 C13–C30 源数据
 npm test                          # 必须全绿（当前 44 tests）
 npm run audit                     # 期望 699/699
 node scripts/audit-stem-spot.js   # 题干 vs 牌面
+node tools/label-check.js         # 牌力标签：重算成牌/听牌 vs 文案（成顺标听牌、三条标两对、四条标葫芦…）
+node tools/verify-feedback.js     # 计算式反馈：逐题核对 explain 印出的每个不等式真假（应 0 假）
 ```
 
-测试覆盖：重复牌、听牌类型、label 与牌力、solver 牌面、learn key 注册、stem 与 spot 一致等。
+测试覆盖：重复牌、听牌类型、label 与牌力、solver 牌面、learn key 注册、stem 与 spot 一致等。两个 `tools/*` 体检脚本独立于 `npm test`，是改内容后揪牌力/答案/反馈错误的最后一道关。
 
 ## C3 范围图
 

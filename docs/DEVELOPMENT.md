@@ -52,6 +52,8 @@ VS Code 也可用任务：**Terminal → Run Task → serve**（见 `.vscode/tas
 | `npm run audit` | 699 题全量审计，输出 `tools/audit-report.json` |
 | `node scripts/gen-content-ext.js` | 改 C13–C30 源数据后重新生成 `js/content-ext.js` |
 | `node scripts/audit-stem-spot.js` | 题干文字 vs 牌面/手牌一致性 |
+| `node tools/label-check.js` | 牌力标签体检：重算成牌/听牌 vs 文案声明 |
+| `node tools/verify-feedback.js` | 计算式反馈数学全量验证（逐题核对不等式真假） |
 | `powershell -File tools/deploy-ec2.ps1` | 打版本戳 + 上传 EC2（需 SSH 密钥） |
 
 ## 5. 代码结构（改哪里）
@@ -64,6 +66,7 @@ js/
   content.js        C1–C12 原理页 + 题目（主题库，手改）
   content-ext.js    C13–C30（由 scripts 生成，勿手改大段）
   engine.js         进度、评分、复习堆、localStorage 迁移
+  explain.js        计算式反馈引擎（outs/胜率/赔率/MDF，对错都有）
   app.js            各 Screen 渲染与事件
   coach.js          统计、漏洞、训练计划
   table.js          牌桌 / spot 渲染
@@ -77,6 +80,8 @@ test/               自动化测试（与改动的文件一起跑）
 tools/
   deploy-ec2.ps1    EC2 部署
   stamp-version.js    index.html 脚本 ?v=git-hash 缓存破坏
+  label-check.js    牌力标签体检（成牌/听牌 vs 文案）
+  verify-feedback.js  计算式反馈数学全量验证
 ```
 
 ### 数据流（简图）

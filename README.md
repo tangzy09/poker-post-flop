@@ -1,6 +1,6 @@
 # Poker Post-Flop
 
-Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons (including an adaptive placement test), theory slides, **699** drill questions, wrong-answer feedback, review pile, and an interactive table view.
+Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons (including an adaptive placement test), theory slides, **699** drill questions, **computed bilingual feedback on both correct and wrong answers** (outs / equity / pot odds / MDF), review pile, and an interactive table view.
 
 **Live:** https://post-flop-coach.ai-speeds.com/
 
@@ -22,12 +22,13 @@ Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons (includi
 - **30 courses** — C1 placement test, C2–C12 fundamentals, C13–C30 advanced: sizing/MDF, blockers, facing raises, 3-bet pots, pot control, turn defense, floating, overbets, donk bets, thin value, draws & semi-bluffs, river defense, multiway, exploits, tournament/ICM, multi-street planning, special boards, capstone
 - **C13–C30 hold 24 drills each** (432 advanced spots) — every answer cross-checked by adversarial blind-solve
 - **C1 placement test** — a fixed 20-question baseline drawn from later courses, with a detailed evaluation at the end
+- **Computed feedback** (`js/explain.js`) — derives outs / equity / pot odds / MDF from board+hand and explains **both correct and wrong** answers in zh/en, falling back to hand-written reasons where a number adds nothing
 - Learn → drill flow; **review lessons** anytime after first pass
 - Poker table visualization (HU spots)
 - C3 range / equity chart (`js/range-chart.js`, `js/equity.js`)
 - Profile, leak analysis, training plan (`js/coach.js`)
 - Progress in browser `localStorage`
-- Automated tests + content audit
+- Automated tests + content audit + hand-strength / feedback-math QA (`tools/label-check.js`, `tools/verify-feedback.js`)
 
 ## Quick start
 
@@ -61,6 +62,7 @@ js/
   courses.js              30-course metadata
   content.js              C1–C12 learn + questions (edit by hand)
   content-ext.js          C13–C30 (generated)
+  explain.js              Computed bilingual feedback (outs/equity/odds/MDF)
   engine.js               Progress, grading, review pile
   app.js                  Screens & events
   coach.js                Stats, leaks, training plan
@@ -75,6 +77,8 @@ test/                     Automated tests
 tools/
   deploy-ec2.ps1          EC2 deploy + cache bust
   stamp-version.js        Git hash → script ?v=
+  label-check.js          Hand-strength label QA (cards vs text)
+  verify-feedback.js      Feedback-math QA (every inequality checked)
 docs/
   DEVELOPMENT.md          Dev guide (中文)
   CONTENT.md              Content / i18n guide (中文)

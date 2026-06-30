@@ -12,7 +12,8 @@ Project: **Poker Post-Flop** — static bilingual HU post-flop trainer (30 cours
 
 1. Run `npm test` when touching `js/`, `scripts/`, or `test/`.
 2. Run `npm run audit` when changing question content (expect 699/699).
-3. Do **not** commit unless the user asks.
+3. After content changes also run `node tools/label-check.js` (hand-strength labels vs cards) and `node tools/verify-feedback.js` (computed-feedback math) — both should report 0.
+4. Do **not** commit unless the user asks.
 
 ## Code conventions
 
@@ -41,6 +42,8 @@ Project: **Poker Post-Flop** — static bilingual HU post-flop trainer (30 cours
 | UI strings | `js/i18n.js` |
 | Course list | `js/courses.js` |
 | Stats / leaks | `js/coach.js` |
+| Answer feedback (computed, bilingual) | `js/explain.js` (called by `engine.feedbackFor`) |
+| Content QA tools | `tools/label-check.js`, `tools/verify-feedback.js` |
 | Deploy EC2 | `tools/deploy-ec2.ps1` |
 
 ## Deploy (user request only)
