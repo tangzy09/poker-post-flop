@@ -249,17 +249,15 @@ function renderFeedback() {
 
   // Resolve translatable text at render time so it follows live language changes.
   const correct = correctLabel(fb.question);
-  const detail = Engine.feedbackFor(fb.question, fb.choice);
+  const detail = Engine.feedbackFor(fb.question, fb.choice, fb.result.ok);
 
   return (
     '<section class="screen feedback-screen">' +
     '<div class="fb-grade ' + fb.result.grade + '">' + t("grade." + fb.result.grade) + "</div>" +
     '<p class="fb-correct">' + t("fb.correct") + ": <b>" + correct + "</b></p>" +
-    (!fb.result.ok
-      ? '<div class="fb-block"><h4>' + t("fb.whyWrong") + "</h4><p>" + detail.reason + "</p></div>" +
-        '<div class="fb-block"><h4>' + t("fb.concept") + "</h4><p>" + detail.concept + "</p></div>" +
-        (detail.ctx ? '<div class="fb-block"><h4>' + t("fb.context") + "</h4><p>" + detail.ctx + "</p></div>" : "")
-      : "") +
+    '<div class="fb-block"><h4>' + t(fb.result.ok ? "fb.whyRight" : "fb.whyWrong") + "</h4><p>" + detail.reason + "</p></div>" +
+    '<div class="fb-block"><h4>' + t("fb.concept") + "</h4><p>" + detail.concept + "</p></div>" +
+    (detail.ctx ? '<div class="fb-block"><h4>' + t("fb.context") + "</h4><p>" + detail.ctx + "</p></div>" : "") +
     '<div class="btn-stack">' +
     '<button class="btn primary" data-action="next-q">' +
     (Engine.qIdx + 1 >= Engine.currentQuestions().length ? t("fb.finish") : t("fb.next")) +

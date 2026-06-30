@@ -137,6 +137,8 @@ reg("grade.good", "Acceptable", "可接受");
 reg("grade.wrong", "Incorrect", "不对");
 
 reg("fb.whyWrong", "Why this doesn't work", "为何不对");
+reg("fb.whyRight", "Why it's right", "为什么对");
+reg("fb.generic.ok", "Correct — that's the best line here.", "正确 —— 这是该局面的最佳选择。");
 reg("fb.correct", "Recommended line", "推荐行动");
 reg("fb.concept", "Key idea", "相关概念");
 reg("fb.context", "Spot context", "局面背景");

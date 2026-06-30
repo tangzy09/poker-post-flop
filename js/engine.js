@@ -145,13 +145,16 @@ const Engine = {
     return { ok, grade: ok ? "best" : "wrong" };
   },
 
-  feedbackFor(question, choice) {
+  feedbackFor(question, choice, ok) {
     const fb = (question.feedback && (question.feedback[choice] || question.feedback._default)) || {};
     const conceptRaw = fb.concept || question.leak || "concept";
+    const computed = (typeof explainFeedback === "function") ? explainFeedback(question, choice, ok) : null;
+    const fallback = fb.reasonKey ? t(fb.reasonKey) : (ok ? t("fb.generic.ok") : t("fb.generic.call_loose"));
     return {
-      reason: fb.reasonKey ? t(fb.reasonKey) : t("fb.generic.call_loose"),
+      reason: computed || fallback,
       concept: tConcept(conceptRaw),
       ctx: question.ctxKey ? t(question.ctxKey) : "",
+      ok: ok,
     };
   },
 
