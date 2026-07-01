@@ -226,7 +226,6 @@ reg("review.subtitle", "Grouped by course — drill a group or remove mastered i
 reg("review.all", "Review all ({n})", "全部复习 ({n})");
 reg("review.drillGroup", "Drill ({n})", "练本课 ({n})");
 reg("review.pileEmpty", "Your review pile is empty — missed questions land here automatically.", "错题堆是空的——训练里答错的题会自动收进来。");
-reg("review.chipMaster", "streak {s}/{m}", "连对 {s}/{m}");
 reg("review.remove", "Remove from pile", "从复习堆移除");
 reg("review.openPile", "Open review pile", "打开复习堆");
 reg("review.emptyFilter", "No matching mistakes in your review pile.", "复习堆里没有符合条件的错题。");
@@ -234,8 +233,33 @@ reg("review.over.title", "Review session complete", "复习完成");
 reg("review.over.score", "This session: {n} / {total} correct", "本次 {n} / {total} 答对");
 reg("review.over.remaining", "{n} left in review pile", "复习堆还剩 {n} 题");
 reg("review.over.cleared", "Review pile cleared — nice work!", "复习堆已清空，干得漂亮！");
-reg("review.over.mastered", "{n} mastered ({m} correct in a row)", "{n} 题已掌握（连对 {m} 次）");
+reg("review.over.mastered", "{n} mastered", "{n} 题已掌握");
 reg("review.over.done", "Done", "完成");
+/* 间隔重复(SRS) */
+reg("review.dueBtn", "Review due ({n})", "复习到期 ({n})");
+reg("review.headCount", "{due} due · {total} total", "{due} 到期 · 共 {total} 题");
+reg("review.chipDue", "due", "到期");
+reg("review.chipWait", "in {when}", "{when}后");
+reg("review.wait.days", "{n}d", "{n} 天");
+reg("review.wait.hours", "{n}h", "{n} 小时");
+reg("review.boxTitle", "Spaced-repetition level {b}/{m}", "间隔重复等级 {b}/{m}");
+reg("review.emptyDue", "No reviews due — next in {when}. Spacing them out helps them stick.", "暂无到期复习 — 下次 {when}后到期。拉开间隔更利于记牢。");
+/* 每日训练 */
+reg("daily.badge", "Daily", "每日");
+reg("daily.title", "Daily training", "今日训练");
+reg("daily.cardSub", "{n} hands picked for you: due reviews + weak spots + fresh spots.", "为你挑选 {n} 道：到期复习 + 弱项 + 新题。");
+reg("daily.start", "Start today's set", "开始今日训练");
+reg("daily.continue", "Continue", "继续");
+reg("daily.retake", "Practice again", "再练一遍");
+reg("daily.progressLine", "In progress: {a}/{s} answered", "进行中：已答 {a}/{s}");
+reg("daily.doneLine", "Done today: {c}/{t} correct", "今日已完成：{c}/{t} 答对");
+reg("daily.doneBadge", "Done today", "今日已完成");
+reg("daily.streak", "{n}-day streak", "连续 {n} 天");
+reg("daily.best", "Best streak: {n} days", "最佳纪录 {n} 天");
+reg("daily.over.title", "Daily training complete", "今日训练完成");
+/* 计分与评级 */
+reg("over.points", "Points: {n}", "积分 {n}");
+reg("over.combo", "Best combo ×{n}", "最高连击 ×{n}");
 
 // —— 12 courses ——
 reg("c1.title", "Placement Test", "初始测试");

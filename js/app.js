@@ -70,12 +70,42 @@ function render() {
     case "placement-result":
       root.innerHTML = renderPlacementResult();
       break;
+    case "daily-over":
+      root.innerHTML = renderDailyOver();
+      break;
     default:
       root.innerHTML = renderCourses();
   }
 
   applyI18n(document);
   bindEvents();
+}
+
+function renderDailyCard() {
+  const ds = Engine.dailyStatus();
+  const flame = ds.streakDays > 0 ? ' <span class="daily-flame">🔥 ' + t("daily.streak", { n: ds.streakDays }) + "</span>" : "";
+  let sub, btn;
+  if (ds.doneToday) {
+    const sc = ds.todayScore;
+    sub = t("daily.doneLine", { c: sc ? sc.c : 0, t: sc ? sc.t : ds.size });
+    btn = '<button class="btn secondary" data-action="start-daily">' + t("daily.retake") + "</button>";
+  } else if (ds.answered > 0) {
+    sub = t("daily.progressLine", { a: ds.answered, s: ds.size });
+    btn = '<button class="btn primary" data-action="start-daily">' + t("daily.continue") + "</button>";
+  } else {
+    sub = t("daily.cardSub", { n: ds.size });
+    btn = '<button class="btn primary" data-action="start-daily">' + t("daily.start") + "</button>";
+  }
+  return (
+    '<article class="course-card daily-card' + (ds.doneToday ? " done" : "") + '">' +
+    '<div class="cc-head"><span class="badge daily-badge">📅 ' + t("daily.badge") + "</span>" +
+    (ds.doneToday ? '<span class="badge done-badge">' + t("daily.doneBadge") + "</span>" : "") +
+    "</div>" +
+    "<h3>" + t("daily.title") + flame + "</h3>" +
+    '<p class="cc-sub">' + sub + "</p>" +
+    btn +
+    "</article>"
+  );
 }
 
 function renderCourses() {
@@ -86,6 +116,7 @@ function renderCourses() {
       <button class="btn" data-action="onboard-start">${t("placement.start")}</button>
       <button data-action="onboard-dismiss">${t("placement.later")}</button></div>`;
   }
+  cards += renderDailyCard();
   COURSES.forEach((c) => {
     if (c.placement) {
       const p = Engine.store.placement;
@@ -121,6 +152,7 @@ function renderCourses() {
       '<span class="cc-num">' + c.order + "</span>" +
       '<span class="badge ' + badgeCls + '">' + badge + "</span>" +
       (p.completed ? '<span class="badge done-badge">' + t("course.completed") + "</span>" : "") +
+      (p.grade ? '<span class="badge grade-badge grade-' + p.grade + '">' + p.grade + "</span>" : "") +
       "</div>" +
       "<h3>" + t(c.titleKey) + "</h3>" +
       '<p class="cc-sub">' + t(c.subKey) + "</p>" +
@@ -132,7 +164,7 @@ function renderCourses() {
     );
   });
 
-  const reviewN = Engine.store.reviewPile.length;
+  const dueN = Engine.dueReviewCount();
   return (
     '<section class="screen courses-screen">' +
     '<header class="page-head">' +
@@ -140,7 +172,7 @@ function renderCourses() {
     '<p class="muted">' + t("app.subtitle") + "</p>" +
     "</header>" +
     '<div class="course-grid">' + cards + "</div>" +
-    bottomNav("courses", reviewN) +
+    bottomNav("courses", dueN) +
     "</section>"
   );
 }
@@ -183,6 +215,7 @@ function renderDrill() {
   const q = qs[Engine.qIdx];
   if (!q) {
     if (Engine.testMode) Engine.finishPlacementTest(Date.now());
+    else if (Engine.dailyMode) Engine.finishDaily();
     else if (Engine.reviewMode) Engine.finishReviewSession();
     else Engine.finishDrill();
     render();
@@ -233,7 +266,7 @@ function renderDrill() {
   return (
     '<section class="screen drill-screen">' +
     '<button class="back-btn" data-action="back-courses">←</button>' +
-    '<p class="eyebrow">' + (Engine.testMode ? t("c1.title") : t(course.titleKey)) + " · " + t("drill.title") + "</p>" +
+    '<p class="eyebrow">' + (Engine.testMode ? t("c1.title") : Engine.dailyMode ? t("daily.title") : t(course.titleKey)) + " · " + t("drill.title") + "</p>" +
     '<p class="q-pager">' + progressLabel + "</p>" +
     body +
     learnBtn +
@@ -270,17 +303,42 @@ function renderOver() {
   const total = Engine.answers.length;
   const pct = total ? Math.round((correct / total) * 100) : 0;
   const mistakes = Engine.answers.filter((a) => !a.ok).length;
+  const sum = Engine.drillSummary || {};
+  const gradeBadge = sum.grade ? '<div class="grade-hero grade-' + sum.grade + '">' + sum.grade + "</div>" : "";
+  const scoreLine = sum.score
+    ? '<p class="muted">' + t("over.points", { n: sum.score }) +
+      (sum.maxCombo > 1 ? " · " + t("over.combo", { n: sum.maxCombo }) : "") + "</p>"
+    : "";
 
   return (
     '<section class="screen over-screen">' +
     "<h2>" + t("over.title") + "</h2>" +
+    gradeBadge +
     '<p class="big-score">' + t("over.accuracy", { pct }) + "</p>" +
     '<p class="muted">' + t("over.score", { n: correct }) + " / " + total + "</p>" +
+    scoreLine +
     '<div class="btn-stack">' +
     (mistakes
       ? '<button class="btn secondary" data-action="review-mistakes">' + t("over.review") + "</button>"
       : "") +
     '<button class="btn secondary" data-action="start-learn" data-id="' + Engine.courseId + '">' + t("course.reviewLearn") + "</button>" +
+    '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button>" +
+    "</div></section>"
+  );
+}
+
+function renderDailyOver() {
+  const s = Engine.dailySummary || { correct: 0, total: 0, pct: 0, score: 0, maxCombo: 0, streakDays: 0, bestStreak: 0 };
+  const comboTxt = s.maxCombo > 1 ? " · " + t("over.combo", { n: s.maxCombo }) : "";
+  return (
+    '<section class="screen over-screen daily-over">' +
+    "<h2>📅 " + t("daily.over.title") + "</h2>" +
+    '<p class="big-score">' + t("over.accuracy", { pct: s.pct }) + "</p>" +
+    '<p class="muted">' + t("over.score", { n: s.correct }) + " / " + s.total + "</p>" +
+    (s.score ? '<p class="muted">' + t("over.points", { n: s.score }) + comboTxt + "</p>" : "") +
+    '<p class="daily-flame big-flame">🔥 ' + t("daily.streak", { n: s.streakDays }) + "</p>" +
+    (s.bestStreak > s.streakDays ? '<p class="muted">' + t("daily.best", { n: s.bestStreak }) + "</p>" : "") +
+    '<div class="btn-stack">' +
     '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button>" +
     "</div></section>"
   );
@@ -293,7 +351,7 @@ function renderReviewOver() {
     : '<p class="muted review-cleared">' + t("review.over.cleared") + "</p>";
   const masteredLine =
     s.mastered > 0
-      ? '<p class="muted">' + t("review.over.mastered", { n: s.mastered, m: MASTER_STREAK }) + "</p>"
+      ? '<p class="muted">' + t("review.over.mastered", { n: s.mastered }) + "</p>"
       : "";
 
   return (
@@ -308,8 +366,21 @@ function renderReviewOver() {
   );
 }
 
+function fmtWait(ms) {
+  if (ms <= 0) return t("review.wait.hours", { n: 1 });
+  const days = Math.floor(ms / 864e5);
+  if (days >= 1) return t("review.wait.days", { n: days });
+  return t("review.wait.hours", { n: Math.max(1, Math.ceil(ms / 36e5)) });
+}
+
 function renderReviewEmpty() {
-  const msg = Engine.reviewFilter ? t("review.emptyFilter") : t("review.empty");
+  let msg;
+  if (Engine.reviewFilter) msg = t("review.emptyFilter");
+  else if (Engine.store.reviewPile.length) {
+    // 有错题但都未到期:显示下次到期时间
+    const next = Engine.nextDueAt();
+    msg = next ? t("review.emptyDue", { when: fmtWait(next - Engine._now()) }) : t("review.empty");
+  } else msg = t("review.empty");
   return (
     '<section class="screen">' +
     "<h2>" + msg + "</h2>" +
@@ -475,6 +546,8 @@ function renderCourseBars() {
 function renderReviewDetail() {
   const pile = Engine.store.reviewPile;
   const reviewN = pile.length;
+  const dueN = Engine.dueReviewCount();
+  const now = Engine._now();
   let body = "";
 
   if (!reviewN) {
@@ -486,15 +559,22 @@ function renderReviewDetail() {
         const chips = g.items
           .map((r) => {
             const qLabel = Coach.questionTitle(r.courseId, r.qid).split(" · ").pop() || r.qid;
-            const streak =
-              r.streak > 0
-                ? ' <span class="rv-st">' + t("review.chipMaster", { s: r.streak, m: MASTER_STREAK }) + "</span>"
+            // SRS 状态:到期(可复习) / 已排程(显示等待时长 + 盒进度)
+            const srs =
+              (r.due || 0) <= now
+                ? ' <span class="rv-due">' + t("review.chipDue") + "</span>"
+                : ' <span class="rv-wait">' + t("review.chipWait", { when: fmtWait(r.due - now) }) + "</span>";
+            const boxDots =
+              r.box > 0
+                ? ' <span class="rv-box" title="' + t("review.boxTitle", { b: r.box, m: SRS_GRADUATE }) + '">' +
+                  "●".repeat(r.box) + "○".repeat(Math.max(0, SRS_GRADUATE - r.box)) + "</span>"
                 : "";
             return (
               '<span class="rv-chip">' +
               qLabel +
               (r.wrong > 1 ? ' <span class="rv-wn">×' + r.wrong + "</span>" : "") +
-              streak +
+              srs +
+              boxDots +
               ' <button type="button" class="rv-del" data-action="review-remove" data-course="' +
               r.courseId +
               '" data-qid="' +
@@ -520,20 +600,27 @@ function renderReviewDetail() {
       .join("");
   }
 
-  const allBtn =
+  const dueBtn =
     '<button type="button" class="btn success review-all-btn"' +
-    (reviewN ? "" : " disabled") +
-    ' data-action="review-all">' +
-    t("review.all", { n: reviewN }) +
+    (dueN ? "" : " disabled") +
+    ' data-action="review-due">' +
+    t("review.dueBtn", { n: dueN }) +
     "</button>";
+  const allBtn =
+    reviewN && reviewN > dueN
+      ? '<button type="button" class="btn secondary review-all-btn" data-action="review-all">' +
+        t("review.all", { n: reviewN }) +
+        "</button>"
+      : "";
 
   return (
     '<section class="screen review-screen">' +
     "<h2>" + t("review.title") + "</h2>" +
     '<p class="muted review-sub">' + t("review.subtitle") + "</p>" +
+    (reviewN ? '<p class="muted review-count">' + t("review.headCount", { due: dueN, total: reviewN }) + "</p>" : "") +
     body +
-    '<div class="review-actions">' + allBtn + "</div>" +
-    bottomNav("review", reviewN) +
+    '<div class="review-actions">' + dueBtn + allBtn + "</div>" +
+    bottomNav("review", dueN) +
     "</section>"
   );
 }
@@ -583,7 +670,7 @@ function renderPlacementResult() {
 
 function renderStats() {
   const s = Engine.store.stats;
-  const reviewN = Engine.store.reviewPile.length;
+  const reviewN = Engine.dueReviewCount();
 
   return (
     '<section class="screen stats-screen">' +
@@ -713,6 +800,10 @@ function handleAction(action, el) {
       resetChoiceShuffle();
       Engine.startPlacementTest();
       break;
+    case "start-daily":
+      resetChoiceShuffle();
+      Engine.startDaily();
+      break;
     case "onboard-start":
       Engine.store.onboardingSeen = true; Engine.save();
       resetChoiceShuffle();
@@ -732,6 +823,13 @@ function handleAction(action, el) {
         Engine.screen = "courses";
         break;
       }
+      if (Engine.dailyMode) {
+        // 每日训练中途退出:会话已持久化,回来可续答
+        Engine.dailyMode = false;
+        Engine.dailyQueue = [];
+        Engine.screen = "courses";
+        break;
+      }
       if (Engine.reviewMode || Engine.screen === "review-empty") {
         Engine.exitReviewFlow();
       } else {
@@ -746,6 +844,7 @@ function handleAction(action, el) {
       Engine.qIdx++;
       if (Engine.qIdx >= Engine.currentQuestions().length) {
         if (Engine.testMode) Engine.finishPlacementTest(Date.now());
+        else if (Engine.dailyMode) Engine.finishDaily();
         else if (Engine.reviewMode) Engine.finishReviewSession();
         else Engine.finishDrill();
       } else Engine.screen = "drill";
@@ -757,10 +856,16 @@ function handleAction(action, el) {
       resetChoiceShuffle();
       Engine.startReview({ courseId: Engine.courseId });
       break;
+    case "review-due":
+      if (Engine.dueReviewCount()) {
+        resetChoiceShuffle();
+        Engine.startReview();
+      }
+      break;
     case "review-all":
       if (Engine.store.reviewPile.length) {
         resetChoiceShuffle();
-        Engine.startReview();
+        Engine.startReview({ all: true });
       }
       break;
     case "review-drill-course":
@@ -794,7 +899,8 @@ function submitChoice(choice) {
   const result = Engine.grade(q, choice);
   Engine.recordAnswer(q, choice, result);
 
-  if (Engine.reviewMode && q._rec && result.ok) {
+  // 复习模式或每日训练里的复习题:答对推进 SRS 盒
+  if (q._rec && result.ok) {
     Engine.onReviewCorrect(q._rec);
   }
 

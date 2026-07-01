@@ -42,16 +42,18 @@ function freshStore() {
   };
 }
 
-test("review wrong answer resets streak on pile record", () => {
+test("review wrong answer resets SRS box and makes record due now", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();
-  const rec = { courseId: "c2", qid: "c2-q1", choice: "fold", streak: 1, wrong: 2, leak: "too_tight" };
+  Engine._now = () => 1000000;
+  const rec = { courseId: "c2", qid: "c2-q1", choice: "fold", box: 2, due: 9999999, wrong: 2, leak: "too_tight" };
   Engine.store.reviewPile = [rec];
   Engine.reviewMode = true;
   Engine.courseId = "c2";
   const q = { id: "c2-q1", type: "action", correct: ["call"], leak: "too_tight", _courseId: "c2", _rec: rec };
   Engine.recordAnswer(q, "fold", { ok: false });
-  assert.equal(rec.streak, 0);
+  assert.equal(rec.box, 0);
+  assert.equal(rec.due, 1000000);
   assert.equal(rec.wrong, 3);
 });
 
@@ -119,16 +121,72 @@ test("finishReviewSession shows summary and keeps reviewReturnTo", () => {
   assert.equal(Engine.reviewSummary, null);
 });
 
-test("onReviewCorrect counts session mastered", () => {
+test("onReviewCorrect advances SRS box and schedules next due", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();
-  const rec = { courseId: "c2", qid: "c2-q1", streak: 1, wrong: 1 };
+  Engine._now = () => 1000000;
+  const rec = { courseId: "c2", qid: "c2-q1", box: 0, due: 0, wrong: 1 };
   Engine.store.reviewPile = [rec];
   Engine.reviewSessionMastered = 0;
   Engine.onReviewCorrect(rec);
-  assert.equal(rec.streak, 2);
+  assert.equal(rec.box, 1);
+  assert.equal(rec.due, 1000000 + 1 * 864e5); // 盒 1 → +1 天
+  assert.equal(Engine.store.reviewPile.length, 1);
+  Engine.onReviewCorrect(rec);
+  assert.equal(rec.box, 2);
+  assert.equal(rec.due, 1000000 + 3 * 864e5); // 盒 2 → +3 天
+});
+
+test("onReviewCorrect graduates record at final box (mastered)", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine._now = () => 1000000;
+  const rec = { courseId: "c2", qid: "c2-q1", box: 3, due: 0, wrong: 1 };
+  Engine.store.reviewPile = [rec];
+  Engine.reviewSessionMastered = 0;
+  Engine.onReviewCorrect(rec);
   assert.equal(Engine.store.reviewPile.length, 0);
   assert.equal(Engine.reviewSessionMastered, 1);
+});
+
+test("startReview with no filter only queues due records", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine._now = () => 1000000;
+  Engine.store.reviewPile = [
+    { courseId: "c2", qid: "c2-q1", box: 0, due: 0, wrong: 1, leak: "too_tight" },       // 到期
+    { courseId: "c3", qid: "c3-q1", box: 1, due: 9999999, wrong: 1, leak: "cbet" },      // 未到期
+  ];
+  Engine.screen = "courses";
+  Engine.startReview();
+  assert.equal(Engine.reviewQueue.length, 1);
+  assert.equal(Engine.reviewQueue[0].id, "c2-q1");
+});
+
+test("startReview with all:true ignores due scheduling", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine._now = () => 1000000;
+  Engine.store.reviewPile = [
+    { courseId: "c2", qid: "c2-q1", box: 0, due: 0, wrong: 1, leak: "too_tight" },
+    { courseId: "c3", qid: "c3-q1", box: 1, due: 9999999, wrong: 1, leak: "cbet" },
+  ];
+  Engine.screen = "courses";
+  Engine.startReview({ all: true });
+  assert.equal(Engine.reviewQueue.length, 2);
+});
+
+test("dueReviewCount and nextDueAt reflect scheduling", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine._now = () => 1000000;
+  Engine.store.reviewPile = [
+    { courseId: "c2", qid: "c2-q1", box: 0, due: 500, wrong: 1 },
+    { courseId: "c3", qid: "c3-q1", box: 1, due: 2000000, wrong: 1 },
+    { courseId: "c4", qid: "c4-q1", box: 2, due: 3000000, wrong: 1 },
+  ];
+  assert.equal(Engine.dueReviewCount(), 1);
+  assert.equal(Engine.nextDueAt(), 2000000);
 });
 
 test("startReview returns to review screen when launched from review", () => {
@@ -202,6 +260,24 @@ test("_migrateStore removes old c1 course data (c1 is now the placement test)", 
   assert.equal(Engine.store.statsByCourse.c1, undefined);
   assert.equal(Engine.store.reviewPile.filter((r) => r.courseId === "c1").length, 0);
   assert.ok(!Engine.store.stats.coursesDoneList.includes("c1"));
+});
+
+test("_migrateStore upgrades legacy streak records to SRS box/due", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.store.reviewPile = [
+    { courseId: "c2", qid: "c2-q1", streak: 1, wrong: 2, leak: "too_tight" },
+    { courseId: "c3", qid: "c3-q1", streak: 0, wrong: 1, leak: "cbet" },
+  ];
+  Engine.save = function () {};
+  Engine._migrateStore();
+  const [a, b] = Engine.store.reviewPile;
+  assert.equal(a.box, 1);
+  assert.equal(a.due, 0); // 迁移后全部立即到期
+  assert.equal(a.streak, undefined);
+  assert.equal(b.box, 0);
+  assert.ok(Engine.store.daily);
+  assert.ok(Engine.store.statsByLeak);
 });
 
 test("_migrateStore backfills statsByCourse from completed progress", () => {

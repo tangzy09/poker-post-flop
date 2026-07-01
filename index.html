@@ -114,6 +114,23 @@
     .badge.free { background: rgba(52,176,116,.2); color: #7dffc0; }
     .badge.pro { background: rgba(176,106,214,.2); color: #d9a8ff; }
     .badge.done-badge { background: rgba(52,176,116,.15); color: var(--call); }
+    .badge.daily-badge { background: rgba(240,180,60,.18); color: var(--gold); }
+    /* 课程评级徽章 (S/A/B/C) */
+    .badge.grade-badge { font-weight: 800; min-width: 20px; text-align: center; }
+    .grade-S { background: rgba(240,180,60,.22); color: var(--gold); }
+    .grade-A { background: rgba(52,176,116,.2); color: #7dffc0; }
+    .grade-B { background: rgba(110,181,255,.18); color: #9fd0ff; }
+    .grade-C { background: rgba(255,255,255,.08); color: var(--muted); }
+    /* 每日训练卡 */
+    .daily-card { border-left: 3px solid var(--gold); }
+    .daily-card.done { opacity: .92; }
+    .daily-flame { color: var(--gold); font-size: .82rem; font-weight: 600; white-space: nowrap; }
+    .big-flame { font-size: 1.15rem; margin: 4px 0 0; }
+    /* 结算页评级大徽章 */
+    .grade-hero {
+      display: inline-block; font-size: 2.4rem; font-weight: 800; line-height: 1;
+      padding: 14px 22px; border-radius: 16px; margin-top: 12px;
+    }
     .course-card h3 { margin: 0 0 4px; font-size: 1.05rem; }
     .cc-sub { margin: 0 0 8px; color: var(--muted); font-size: .85rem; line-height: 1.45; }
     .cc-meta { margin: 0 0 12px; font-size: .78rem; color: var(--muted); }
@@ -484,7 +501,10 @@
       padding: 5px 8px; font-size: .78rem; font-variant-numeric: tabular-nums;
     }
     .rv-wn { color: var(--wrong); font-size: .68rem; font-weight: 700; }
-    .rv-st { color: var(--best); font-size: .68rem; }
+    .rv-due { color: var(--gold); font-size: .68rem; font-weight: 700; }
+    .rv-wait { color: var(--muted); font-size: .68rem; }
+    .rv-box { color: var(--best); font-size: .6rem; letter-spacing: 1px; }
+    .review-count { font-size: .82rem; margin: -6px 0 10px; }
     .rv-del {
       appearance: none; border: none; background: transparent; cursor: pointer;
       color: var(--muted); font-weight: 700; padding: 0 2px; line-height: 1;

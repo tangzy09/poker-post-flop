@@ -1,7 +1,30 @@
 /* engine.js — course flow, grading, persistence */
 const STORE_KEY = "pokerPostFlop_v1";
 const STORE_KEY_LEGACY = "postflopCoach_v1";
-const MASTER_STREAK = 2;
+/* 间隔重复(Leitner 盒):答对升盒,盒 n 的下次到期间隔 = SRS_INTERVALS[n];到 SRS_GRADUATE 移出(掌握)。答错回盒 0(立即到期)。 */
+const SRS_INTERVALS = [0, 1, 3, 7].map((d) => d * 864e5);
+const SRS_GRADUATE = 4;
+const DAILY_SIZE = 10;
+const GRADE_RANK = { S: 4, A: 3, B: 2, C: 1 };
+
+/* 确定性组卷:同一天生成同一套每日训练题 */
+function hashStr(s) {
+  let h = 1779033703 ^ s.length;
+  for (let i = 0; i < s.length; i++) {
+    h = Math.imul(h ^ s.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+}
+function mulberry32(a) {
+  return function () {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
 const PLACEMENT_SPEC = [
   { theme: "flop", courseId: "c3", qid: "c3-q1" },
@@ -41,6 +64,29 @@ const Engine = {
   testMode: false,
   testQueue: [],
   testResults: [],
+  dailyMode: false,
+  dailyQueue: [],
+  combo: 0,
+  maxCombo: 0,
+  sessionScore: 0,
+
+  /* 可在测试中覆写的时钟 */
+  _now() {
+    return Date.now();
+  },
+  _dateStrAt(ms) {
+    const d = new Date(ms);
+    const p = (n) => String(n).padStart(2, "0");
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+  },
+  _todayStr() {
+    return this._dateStrAt(this._now());
+  },
+  _resetScore() {
+    this.combo = 0;
+    this.maxCombo = 0;
+    this.sessionScore = 0;
+  },
 
   load() {
     try {
@@ -57,9 +103,17 @@ const Engine = {
   _migrateStore() {
     if (!this.store.statsByCourse) this.store.statsByCourse = {};
     if (!this.store.statsByStreet) this.store.statsByStreet = {};
+    if (!this.store.statsByLeak) this.store.statsByLeak = {};
+    if (!this.store.daily) this.store.daily = { lastDone: null, streakDays: 0, bestStreak: 0, history: {}, session: null };
     (this.store.reviewPile || []).forEach((r) => {
       if (!r.wrong) r.wrong = 1;
       r.leak = normalizeLeak(r.leak);
+      // 旧版按连对次数掌握(streak);升级为 SRS 盒:旧 streak 映射为盒号,全部立即到期一次
+      if (r.box === undefined) {
+        r.box = Math.min(r.streak || 0, SRS_GRADUATE - 1);
+        r.due = 0;
+        delete r.streak;
+      }
     });
     delete this.store.leaks;
     for (const c of COURSES) {
@@ -93,9 +147,25 @@ const Engine = {
       stats: { totalQ: 0, correctQ: 0, coursesDone: 0 },
       statsByCourse: {},
       statsByStreet: {},
+      statsByLeak: {},
       placement: null,
       onboardingSeen: false,
+      daily: { lastDone: null, streakDays: 0, bestStreak: 0, history: {}, session: null },
     };
+  },
+
+  /* —— SRS 到期查询 —— */
+  dueReviewItems() {
+    const now = this._now();
+    return this.store.reviewPile.filter((r) => (r.due || 0) <= now);
+  },
+  dueReviewCount() {
+    return this.dueReviewItems().length;
+  },
+  nextDueAt() {
+    const now = this._now();
+    const later = this.store.reviewPile.map((r) => r.due || 0).filter((d) => d > now);
+    return later.length ? Math.min(...later) : null;
   },
 
   questionCourseId(question) {
@@ -119,6 +189,9 @@ const Engine = {
     this.reviewMode = false;
     this.testMode = false;
     this.testQueue = [];
+    this.dailyMode = false;
+    this.dailyQueue = [];
+    this._resetScore();
     const p = this.getProgress(courseId);
     if (mode === "learn") {
       this.screen = "learn";
@@ -135,6 +208,7 @@ const Engine = {
 
   currentQuestions() {
     if (this.testMode) return this.testQueue;
+    if (this.dailyMode) return this.dailyQueue;
     if (this.reviewMode) return this.reviewQueue;
     return getQuestions(this.courseId);
   },
@@ -183,17 +257,32 @@ const Engine = {
       if (!this.store.statsByStreet[street]) this.store.statsByStreet[street] = { h: 0, c: 0 };
       this.store.statsByStreet[street].h++;
       if (result.ok) this.store.statsByStreet[street].c++;
+      if (!this.store.statsByLeak) this.store.statsByLeak = {};
+      this._tally(this.store.statsByLeak, normalizeLeak(question.leak), result.ok);
+    }
+
+    // 连击计分:答对 10 + 连击加成(最多 +5);答错清零连击
+    if (result.ok) {
+      this.combo = (this.combo || 0) + 1;
+      this.maxCombo = Math.max(this.maxCombo || 0, this.combo);
+      this.sessionScore = (this.sessionScore || 0) + 10 + Math.min(this.combo - 1, 5);
+    } else {
+      this.combo = 0;
     }
 
     if (!result.ok) {
-      if (this.reviewMode && question._rec) {
-        question._rec.streak = 0;
+      if (question._rec) {
+        // 复习/每日队列里的错题:回盒 0,立即到期
+        question._rec.box = 0;
+        question._rec.due = this._now();
         question._rec.choice = choice;
         question._rec.wrong = (question._rec.wrong || 1) + 1;
+        question._rec.leak = normalizeLeak(question.leak || question._rec.leak);
       } else if (!this.reviewMode && cid) {
         const existing = this.store.reviewPile.find((r) => r.qid === question.id && r.courseId === cid);
         if (existing) {
-          existing.streak = 0;
+          existing.box = 0;
+          existing.due = this._now();
           existing.choice = choice;
           existing.wrong = (existing.wrong || 1) + 1;
           existing.leak = normalizeLeak(question.leak || existing.leak);
@@ -202,12 +291,18 @@ const Engine = {
             courseId: cid,
             qid: question.id,
             choice,
-            streak: 0,
+            box: 0,
+            due: this._now(),
             wrong: 1,
             leak: normalizeLeak(question.leak),
           });
         }
       }
+    }
+
+    // 每日训练:持久化会话,刷新后可续答
+    if (this.dailyMode && this.store.daily && this.store.daily.session) {
+      this.store.daily.session.answers = this.answers.slice();
     }
     this.save();
   },
@@ -218,14 +313,24 @@ const Engine = {
     this.qIdx = 0;
   },
 
+  gradeLetter(correct, total) {
+    const pct = total ? correct / total : 0;
+    return pct >= 1 ? "S" : pct >= 0.9 ? "A" : pct >= 0.75 ? "B" : "C";
+  },
+
   finishDrill() {
     const qs = getQuestions(this.courseId);
     const correct = this.answers.filter((a) => a.ok).length;
+    const grade = this.gradeLetter(correct, qs.length);
+    const prevGrade = this.getProgress(this.courseId).grade;
+    this.drillSummary = { score: this.sessionScore || 0, maxCombo: this.maxCombo || 0, grade };
     this.setProgress(this.courseId, {
       qDone: qs.length,
       correct,
       total: qs.length,
       completed: true,
+      // 课程卡上展示历史最佳评级
+      grade: prevGrade && GRADE_RANK[prevGrade] >= GRADE_RANK[grade] ? prevGrade : grade,
     });
     if (!this.store.stats.coursesDoneList) this.store.stats.coursesDoneList = [];
     if (!this.store.stats.coursesDoneList.includes(this.courseId)) {
@@ -250,6 +355,9 @@ const Engine = {
     this.testResults = [];
     this.testMode = true;
     this.reviewMode = false;
+    this.dailyMode = false;
+    this.dailyQueue = [];
+    this._resetScore();
     this.courseId = "c1";
     this.qIdx = 0;
     this.answers = [];
@@ -300,9 +408,158 @@ const Engine = {
     for (const r of results) {
       this._tally(statsByCourse, r.courseId, r.ok);
       this._tally(statsByStreet, r.street, r.ok);
-      if (!r.ok) reviewPile.push({ courseId: r.courseId, qid: r.qid, leak: r.leak, choice: r.choice, streak: 0, wrong: 1 });
+      if (!r.ok) reviewPile.push({ courseId: r.courseId, qid: r.qid, leak: r.leak, choice: r.choice, box: 0, due: 0, wrong: 1 });
     }
     return { statsByCourse, statsByStreet, reviewPile, stats: { totalQ: results.length, correctQ: results.filter((x) => x.ok).length, coursesDone: 0 }, progress: {} };
+  },
+
+  /* —— 每日训练 —— */
+  _dailyPool() {
+    return COURSES.filter((c) => !c.placement && (typeof canAccessCourse !== "function" || canAccessCourse(c)));
+  },
+
+  buildDailySet(dateStr) {
+    const rng = mulberry32(hashStr(dateStr));
+    const picked = [];
+    const seen = new Set();
+    const add = (q, courseId, rec) => {
+      if (!q || seen.has(courseId + "|" + q.id)) return false;
+      seen.add(courseId + "|" + q.id);
+      picked.push(Object.assign({}, q, { _courseId: courseId }, rec ? { _rec: rec } : {}));
+      return true;
+    };
+    // 1) 到期复习题优先(最多 4 道,先到期先出)
+    const due = this.dueReviewItems()
+      .slice()
+      .sort((a, b) => (a.due || 0) - (b.due || 0) || (a.qid < b.qid ? -1 : 1));
+    for (const r of due) {
+      if (picked.length >= 4) break;
+      const q = getQuestions(r.courseId).find((x) => x.id === r.qid);
+      add(q, r.courseId, r);
+    }
+    // 2) 弱项课(样本 ≥8、准确率最低的 2 门课,各抽 2 道)
+    const pool = this._dailyPool();
+    const weak = pool
+      .filter((c) => {
+        const s = this.store.statsByCourse[c.id];
+        return s && s.h >= 8;
+      })
+      .sort((a, b) => {
+        const sa = this.store.statsByCourse[a.id], sb = this.store.statsByCourse[b.id];
+        return sa.c / sa.h - sb.c / sb.h;
+      })
+      .slice(0, 2);
+    for (const c of weak) {
+      const qs = getQuestions(c.id);
+      let got = 0, tries = 0;
+      while (got < 2 && tries++ < 40 && qs.length) {
+        if (add(qs[Math.floor(rng() * qs.length)], c.id)) got++;
+      }
+    }
+    // 3) 随机补满
+    let guard = 0;
+    while (picked.length < DAILY_SIZE && guard++ < 400) {
+      const c = pool[Math.floor(rng() * pool.length)];
+      const qs = getQuestions(c.id);
+      if (!qs.length) continue;
+      add(qs[Math.floor(rng() * qs.length)], c.id);
+    }
+    return picked;
+  },
+
+  startDaily() {
+    const today = this._todayStr();
+    const d = this.store.daily;
+    let queue;
+    if (d.session && d.session.date === today && d.session.qids) {
+      // 当日已有会话:按记录的题目列表重建,支持刷新续答
+      queue = d.session.qids
+        .map((k) => {
+          const i = k.indexOf("|");
+          const cid = k.slice(0, i), qid = k.slice(i + 1);
+          const q = getQuestions(cid).find((x) => x.id === qid);
+          if (!q) return null;
+          const rec = this.store.reviewPile.find((r) => r.courseId === cid && r.qid === qid);
+          return Object.assign({}, q, { _courseId: cid }, rec ? { _rec: rec } : {});
+        })
+        .filter(Boolean);
+    } else {
+      queue = this.buildDailySet(today);
+      d.session = { date: today, qids: queue.map((q) => q._courseId + "|" + q.id), answers: [] };
+    }
+    this.dailyMode = true;
+    this.reviewMode = false;
+    this.testMode = false;
+    this.dailyQueue = queue;
+    this.answers = ((d.session && d.session.answers) || []).slice();
+    this.qIdx = this.answers.length;
+    // 续答时按已答记录重算连击与得分
+    this._resetScore();
+    for (const a of this.answers) {
+      if (a.ok) {
+        this.combo++;
+        this.maxCombo = Math.max(this.maxCombo, this.combo);
+        this.sessionScore += 10 + Math.min(this.combo - 1, 5);
+      } else this.combo = 0;
+    }
+    this.courseId = queue[0] ? queue[0]._courseId : null;
+    if (!queue.length || this.qIdx >= queue.length) {
+      this.finishDaily();
+      return;
+    }
+    this.screen = "drill";
+    this.save();
+  },
+
+  finishDaily() {
+    const d = this.store.daily;
+    const today = this._todayStr();
+    const correct = this.answers.filter((a) => a.ok).length;
+    const total = this.answers.length;
+    d.history[today] = { c: correct, t: total };
+    if (d.lastDone !== today) {
+      const yesterday = this._dateStrAt(this._now() - 864e5);
+      d.streakDays = d.lastDone === yesterday ? (d.streakDays || 0) + 1 : 1;
+      d.bestStreak = Math.max(d.bestStreak || 0, d.streakDays);
+      d.lastDone = today;
+    }
+    // 历史只留最近 60 天
+    const keys = Object.keys(d.history).sort();
+    while (keys.length > 60) delete d.history[keys.shift()];
+    d.session = null;
+    this.dailySummary = {
+      correct,
+      total,
+      pct: total ? Math.round((correct / total) * 100) : 0,
+      score: this.sessionScore || 0,
+      maxCombo: this.maxCombo || 0,
+      streakDays: d.streakDays,
+      bestStreak: d.bestStreak,
+    };
+    this.dailyMode = false;
+    this.dailyQueue = [];
+    this.qIdx = 0;
+    this.answers = [];
+    this.screen = "daily-over";
+    this.save();
+  },
+
+  dailyStatus() {
+    const d = this.store.daily || {};
+    const today = this._todayStr();
+    const yesterday = this._dateStrAt(this._now() - 864e5);
+    // 断签展示:昨天和今天都没做 → 连续天数归零
+    let streak = d.streakDays || 0;
+    if (d.lastDone !== today && d.lastDone !== yesterday) streak = 0;
+    const sess = d.session && d.session.date === today ? d.session : null;
+    return {
+      doneToday: d.lastDone === today,
+      streakDays: streak,
+      bestStreak: d.bestStreak || 0,
+      answered: sess ? (sess.answers || []).length : 0,
+      size: DAILY_SIZE,
+      todayScore: (d.history || {})[today] || null,
+    };
   },
 
   startReview(filter) {
@@ -311,9 +568,13 @@ const Engine = {
     else if (this.screen === "review") this.reviewReturnTo = "review";
     else this.reviewReturnTo = "courses";
     const wantLeak = filter?.leak ? normalizeLeak(filter.leak) : null;
+    // 默认(无筛选)只复习到期题;定向筛选(某课/某漏洞)或 {all:true} 不受排程限制
+    const dueOnly = !filter || (!filter.all && !filter.courseId && !filter.leak);
+    const now = this._now();
     const pile = this.store.reviewPile.filter((r) => {
       if (filter?.courseId && r.courseId !== filter.courseId) return false;
       if (wantLeak && normalizeLeak(r.leak) !== wantLeak) return false;
+      if (dueOnly && (r.due || 0) > now) return false;
       return true;
     });
     this.reviewQueue = pile
@@ -327,6 +588,9 @@ const Engine = {
       return;
     }
     this.reviewMode = true;
+    this.dailyMode = false;
+    this.dailyQueue = [];
+    this._resetScore();
     this.courseId = this.reviewQueue[0]._courseId;
     this.qIdx = 0;
     this.answers = [];
@@ -379,10 +643,12 @@ const Engine = {
   },
 
   onReviewCorrect(rec) {
-    rec.streak = (rec.streak || 0) + 1;
-    if (rec.streak >= MASTER_STREAK) {
+    rec.box = (rec.box || 0) + 1;
+    if (rec.box >= SRS_GRADUATE) {
       this.store.reviewPile = this.store.reviewPile.filter((r) => !(r.qid === rec.qid && r.courseId === rec.courseId));
       this.reviewSessionMastered = (this.reviewSessionMastered || 0) + 1;
+    } else {
+      rec.due = this._now() + SRS_INTERVALS[rec.box];
     }
     this.save();
   },
