@@ -136,7 +136,9 @@ app.js (render) + table.js (spot) + i18n.js (t)
 | CSS 类名 `btn` | 全局按钮样式；范围矩阵勿用 `btn` 作颜色类（已改为 `rng-open` 等） |
 | `applyI18n` | 必须作用在 `document` 上，否则顶栏 `data-i18n` 不更新 |
 | C13–C30 | 改 `scripts/courses-ext-data.js` 后必须 `node scripts/gen-content-ext.js` |
-| C1 题数 | 8 题；`engine.js` 有 c1 进度迁移逻辑 |
+| C1 | 已改造为**初始测试**（20 题基准卷，无自有题库）；`engine.js` 会迁移旧 c1 进度 |
+| 复习堆 | SRS Leitner 盒（`box`/`due`，间隔 1/3/7 天）；默认只复习**到期**题，旧 `streak` 记录自动迁移 |
+| 每日训练 | 按本地日期做种子的确定性组卷（同一天同一套题）；会话存在 `store.daily.session` 支持续答 |
 | `.github/workflows/pages.yml` | 本地可能未跟踪；push 需 PAT 带 `workflow` scope |
 
 ## 9. 文档索引

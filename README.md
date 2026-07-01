@@ -23,6 +23,10 @@ Bilingual (English / 中文) **heads-up post-flop trainer**: 30 lessons (includi
 - **C13–C30 hold 24 drills each** (432 advanced spots) — every answer cross-checked by adversarial blind-solve
 - **C1 placement test** — a fixed 20-question baseline drawn from later courses, with a detailed evaluation at the end
 - **Computed feedback** (`js/explain.js`) — derives outs / equity / pot odds / MDF from board+hand and explains **both correct and wrong** answers in zh/en, falling back to hand-written reasons where a number adds nothing
+- **Daily training** — 10 questions per day (due reviews + weakest courses + fresh spots, deterministic per date), with day-streak 🔥 tracking and mid-session resume
+- **Spaced repetition** — missed questions return on a Leitner schedule (1d / 3d / 7d), graduating after four spaced correct answers; review tab shows due counts
+- **Scoring & grades** — combo points per session and S/A/B/C course grades (best kept as card badges)
+- **Leak heatmap** — stats page shows accuracy by leak type (MDF, over-folding, sizing…), color-coded
 - Learn → drill flow; **review lessons** anytime after first pass
 - Poker table visualization (HU spots)
 - C3 range / equity chart (`js/range-chart.js`, `js/equity.js`)

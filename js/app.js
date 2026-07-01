@@ -543,6 +543,28 @@ function renderCourseBars() {
     .join("");
 }
 
+function renderLeakHeatmap() {
+  const m = Engine.store.statsByLeak || {};
+  const rows = Object.keys(m)
+    .filter((k) => m[k].h >= 3) // 样本太少不显示
+    .map((k) => ({ k, h: m[k].h, acc: Math.round((m[k].c / m[k].h) * 100) }))
+    .sort((a, b) => a.acc - b.acc);
+  if (!rows.length) return '<p class="coach-note">' + t("heat.empty") + "</p>";
+  return rows
+    .map((r) => {
+      // 热图着色:≥80% 绿 / ≥60% 金 / 其余红
+      const color = r.acc >= 80 ? "var(--call)" : r.acc >= 60 ? "var(--gold)" : "var(--wrong)";
+      return (
+        '<div class="sbar">' +
+        '<span class="sbar-nm">' + Coach.leakLabel(r.k) + "</span>" +
+        '<span class="sbar-trk"><span class="sbar-fil" style="width:' + r.acc + "%;background:" + color + '"></span></span>' +
+        '<span class="sbar-pct">' + t("stats.barPct", { p: r.acc, h: r.h }) + "</span>" +
+        "</div>"
+      );
+    })
+    .join("");
+}
+
 function renderReviewDetail() {
   const pile = Engine.store.reviewPile;
   const reviewN = pile.length;
@@ -698,6 +720,11 @@ function renderStats() {
     t("stats.courseAccTitle") +
     "</h3>" +
     renderCourseBars() +
+    "</article>" +
+    '<article class="coach-card"><h3>' +
+    t("stats.leakHeatTitle") +
+    "</h3>" +
+    renderLeakHeatmap() +
     "</article>" +
     '<article class="coach-card"><h3>' +
     t("stats.profileTitle") +

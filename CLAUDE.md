@@ -37,7 +37,7 @@ courses.js（30 课元数据）
 每课 = 4 页 Learn（3 原理 + 1 summary）→ 再进入 Drill。题目分两类：`_choice()`（选择题）或由 `buildSpots()` 生成的 action spot（board/hand/pot/actions/correct/feedback）。
 
 关键边界：
-- **`js/engine.js`** —— 进度的唯一真相源。持久化到 `localStorage` 键 `pokerPostFlop_v1`（会从旧键 `postflopCoach_v1` 迁移）。包含版本迁移逻辑 —— 尤其 C1 被改为 8 题，所以 `_migrateStore()` 会裁剪旧的 C1 进度/复习记录。改 store 结构时要谨慎。
+- **`js/engine.js`** —— 进度的唯一真相源。持久化到 `localStorage` 键 `pokerPostFlop_v1`（会从旧键 `postflopCoach_v1` 迁移）。`_migrateStore()` 含版本迁移：C1 改为初始测试后裁剪旧 C1 数据；复习堆已从「连对 N 次」升级为 **SRS Leitner 盒**（`box`/`due` 字段，间隔 1/3/7 天，盒 4 毕业），旧 `streak` 记录自动迁移。还管理**每日训练**（`store.daily`：确定性组卷、连续天数、会话续答）、**连击计分**（`sessionScore`/`maxCombo`）与 **S/A/B/C 课程评级**（`progress[cid].grade` 保留历史最佳）、`statsByLeak` 按漏洞统计。改 store 结构时要谨慎。
 - **`js/coach.js`** —— 从 engine 的 `statsByCourse` / `statsByStreet` 派生统计、漏洞分析、训练计划。
 - **`js/i18n.js`** —— `reg(key, en, zh)` + `t(key, {n})`。渲染时 `applyI18n(document)` 会更新 `data-i18n` 属性和 `document.title`。
 - **`js/explain.js`** —— 计算式反馈引擎。`engine.feedbackFor(q, choice, ok)` 优先调它，从 board+hand 算出 outs / 胜率（面对下注用单张 ×2）/ 底池赔率 / MDF，对**答对和答错都**生成双语讲解；算不出时回退到题目自带的 `reasonKey`。反馈屏（`app.js renderFeedback`）答错显示「为何不对」、答对显示「为什么对」。靠隐含/反向隐含赔率定夺的局面只给措辞、不印不等式，避免假数学。

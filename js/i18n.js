@@ -260,6 +260,9 @@ reg("daily.over.title", "Daily training complete", "今日训练完成");
 /* 计分与评级 */
 reg("over.points", "Points: {n}", "积分 {n}");
 reg("over.combo", "Best combo ×{n}", "最高连击 ×{n}");
+/* 漏洞热图 */
+reg("stats.leakHeatTitle", "Accuracy by leak type", "按漏洞类型准确率");
+reg("heat.empty", "Answer more questions to build your leak heatmap (needs 3+ hands per leak type).", "多答题即可生成漏洞热图（每类漏洞需 3 手以上样本）。");
 
 // —— 12 courses ——
 reg("c1.title", "Placement Test", "初始测试");
