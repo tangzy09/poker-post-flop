@@ -8,3 +8,4 @@ Thumbs.db
 server-log.txt
 .cursor/
 tools/audit-report.json
+.solve/
