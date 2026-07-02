@@ -102,7 +102,32 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     .page-head h2 { margin: 0 0 4px; font-size: 1.4rem; }
     .muted { color: var(--muted); font-size: .9rem; margin: 0; }
-    .course-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+    /* 课程 2 列网格(向 Preflop Camp 看齐);功能卡(每日/摸底/引导横幅/互链)占整行 */
+    .course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .course-grid > .onboard-banner,
+    .course-grid > .daily-card,
+    .course-grid > .placement-card,
+    .course-grid > .cross-card { grid-column: 1 / -1; }
+    /* 整卡可点的课程卡(压缩版):课号进度环 + 标题 + 题数/正确率 */
+    .lesson-card {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+      text-align: left; cursor: pointer; font-family: inherit; color: var(--ink);
+      transition: transform .14s ease, border-color .18s;
+    }
+    .lesson-card:not(.locked):hover { transform: translateY(-3px); border-color: var(--gold); }
+    .lesson-card:not(.locked):active { transform: translateY(-1px) scale(.98); }
+    .lesson-card h3 { margin: 0; font-size: .95rem; line-height: 1.3; }
+    .lesson-card .cc-sub { margin: 0; font-size: .76rem; }
+    .lesson-card .cc-meta { margin: 0; margin-top: auto; }
+    .lesson-card .cc-top { display: flex; align-items: center; gap: 8px; width: 100%; }
+    .lesson-card .badges { display: flex; gap: 4px; margin-left: auto; }
+    /* 课号进度环:弧长 = 该课正确率,颜色随评级 */
+    .ring { position: relative; width: 34px; height: 34px; flex: none; }
+    .ring svg { transform: rotate(-90deg); display: block; }
+    .ring .num {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .8rem; color: var(--gold);
+    }
     .course-card {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -353,6 +378,16 @@
     .conf-chip.reference { background: rgba(232,198,106,.15); color: var(--gold); }
     .conf-chip.conceptual { background: rgba(127,198,255,.15); color: #7fc6ff; }
     .choice-grid, .action-grid { display: flex; flex-direction: column; gap: var(--space-2); }
+    /* 动作栏固定在屏幕底部(向 Preflop Camp 看齐):牌桌再高按钮也始终可点 */
+    .drill-screen.has-actbar { padding-bottom: 150px; }
+    .actbar {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 520px; z-index: 20;
+      padding: 26px 16px calc(12px + env(safe-area-inset-bottom));
+      background: linear-gradient(180deg, transparent, rgba(10,32,26,.92) 30%, #0a201a 70%);
+    }
+    .actbar .action-grid { flex-direction: row; }
+    .actbar .act-btn { flex: 1; min-height: var(--btn-h); }
     .choice-btn {
       display: flex;
       align-items: center;

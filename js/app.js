@@ -173,37 +173,44 @@ function renderCourses() {
     const qs = getQuestions(c.id).length;
     const locked = !canAccessCourse(c);
     const acc = Engine.accuracy(c.id);
-    const badge = c.free ? t("course.free") : t("course.pro");
-    const badgeCls = c.free ? "free" : "pro";
-    let actions;
-    if (locked) {
-      actions = '<p class="cc-lock">' + t("course.locked") + "</p>";
-    } else if (p.learnDone) {
-      actions =
-        '<div class="btn-row">' +
-        '<button class="btn secondary" data-action="start-learn" data-id="' + c.id + '">' + t("course.reviewLearn") + "</button>" +
-        '<button class="btn primary" data-action="start-drill" data-id="' + c.id + '">' + t("course.practice") + "</button>" +
-        "</div>";
-    } else {
-      actions = '<button class="btn primary" data-action="start-course" data-id="' + c.id + '">' + t("course.start") + "</button>";
-    }
 
-    cards += (
-      '<article class="course-card' + (locked ? " locked" : "") + (p.completed ? " done" : "") + '">' +
-      '<div class="cc-head">' +
-      '<span class="cc-num">' + c.order + "</span>" +
-      '<span class="badge ' + badgeCls + '">' + badge + "</span>" +
-      (p.completed ? '<span class="badge done-badge">' + t("course.completed") + "</span>" : "") +
+    // 课号进度环:弧长 = 正确率,颜色随评级(未练 = 空环)
+    const R = 15, CIRC = 2 * Math.PI * R;
+    const ringColor = p.grade === "S" ? "var(--gold)" : p.grade === "A" ? "var(--call)" : p.grade === "B" ? "#9fd0ff" : p.grade === "C" ? "var(--muted)" : "var(--gold)";
+    const arc = acc != null ? (acc / 100) * CIRC : 0;
+    const ring =
+      '<span class="ring"><svg viewBox="0 0 34 34" width="34" height="34">' +
+      '<circle cx="17" cy="17" r="' + R + '" fill="rgba(232,198,106,.10)" stroke="var(--line)" stroke-width="3"/>' +
+      (arc > 0 ? '<circle cx="17" cy="17" r="' + R + '" fill="none" stroke="' + ringColor + '" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + arc.toFixed(1) + " " + CIRC.toFixed(1) + '"/>' : "") +
+      '</svg><span class="num">' + c.order + "</span></span>";
+
+    const badges =
+      '<span class="badges">' +
+      (p.completed ? '<span class="badge done-badge">✓</span>' : "") +
       (p.grade ? '<span class="badge grade-badge grade-' + p.grade + '">' + p.grade + "</span>" : "") +
-      "</div>" +
-      "<h3>" + t(c.titleKey) + "</h3>" +
-      '<p class="cc-sub">' + t(c.subKey) + "</p>" +
-      '<p class="cc-meta">' + t("course.questions", { n: qs }) +
-      (acc != null ? " · " + t("course.accuracy", { pct: acc }) : "") +
-      "</p>" +
-      actions +
-      "</article>"
-    );
+      "</span>";
+
+    // 整卡可点:未学过 → 课程(先 Learn);学过 → 直接进 Drill(「复习原理」在 drill 屏内仍有入口)
+    if (locked) {
+      cards += (
+        '<article class="course-card lesson-card locked">' +
+        '<div class="cc-top">' + ring + badges + "</div>" +
+        "<h3>" + t(c.titleKey) + "</h3>" +
+        '<p class="cc-lock">' + t("course.locked") + "</p>" +
+        "</article>"
+      );
+    } else {
+      cards += (
+        '<button class="course-card lesson-card' + (p.completed ? " done" : "") + '" data-action="' + (p.learnDone ? "start-drill" : "start-course") + '" data-id="' + c.id + '">' +
+        '<div class="cc-top">' + ring + badges + "</div>" +
+        "<h3>" + t(c.titleKey) + "</h3>" +
+        '<p class="cc-sub">' + t(c.subKey) + "</p>" +
+        '<p class="cc-meta">' + t("course.questions", { n: qs }) +
+        (acc != null ? " · " + acc + "%" : "") +
+        "</p>" +
+        "</button>"
+      );
+    }
   });
 
   // 姐妹站互链(列表末尾)
@@ -293,6 +300,7 @@ function renderDrill() {
     body += '<span class="conf-chip ' + q.confidence + '">' + t("drill.confidence." + q.confidence) + "</span>";
   }
 
+  let isAction = false;
   if (q.type === "choice") {
     body += '<div class="choice-grid">';
     displayChoiceOptions(q).forEach((opt) => {
@@ -300,12 +308,14 @@ function renderDrill() {
     });
     body += "</div>";
   } else {
+    // 动作题:按钮固定在屏幕底部(choice 题选项长,保持流内)
+    isAction = true;
     const acts = drillActionsForQuestion(q);
-    body += '<div class="action-grid">';
+    body += '<div class="actbar"><div class="action-grid">';
     acts.forEach((act) => {
       body += '<button class="act-btn a-' + act + '" data-choice="' + act + '">' + t("action." + act) + "</button>";
     });
-    body += "</div>";
+    body += "</div></div>";
   }
 
   const learnBtn =
@@ -318,7 +328,7 @@ function renderDrill() {
     : t("drill.q", { n: Engine.qIdx + 1, total: qs.length });
 
   return (
-    '<section class="screen drill-screen">' +
+    '<section class="screen drill-screen' + (isAction ? " has-actbar" : "") + '">' +
     '<button class="back-btn" data-action="back-courses">←</button>' +
     '<p class="eyebrow">' + (Engine.testMode ? t("c1.title") : Engine.dailyMode ? t("daily.title") : t(course.titleKey)) + " · " + t("drill.title") + "</p>" +
     '<p class="q-pager">' + progressLabel + "</p>" +
