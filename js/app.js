@@ -112,9 +112,11 @@ function renderCourses() {
   const noProgress = Object.keys(Engine.store.progress || {}).length === 0;
   let cards = "";
   if (!Engine.store.onboardingSeen && noProgress && !Engine.store.placement) {
-    cards += `<div class="onboard-banner">${t("placement.onboard")}
-      <button class="btn" data-action="onboard-start">${t("placement.start")}</button>
-      <button data-action="onboard-dismiss">${t("placement.later")}</button></div>`;
+    cards += `<div class="onboard-banner"><p>${t("placement.onboard")}</p>
+      <div class="btn-row">
+      <button class="btn secondary" data-action="onboard-dismiss">${t("placement.later")}</button>
+      <button class="btn primary" data-action="onboard-start">${t("placement.start")}</button>
+      </div></div>`;
   }
   cards += renderDailyCard();
   COURSES.forEach((c) => {
@@ -122,8 +124,9 @@ function renderCourses() {
       const p = Engine.store.placement;
       const last = p ? " · " + t("placement.scoreLine", { c: p.score, t: p.total }) : "";
       cards += `<button class="course-card placement-card" data-action="start-placement">
-        <div class="course-title">🎯 ${t(c.titleKey)}</div>
-        <div class="course-sub">${t(c.subKey)}${last}</div>
+        <div class="cc-head"><span class="badge placement-badge">🎯 ${t("placement.badge")}</span></div>
+        <h3>${t(c.titleKey)}</h3>
+        <p class="cc-sub">${t(c.subKey)}${last}</p>
       </button>`;
       return;
     }
@@ -164,12 +167,24 @@ function renderCourses() {
     );
   });
 
+  // 姐妹站互链(列表末尾)
+  cards +=
+    '<a class="course-card cross-card" href="https://pre-flop.ai-speeds.com/" target="_blank" rel="noopener">' +
+    '<div class="cc-head"><span class="badge placement-badge">♠ Preflop</span></div>' +
+    "<h3>" + t("cross.title") + "</h3>" +
+    '<p class="cc-sub">' + t("cross.sub") + "</p>" +
+    '<span class="cross-go">' + t("cross.go") + "</span>" +
+    "</a>";
+
   const dueN = Engine.dueReviewCount();
+  // 副标题给进度概览(顶栏已有 app.subtitle,不再重复)
+  const totalCourses = COURSES.filter((c) => !c.placement).length;
+  const doneCourses = Engine.store.stats.coursesDone || 0;
   return (
     '<section class="screen courses-screen">' +
     '<header class="page-head">' +
     "<h2>" + t("nav.courses") + "</h2>" +
-    '<p class="muted">' + t("app.subtitle") + "</p>" +
+    '<p class="muted">' + t("courses.progressLine", { done: doneCourses, total: totalCourses }) + "</p>" +
     "</header>" +
     '<div class="course-grid">' + cards + "</div>" +
     bottomNav("courses", dueN) +

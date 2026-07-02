@@ -263,6 +263,13 @@ reg("over.combo", "Best combo ×{n}", "最高连击 ×{n}");
 /* 漏洞热图 */
 reg("stats.leakHeatTitle", "Accuracy by leak type", "按漏洞类型准确率");
 reg("heat.empty", "Answer more questions to build your leak heatmap (needs 3+ hands per leak type).", "多答题即可生成漏洞热图（每类漏洞需 3 手以上样本）。");
+/* 课程页 */
+reg("courses.progressLine", "{done}/{total} courses completed", "已完成 {done}/{total} 课");
+reg("placement.badge", "Placement", "摸底");
+/* 姐妹站互链 */
+reg("cross.title", "Sharpen your preflop game too", "翻前也要练？");
+reg("cross.sub", "Preflop Camp — GTO preflop trainer with solved Nash push/fold (same maker).", "翻前训练营 — 含自算 Nash 推弃真 EV 的翻前 GTO 训练器（同一作者）。");
+reg("cross.go", "Open Preflop Camp ↗", "去翻前训练营 ↗");
 
 // —— 12 courses ——
 reg("c1.title", "Placement Test", "初始测试");
