@@ -294,6 +294,30 @@ test("_migrateStore upgrades legacy streak records to SRS box/due", () => {
   assert.ok(Engine.store.statsByLeak);
 });
 
+test("_migrateStore survives stores missing top-level fields (no silent wipe)", () => {
+  const { Engine } = loadEngine();
+  // 只有 reviewPile 的极旧存档:缺 progress/stats,迁移不得抛(load 的 catch 会整库清零)
+  Engine.store = { reviewPile: [{ courseId: "c2", qid: "c2-q1", wrong: 2, leak: "too_tight" }] };
+  Engine.save = function () {};
+  Engine._migrateStore();
+  assert.equal(Engine.store.reviewPile.length, 1); // 数据保住了
+  assert.equal(Engine.store.reviewPile[0].box, 0); // 且完成了 SRS 迁移
+  assert.ok(Engine.store.progress);
+  assert.ok(Engine.store.stats);
+  assert.ok(Engine.store.daily);
+});
+
+test("startCourse drill clamps stale qDone within question count", () => {
+  const { Engine, getQuestions } = loadEngine();
+  Engine.store = freshStore();
+  Engine.save = function () {};
+  const n = getQuestions("c2").length;
+  // 旧版存档:completed:false 且 qDone 超过缩水后的题数 → 不得越界(曾致白屏)
+  Engine.store.progress.c2 = { learnDone: true, qDone: n + 50, completed: false };
+  Engine.startCourse("c2", "drill");
+  assert.ok(Engine.qIdx < n, "qIdx(" + Engine.qIdx + ") 应小于题数 " + n);
+});
+
 test("_migrateStore backfills statsByCourse from completed progress", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();

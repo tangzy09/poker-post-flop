@@ -35,49 +35,56 @@ function displayChoiceOptions(q) {
   return _choiceOrderOpts;
 }
 
-function render() {
+function render(depth) {
   const root = $("#screens");
   if (!root) return;
 
+  let html;
   switch (Engine.screen) {
     case "courses":
-      root.innerHTML =
-        renderCourses() +
-        (!Engine.store.seenIntro ? renderIntro() : "");
+      html = renderCourses() + (!Engine.store.seenIntro ? renderIntro() : "");
       break;
     case "learn":
-      root.innerHTML = renderLearn();
+      html = renderLearn();
       break;
     case "drill":
-      root.innerHTML = renderDrill();
+      html = renderDrill();
       break;
     case "feedback":
-      root.innerHTML = renderFeedback();
+      html = renderFeedback();
       break;
     case "over":
-      root.innerHTML = renderOver();
+      html = renderOver();
       break;
     case "review-empty":
-      root.innerHTML = renderReviewEmpty();
+      html = renderReviewEmpty();
       break;
     case "review":
-      root.innerHTML = renderReviewDetail();
+      html = renderReviewDetail();
       break;
     case "review-over":
-      root.innerHTML = renderReviewOver();
+      html = renderReviewOver();
       break;
     case "stats":
-      root.innerHTML = renderStats();
+      html = renderStats();
       break;
     case "placement-result":
-      root.innerHTML = renderPlacementResult();
+      html = renderPlacementResult();
       break;
     case "daily-over":
-      root.innerHTML = renderDailyOver();
+      html = renderDailyOver();
       break;
     default:
-      root.innerHTML = renderCourses();
+      html = renderCourses();
   }
+
+  // renderDrill/renderFeedback 越界早退返回 null(内部已结算并切换 screen):
+  // 按新 screen 重走一遍,而不是把 null/空串写进 DOM(白屏)。
+  if (html == null) {
+    if ((depth || 0) < 2) return render((depth || 0) + 1);
+    html = renderCourses(); // 双重早退兜底,不该发生
+  }
+  root.innerHTML = html;
 
   applyI18n(document);
   bindEvents();
@@ -275,12 +282,13 @@ function renderDrill() {
   const qs = Engine.currentQuestions();
   const q = qs[Engine.qIdx];
   if (!q) {
+    // 越界/空题库:结算并返回 null,由外层 render() 按已切换的 screen 重走一遍。
+    // 绝不能在这里递归 render() —— 外层随后的 innerHTML 赋值会把刚画好的屏清空(白屏 bug)。
     if (Engine.testMode) Engine.finishPlacementTest(Date.now());
     else if (Engine.dailyMode) Engine.finishDaily();
     else if (Engine.reviewMode) Engine.finishReviewSession();
     else Engine.finishDrill();
-    render();
-    return "";
+    return null;
   }
 
   const drillCourseId = q._courseId || Engine.courseId;
@@ -318,8 +326,9 @@ function renderDrill() {
     body += "</div></div>";
   }
 
+  // 「回到原理」只属于普通课程练习:摸底是考试(点了会静默作废测试)、每日/复习是混课队列
   const learnBtn =
-    !Engine.reviewMode && p.learnDone
+    !Engine.reviewMode && !Engine.testMode && !Engine.dailyMode && p.learnDone
       ? '<div class="btn-stack drill-actions"><button class="btn secondary" data-action="start-learn" data-id="' + drillCourseId + '">' + t("learn.backToLearn") + "</button></div>"
       : "";
 

@@ -101,6 +101,11 @@ const Engine = {
   },
 
   _migrateStore() {
+    // 顶层字段兜底必须最先做:老版本/手改过的存档缺任一字段都会让下面的迁移抛
+    // TypeError,而 load() 的 catch 会用默认 store 覆盖 —— 用户全部进度静默清零。
+    if (!this.store.progress) this.store.progress = {};
+    if (!this.store.stats) this.store.stats = { totalQ: 0, correctQ: 0, coursesDone: 0 };
+    if (!this.store.reviewPile) this.store.reviewPile = [];
     if (!this.store.statsByCourse) this.store.statsByCourse = {};
     if (!this.store.statsByStreet) this.store.statsByStreet = {};
     if (!this.store.statsByLeak) this.store.statsByLeak = {};
@@ -206,7 +211,8 @@ const Engine = {
     }
     if (mode === "drill") {
       this.screen = "drill";
-      this.qIdx = p.completed ? 0 : p.qDone || 0;
+      // 钳制:旧版存档可能带 completed:false 且 qDone>0(甚至超过缩水后的题数)
+      this.qIdx = p.completed ? 0 : Math.min(p.qDone || 0, Math.max(0, getQuestions(courseId).length - 1));
       return;
     }
     // First visit: start with lessons.
