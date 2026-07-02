@@ -48,12 +48,15 @@ VS Code 也可用任务：**Terminal → Run Task → serve**（见 `.vscode/tas
 
 | 命令 | 作用 |
 |------|------|
-| `npm test` | **44** 项结构/内容/引擎测试，改题库或 i18n 后必跑 |
+| `npm test` | **64** 项结构/内容/引擎测试，改题库或 i18n 后必跑 |
 | `npm run audit` | 699 题全量审计，输出 `tools/audit-report.json` |
 | `node scripts/gen-content-ext.js` | 改 C13–C30 源数据后重新生成 `js/content-ext.js` |
 | `node scripts/audit-stem-spot.js` | 题干文字 vs 牌面/手牌一致性 |
 | `node tools/label-check.js` | 牌力标签体检：重算成牌/听牌 vs 文案声明 |
 | `node tools/verify-feedback.js` | 计算式反馈数学全量验证（逐题核对不等式真假） |
+| `node tools/gen-seo-pages.js` | 重新生成 `courses/` 静态课程页（29×en/zh）+ sitemap + robots |
+| `node tools/gen-seo-block.js` | 重新生成 `index.html` 内 `<!--SEO-->` 静态内容块 |
+| `node tools/embed-fonts.js` | 字体集变更时重新 base64 内嵌 Space Grotesk |
 | `powershell -File tools/deploy-ec2.ps1` | 打版本戳 + 上传 EC2（需 SSH 密钥） |
 
 ## 5. 代码结构（改哪里）
@@ -120,12 +123,12 @@ app.js (render) + table.js (spot) + i18n.js (t)
 | 环境 | 方式 |
 |------|------|
 | **EC2（主站）** | `powershell -File tools/deploy-ec2.ps1` → https://post-flop-coach.ai-speeds.com/ |
-| GitHub Pages | push `main` 触发 CI（需 workflow 权限） |
+| GitHub Pages | **未启用**（镜像 404）—— EC2 是唯一发布通道 |
 
 部署脚本会：
 
 1. 用当前 git short hash 写入 `index.html` 里 `?v=`
-2. 上传 `index.html`、`js/`、`data/` 到 EC2
+2. 上传 `index.html`、`robots.txt`、`sitemap.xml`、`og-image.png`、GSC 验证文件、`js/`、`data/`、`courses/` 到 EC2
 
 手机端若看到旧版：**硬刷新**或清缓存（依赖 `?v=` 戳）。
 
@@ -139,7 +142,10 @@ app.js (render) + table.js (spot) + i18n.js (t)
 | C1 | 已改造为**初始测试**（20 题基准卷，无自有题库）；`engine.js` 会迁移旧 c1 进度 |
 | 复习堆 | SRS Leitner 盒（`box`/`due`，间隔 1/3/7 天）；默认只复习**到期**题，旧 `streak` 记录自动迁移 |
 | 每日训练 | 按本地日期做种子的确定性组卷（同一天同一套题）；会话存在 `store.daily.session` 支持续答 |
-| `.github/workflows/pages.yml` | 本地可能未跟踪；push 需 PAT 带 `workflow` scope |
+| SEO 静态块 | `#screens` 内 `<!--SEO-->` 块由 `gen-seo-block.js` 生成、`render()` 首帧覆写 —— 勿手改 |
+| 课程页 slug | `tools/seo-slugs.js` **发布后不可改**（收录/外链会断）；`courses/` 是生成产物 |
+| 字体 | 已 base64 内嵌（大陆可用/离线），**勿**再加 Google Fonts CDN；script 全部 `defer` |
+| GitHub Pages | **未启用**（镜像 404）；`.github/` 保持未跟踪 —— push 的 PAT 无 `workflow` scope，入库会拒推 |
 
 ## 9. 文档索引
 

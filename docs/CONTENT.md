@@ -130,11 +130,13 @@ t("course.questions", { n: 24 });
 
 ```bash
 node scripts/gen-content-ext.js   # 仅当改了 C13–C30 源数据
-npm test                          # 必须全绿（当前 44 tests）
+npm test                          # 必须全绿（当前 64 tests）
 npm run audit                     # 期望 699/699
 node scripts/audit-stem-spot.js   # 题干 vs 牌面
 node tools/label-check.js         # 牌力标签：重算成牌/听牌 vs 文案（成顺标听牌、三条标两对、四条标葫芦…）
 node tools/verify-feedback.js     # 计算式反馈：逐题核对 explain 印出的每个不等式真假（应 0 假）
+node tools/gen-seo-pages.js       # Learn 文案/课程结构变了 → 重生成 SEO 课程页 + sitemap
+node tools/gen-seo-block.js       # 课程标题/题数变了 → 重生成 index.html 静态 SEO 块
 ```
 
 测试覆盖：重复牌、听牌类型、label 与牌力、solver 牌面、learn key 注册、stem 与 spot 一致等。两个 `tools/*` 体检脚本独立于 `npm test`，是改内容后揪牌力/答案/反馈错误的最后一道关。
