@@ -154,10 +154,23 @@
       display: flex; align-items: center; justify-content: center; padding: 24px;
     }
     .intro-card {
+      position: relative;
       background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
       padding: 24px 20px; max-width: 340px; width: 100%; text-align: center;
       box-shadow: 0 18px 50px rgba(0,0,0,.5);
     }
+    /* 引导内语言切换(顶栏被 overlay 盖住,首启必须能切中文) */
+    .intro-lang {
+      position: absolute; top: 10px; right: 10px;
+      display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+      background: rgba(0,0,0,.25);
+    }
+    .intro-lang button {
+      border: 0; background: transparent; color: var(--muted);
+      padding: 4px 9px; font-weight: 700; font-size: .74rem; cursor: pointer; font-family: inherit;
+    }
+    .intro-lang button + button { border-left: 1px solid var(--line); }
+    .intro-lang button.on { background: rgba(232,198,106,.15); color: var(--gold); }
     .intro-ic { font-size: 2rem; margin-bottom: 6px; }
     .intro-card h3 { margin: 0 0 8px; font-size: 1.12rem; }
     .intro-card p { margin: 0 0 14px; color: var(--muted); font-size: .88rem; line-height: 1.55; }

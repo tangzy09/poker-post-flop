@@ -100,9 +100,17 @@ function renderIntro() {
       '<button class="btn primary" data-action="intro-placement">' + t("intro.goPlacement") + "</button>"
     : '<button class="btn secondary" data-action="intro-skip">' + t("intro.skip") + "</button>" +
       '<button class="btn primary" data-action="intro-next">' + t("intro.next") + "</button>";
+  // 顶栏语言切换被 overlay 盖住 —— 引导内必须自带切换(默认英文,首启即可切中文)
+  const lang = curLang();
+  const langSel =
+    '<div class="intro-lang">' +
+    '<button data-action="intro-lang" data-lang="zh"' + (lang === "zh" ? ' class="on"' : "") + ">中</button>" +
+    '<button data-action="intro-lang" data-lang="en"' + (lang === "en" ? ' class="on"' : "") + ">EN</button>" +
+    "</div>";
   return (
-    '<div class="intro-ov">' +
+    '<div class="intro-ov" role="dialog" aria-modal="true">' +
     '<div class="intro-card">' +
+    langSel +
     '<div class="intro-ic">' + s.icon + "</div>" +
     "<h3>" + s.title + "</h3>" +
     "<p>" + s.body + "</p>" +
@@ -1007,11 +1015,16 @@ function handleAction(action, el) {
       resetChoiceShuffle();
       Engine.startDaily();
       break;
+    case "intro-lang":
+      setLang(el.getAttribute("data-lang")); // onLangChange 会重渲,_introStep 保留
+      return;
     case "intro-next":
       _introStep = Math.min(_introStep + 1, 2);
       break;
     case "intro-skip":
+      // 关闭引导即视为已完成 onboarding:第 3 步刚做过选择,不再叠加摸底横幅重复推销
       Engine.store.seenIntro = true;
+      Engine.store.onboardingSeen = true;
       Engine.save();
       _introStep = 0;
       break;
