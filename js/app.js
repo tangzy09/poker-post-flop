@@ -1050,6 +1050,17 @@ function bindEvents() {
     el.onclick = () => {
       const courseId = el.getAttribute("data-drill-course");
       const leak = el.getAttribute("data-drill-leak");
+      // 摸底结果页的「专练」:漏洞卡来自 pseudoStore,但 startReview 过滤的是真实复习堆
+      // (testMode 答错不入堆)—— 先把摸底错题幂等并入,否则新用户点了必落空页
+      if (Engine.screen === "placement-result" && Engine.store.placement) {
+        const ps = Engine.placementPseudoStore(Engine.store.placement.results);
+        for (const r of ps.reviewPile) {
+          if (!Engine.store.reviewPile.find((x) => x.qid === r.qid && x.courseId === r.courseId)) {
+            Engine.store.reviewPile.push(r);
+          }
+        }
+        Engine.save();
+      }
       resetChoiceShuffle();
       Engine.startReview({ courseId, leak: leak || undefined });
       render();

@@ -158,6 +158,35 @@ test("startDaily resumes today's session at the next unanswered question", () =>
   assert.equal(Engine.dailyQueue.length, 10);
 });
 
+test("crossing midnight: finishDaily anchors to session date and keeps the streak", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.save = function () {};
+  // D-1 日完成过每日
+  Engine._now = () => DAY1;
+  Engine.startDaily();
+  Engine.answers = Engine.dailyQueue.map((q) => ({ qid: q.id, choice: "x", ok: true }));
+  Engine.finishDaily();
+  assert.equal(Engine.store.daily.streakDays, 1);
+  // D 日 23:55 开卷,答了 3 题
+  const lateNight = DAY1 + DAY + 11.9 * 36e5; // D 日 23:54
+  Engine._now = () => lateNight;
+  Engine.startDaily();
+  const dayD = Engine.store.daily.session.date;
+  for (let i = 0; i < 3; i++) Engine.recordAnswer(Engine.dailyQueue[i], "x", { ok: true });
+  // 跨午夜(D+1 日 00:10)回来:会话可续,不弃卷
+  Engine._now = () => lateNight + 16 * 6e4;
+  Engine.startDaily();
+  assert.equal(Engine.qIdx, 3, "昨晚的作答应保留");
+  assert.equal(Engine.store.daily.session.date, dayD, "仍是开卷日的卷");
+  // 答完:成绩记到开卷日 D,streak 接上 D-1 → 2(而非被清零)
+  Engine.answers = Engine.dailyQueue.map((q) => ({ qid: q.id, choice: "x", ok: true }));
+  Engine.finishDaily();
+  assert.equal(Engine.store.daily.lastDone, dayD);
+  assert.ok(Engine.store.daily.history[dayD]);
+  assert.equal(Engine.store.daily.streakDays, 2, "跨午夜完成不应清零 streak");
+});
+
 test("dailyStatus reports doneToday and zeroes streak display after a gap", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();

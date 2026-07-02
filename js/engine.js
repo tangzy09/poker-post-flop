@@ -493,9 +493,15 @@ const Engine = {
 
   startDaily() {
     const today = this._todayStr();
+    const yesterday = this._dateStrAt(this._now() - 864e5);
     const d = this.store.daily;
+    // 昨晚开卷答了一部分、跨午夜回来:继续旧卷(完成时记到开卷日),不静默弃卷
+    const resumable =
+      d.session && d.session.qids &&
+      (d.session.date === today ||
+        (d.session.date === yesterday && (d.session.answers || []).length > 0));
     let queue;
-    if (d.session && d.session.date === today && d.session.qids) {
+    if (resumable) {
       // 当日已有会话:按记录的题目列表重建,支持刷新续答
       queue = d.session.qids
         .map((k) => {
@@ -537,15 +543,17 @@ const Engine = {
 
   finishDaily() {
     const d = this.store.daily;
-    const today = this._todayStr();
+    // 成绩与打卡锚定「开卷日」:23:55 开卷 00:05 答完仍算开卷那天,streak 不被跨午夜冤枉清零
+    const day = (d.session && d.session.date) || this._todayStr();
     const correct = this.answers.filter((a) => a.ok).length;
     const total = this.answers.length;
-    d.history[today] = { c: correct, t: total };
-    if (d.lastDone !== today) {
-      const yesterday = this._dateStrAt(this._now() - 864e5);
-      d.streakDays = d.lastDone === yesterday ? (d.streakDays || 0) + 1 : 1;
+    d.history[day] = { c: correct, t: total };
+    if (d.lastDone !== day) {
+      // day 的前一天(用正午锚点解析,避开时区/夏令时边界)
+      const dayBefore = this._dateStrAt(new Date(day + "T12:00:00").getTime() - 864e5);
+      d.streakDays = d.lastDone === dayBefore ? (d.streakDays || 0) + 1 : 1;
       d.bestStreak = Math.max(d.bestStreak || 0, d.streakDays);
-      d.lastDone = today;
+      d.lastDone = day;
     }
     // 历史只留最近 60 天
     const keys = Object.keys(d.history).sort();
@@ -575,7 +583,11 @@ const Engine = {
     // 断签展示:昨天和今天都没做 → 连续天数归零
     let streak = d.streakDays || 0;
     if (d.lastDone !== today && d.lastDone !== yesterday) streak = 0;
-    const sess = d.session && d.session.date === today ? d.session : null;
+    // 进行中的会话:今天的,或昨晚未答完的(可续,见 startDaily)
+    const sess =
+      d.session && (d.session.date === today || (d.session.date === yesterday && (d.session.answers || []).length > 0))
+        ? d.session
+        : null;
     return {
       doneToday: d.lastDone === today,
       streakDays: streak,

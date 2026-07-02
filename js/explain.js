@@ -107,10 +107,14 @@
       var d = drawTags(ev);
       var oneCard = Math.min(d.outs * 2 + (d.outs >= 9 ? 1 : 0), 59); // ≈ one-card hit %
       var od = s.bet ? potOdds(s.pot, s.bet) : null;
+      // 已成对子 + 听牌:如实说明摊牌价值,并标注 outs 仅计听牌(不编对子改进的具体数字)
+      var pairNote = ev.cat === "pair"
+        ? L("；另持一对有摊牌价值（outs 仅计听牌，实际更强）", "; you also hold a pair for showdown value (outs count the draw only — you are stronger than the raw number)")
+        : "";
       var head = L(
         "你的牌是 " + d.tags.join(" + ") + "，约 " + d.outs + " 个 outs（一张牌≈" + oneCard + "% 命中）",
         "You hold " + d.tags.join(" + ") + " — about " + d.outs + " outs (≈" + oneCard + "% to hit on one card)"
-      );
+      ) + pairNote;
       if (od) head += L("，面对 " + s.bet + " 注（底池 " + s.pot + "）需 " + od.need + "%（" + od.ratio + ":1）", ", and facing " + s.bet + " into " + s.pot + " you need " + od.need + "% (" + od.ratio + ":1)");
       head += L("。", ". ");
       var clears = od && oneCard >= od.need;
