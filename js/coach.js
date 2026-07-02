@@ -45,14 +45,29 @@ const Coach = {
   },
 
   aggregateLeaks(store) {
+    // 口径 = 累计答错次数(statsByLeak.h−c),与统计页热图一致。
+    // 旧口径基于 reviewPile 现存记录:错题在 SRS 盒 4 毕业被删后,「最大漏洞」会随掌握
+    // 而消失甚至归空,与旁边按累计算的热图同屏自相矛盾。摸底 pseudoStore 无 statsByLeak,
+    // 保留 reviewPile 回退。
     const counts = {};
     let total = 0;
-    (store.reviewPile || []).forEach((r) => {
-      const k = r.leak || "other";
-      const n = r.wrong || 1;
-      counts[k] = (counts[k] || 0) + n;
-      total += n;
-    });
+    const byLeak = store.statsByLeak;
+    if (byLeak && Object.keys(byLeak).length) {
+      for (const k of Object.keys(byLeak)) {
+        const n = Math.max(0, (byLeak[k].h || 0) - (byLeak[k].c || 0));
+        if (n > 0) {
+          counts[k] = n;
+          total += n;
+        }
+      }
+    } else {
+      (store.reviewPile || []).forEach((r) => {
+        const k = r.leak || "other";
+        const n = r.wrong || 1;
+        counts[k] = (counts[k] || 0) + n;
+        total += n;
+      });
+    }
     const order = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
     return { counts, total, order, topKey: order[0] || null };
   },

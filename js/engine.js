@@ -147,7 +147,16 @@ const Engine = {
   save() {
     try {
       localStorage.setItem(STORE_KEY, JSON.stringify(this.store));
-    } catch (e) {}
+      this._saveWarned = false;
+    } catch (e) {
+      // 存储满/隐私模式:进度写不进去,再静默用户会以为答了都算数 —— 提示一次
+      if (!this._saveWarned) {
+        this._saveWarned = true;
+        try {
+          if (typeof alert === "function") alert(t("err.saveFailed"));
+        } catch (e2) {}
+      }
+    }
   },
 
   _defaultStore() {
@@ -343,6 +352,7 @@ const Engine = {
   },
 
   finishDrill() {
+    if (this.screen === "over") return; // 重入守卫:重复触发会用空 answers 把成绩覆盖成 0
     const qs = getQuestions(this.courseId);
     const correct = this.answers.filter((a) => a.ok).length;
     const grade = this.gradeLetter(correct, qs.length);
@@ -398,6 +408,7 @@ const Engine = {
   },
 
   finishPlacementTest(takenAt) {
+    if (!this.testMode) return; // 重入守卫
     const res = this.testResults;
     const total = res.length;
     const score = res.filter((r) => r.ok).length;
@@ -533,7 +544,15 @@ const Engine = {
       } else this.combo = 0;
     }
     this.courseId = queue[0] ? queue[0]._courseId : null;
-    if (!queue.length || this.qIdx >= queue.length) {
+    if (!queue.length) {
+      // 空队列(题库变更的极端情况):不结算、不计打卡,回课程页
+      this.dailyMode = false;
+      this.store.daily.session = null;
+      this.screen = "courses";
+      this.save();
+      return;
+    }
+    if (this.qIdx >= queue.length) {
       this.finishDaily();
       return;
     }
@@ -542,6 +561,7 @@ const Engine = {
   },
 
   finishDaily() {
+    if (!this.dailyMode) return; // 重入守卫
     const d = this.store.daily;
     // 成绩与打卡锚定「开卷日」:23:55 开卷 00:05 答完仍算开卷那天,streak 不被跨午夜冤枉清零
     const day = (d.session && d.session.date) || this._todayStr();
@@ -638,6 +658,7 @@ const Engine = {
   },
 
   finishReviewSession() {
+    if (!this.reviewMode) return; // 重入守卫
     const correct = this.answers.filter((a) => a.ok).length;
     const total = this.answers.length;
     this.reviewSummary = {

@@ -22,7 +22,7 @@ vm.runInContext(code, ctx);
 const { STR, COURSES, getQuestions } = ctx.__o;
 const en = (k) => STR.en[k] || k;
 const zh = (k) => STR.zh[k] || STR.en[k] || k;
-const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const courses = COURSES.filter((c) => !c.placement);
 const totalQ = courses.reduce((n, c) => n + getQuestions(c.id).length, 0);

@@ -154,7 +154,7 @@ function pageHtml(lang, course, order, prevC, nextC) {
 <div class="wrap">
 <p class="eyebrow"><a href="${lang === 'zh' ? '../../' : '../'}">${l.brandLong}</a><span class="langsw"><a href="${lang === 'zh' ? urlEn : urlZh}">${lang === 'zh' ? 'EN' : '中文'}</a></span></p>
 <h1>${esc(title)}</h1>
-<p class="eyebrow">${l.lesson(order)} · ${sub} · ${l.questions(nQ)}</p>
+<p class="eyebrow">${l.lesson(order)} · ${esc(sub)} · ${l.questions(nQ)}</p>
 ${slidesHtml}
 ${sampleHtml}
 <a class="cta" href="${lang === 'zh' ? '../../' : '../'}">${l.cta(nQ)}</a>

@@ -28,8 +28,16 @@ function reg(key, en, zh) {
   STR.zh[key] = zh || en;
 }
 
+const _tMissWarned = {};
 function t(key, vars) {
-  let s = (STR[LANG] && STR[LANG][key]) || STR.en[key] || key;
+  let s = (STR[LANG] && STR[LANG][key]) || STR.en[key];
+  if (s === undefined) {
+    s = key; // 缺 key 回退为 key 本身,但控制台警告一次,避免新枚举忘 reg() 静默露 key
+    if (!_tMissWarned[key] && typeof console !== "undefined") {
+      _tMissWarned[key] = 1;
+      console.warn("[i18n] missing key:", key);
+    }
+  }
   if (vars) {
     for (const k of Object.keys(vars)) {
       s = s.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]);
@@ -275,6 +283,8 @@ reg("trend.empty", "No trend data yet — normal training records daily accuracy
 reg("trend.note", "{n} days tracked · latest {acc}% ({h} hands)", "共记录 {n} 天 · 最近一天 {acc}%（{h} 手）");
 reg("trend.hands", "hands", "手数");
 reg("trend.tip", "{date} · {acc}% · {h} hands", "{date} · {acc}% · {h} 手");
+reg("trend.max", "max", "峰值");
+reg("err.saveFailed", "Storage is full or unavailable — your progress is NOT being saved. Free up space or exit private browsing.", "存储已满或不可用 —— 进度当前无法保存。请清理空间或退出无痕模式。");
 /* 反馈闭环 */
 reg("fb.vs.ref", "Reference", "参考");
 reg("fb.vs.you", "You", "你");

@@ -374,7 +374,8 @@ function fbLeakHtml(q, ok) {
   if (ok || Engine.testMode) return "";
   const leak = q.leak || "other";
   const s = (Engine.store.statsByLeak || {})[leak];
-  const n = s ? Math.max(1, s.h - s.c) : 1; // 该类累计错次(recordAnswer 已含本题)
+  // 普通/每日模式 recordAnswer 已含本题;复习模式不更新 statsByLeak,显示时补上本次
+  const n = Math.max(1, (s ? s.h - s.c : 0) + (Engine.reviewMode ? 1 : 0));
   const txt = n >= 2 ? t("fb.leakLine", { name: Coach.leakLabel(leak), n }) : t("fb.leakFirst", { name: Coach.leakLabel(leak) });
   return (
     '<div class="fb-leak">' +
@@ -470,9 +471,11 @@ function buildDailyShareCanvas(s) {
   c.fillStyle = "#f1f5ee"; c.font = "700 52px " + F;
   c.fillText("🔥 " + t("daily.streak", { n: s.streakDays }), W / 2, 590);
   // 积分 · 连击
-  c.fillStyle = "#8fa79a"; c.font = "30px " + F;
-  const line = t("over.points", { n: s.score }) + (s.maxCombo > 1 ? " · " + t("over.combo", { n: s.maxCombo }) : "");
-  c.fillText(line, W / 2, 648);
+  if (s.score > 0) {
+    c.fillStyle = "#8fa79a"; c.font = "30px " + F;
+    const line = t("over.points", { n: s.score }) + (s.maxCombo > 1 ? " · " + t("over.combo", { n: s.maxCombo }) : "");
+    c.fillText(line, W / 2, 648);
+  }
   // 底部品牌 pill
   const pw = 560, ph = 78, px = (W - pw) / 2, py = 790;
   const pg = c.createLinearGradient(0, py, 0, py + ph);
@@ -492,7 +495,7 @@ function buildDailyShareCanvas(s) {
 function shareDailyCard() {
   const s = Engine.dailySummary || Engine.dailyStatus().todayScore && {
     correct: Engine.dailyStatus().todayScore.c, total: Engine.dailyStatus().todayScore.t,
-    pct: Math.round((Engine.dailyStatus().todayScore.c / Engine.dailyStatus().todayScore.t) * 100),
+    pct: Engine.dailyStatus().todayScore.t ? Math.round((Engine.dailyStatus().todayScore.c / Engine.dailyStatus().todayScore.t) * 100) : 0,
     score: 0, maxCombo: 0, streakDays: Engine.dailyStatus().streakDays,
   };
   if (!s) return;
@@ -764,7 +767,7 @@ function renderTrendCard() {
     .map((e, i) => `<rect x="${(x(i) - bw / 2).toFixed(1)}" y="${(barTop + BH - (e.h / maxH) * BH).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1.5, (e.h / maxH) * BH).toFixed(1)}" rx="2" fill="rgba(232,198,106,.45)"/>`)
     .join("");
   const barLbl = `<text x="${PL - 5}" y="${(barTop + BH - 1).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--muted)">${t("trend.hands")}</text>` +
-    `<text x="${W - PR}" y="${(barTop - 2).toFixed(1)}" text-anchor="end" font-size="8" fill="var(--muted)">max ${maxH}</text>`;
+    `<text x="${W - PR}" y="${(barTop - 2).toFixed(1)}" text-anchor="end" font-size="8" fill="var(--muted)">${t("trend.max")} ${maxH}</text>`;
 
   const lbl = (i) => days[i].d.slice(5).replace("-", "/");
   const xl = [0, n - 1]
