@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://post-flop-coach.ai-speeds.com/sitemap.xml
