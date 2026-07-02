@@ -62,6 +62,11 @@ courses.js（30 课元数据）
 - 调试解锁：`localStorage.setItem('pokerPostFlopPro','1')`（解锁全部课程）、`localStorage.setItem('pokerPostFlopLang','zh')`（切语言）、`localStorage.removeItem('pokerPostFlop_v1')`（清进度）。
 - **未经用户明确要求，不要 commit、push 或部署。**
 
+## 品牌共享 token(与 pokerPreFlop 对齐,勿单边改)
+
+两站(翻前/翻后训练营)共用同一套品牌视觉,以下 token 两边 `:root` 保持一致:
+`--felt #0c2a22` `--felt2 #0a201a` `--panel #161d18` `--line #28332a` `--ink #f1f5ee` `--muted #8fa79a` `--gold #e8c66a` `--gold2 #b8902f` `--call/--best #34b074` `--raise/--wrong #e0544f` `--fold #5b6f63` `--card-r 10px`;字体 = 内嵌 Space Grotesk(latin)+ 中文系统回退。改任一 token 需两仓同步。内容宽度是**有意的差异**(本站 520px / 翻前 430px),不必对齐。
+
 ## 部署
 
 - **EC2（唯一发布通道）**：`powershell -File tools/deploy-ec2.ps1` → https://post-flop-coach.ai-speeds.com/（需 SSH 密钥）。上传清单：`index.html`、`robots.txt`、`sitemap.xml`、`og-image.png`、GSC 验证文件、`js/`、`data/`、`courses/`。
