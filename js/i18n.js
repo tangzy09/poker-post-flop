@@ -266,6 +266,29 @@ reg("heat.empty", "Answer more questions to build your leak heatmap (needs 3+ ha
 /* 课程页 */
 reg("courses.progressLine", "{done}/{total} courses completed", "已完成 {done}/{total} 课");
 reg("placement.badge", "Placement", "摸底");
+/* 准确率趋势 */
+reg("trend.title", "Accuracy trend", "准确率趋势");
+reg("trend.empty", "No trend data yet — normal training records daily accuracy.", "还没有趋势数据 — 正常训练会按天记录准确率。");
+reg("trend.note", "{n} days tracked · latest {acc}% ({h} hands)", "共记录 {n} 天 · 最近一天 {acc}%（{h} 手）");
+reg("trend.hands", "hands", "手数");
+reg("trend.tip", "{date} · {acc}% · {h} hands", "{date} · {acc}% · {h} 手");
+/* 反馈闭环 */
+reg("fb.vs.ref", "Reference", "参考");
+reg("fb.vs.you", "You", "你");
+reg("fb.leakLine", "Your leak: {name} · ×{n}", "你的毛病：{name} · 第 {n} 次");
+reg("fb.leakFirst", "Leak type: {name}", "漏洞类型：{name}");
+reg("fb.drillLeak", "Drill this leak →", "专练这类 →");
+/* 新手引导 */
+reg("intro.t1", "Train your post-flop game", "练翻牌后的决策");
+reg("intro.b1", "30 lessons, 699 real spots — from pot odds and MDF all the way to overbets, ICM and a capstone. Every answer is verified.", "30 课、699 道实战题 — 从赔率与 MDF 一路到超池、ICM 与综合大考。每道答案都经过验证。");
+reg("intro.t2", "Learn, drill, and review on schedule", "边学边练，按期复习");
+reg("intro.b2", "Each lesson: short theory, then drills with computed feedback. Misses return on a 1/3/7-day schedule, and a 10-hand daily set keeps your streak alive.", "每课先讲原理再进题；答错的题按 1/3/7 天到期回归，每天 10 题保持手感和连续打卡。");
+reg("intro.t3", "Start with a 5-minute placement test", "从 5 分钟摸底开始");
+reg("intro.b3", "20 questions to find your level and weakest street — then jump in exactly where you should.", "20 道题测出你的水平与最弱街道，然后从最该练的地方开始。");
+reg("intro.skip", "Skip", "跳过");
+reg("intro.next", "Next", "下一步");
+reg("intro.browse", "Browse courses", "先逛逛");
+reg("intro.goPlacement", "Take the test", "去摸底");
 /* 姐妹站互链 */
 reg("cross.title", "Sharpen your preflop game too", "翻前也要练？");
 reg("cross.sub", "Preflop Camp — GTO preflop trainer with solved Nash push/fold (same maker).", "翻前训练营 — 含自算 Nash 推弃真 EV 的翻前 GTO 训练器（同一作者）。");

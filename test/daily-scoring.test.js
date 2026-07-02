@@ -215,6 +215,47 @@ test("combo scoring: 10 base + streak bonus capped at +5, wrong resets combo", (
   assert.equal(Engine.maxCombo, 7);
 });
 
+/* —— 准确率趋势采集 —— */
+
+test("trend collects per-day accuracy in normal drill, skips review/test", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.store.trend = [];
+  Engine.save = function () {};
+  Engine._now = () => DAY1;
+  Engine.courseId = "c2";
+  const q = { id: "c2-qt", type: "action", correct: ["call"], leak: "mdf", spot: { street: "flop" }, _courseId: "c2" };
+  Engine.recordAnswer(q, "call", { ok: true });
+  Engine.recordAnswer(q, "fold", { ok: false });
+  assert.equal(Engine.store.trend.length, 1);
+  assert.equal(Engine.store.trend[0].d, Engine._dateStrAt(DAY1));
+  assert.equal(Engine.store.trend[0].h, 2);
+  assert.equal(Engine.store.trend[0].c, 1);
+  // 复习模式不采集
+  Engine.reviewMode = true;
+  Engine.recordAnswer(Object.assign({}, q, { _rec: { box: 0 } }), "call", { ok: true });
+  assert.equal(Engine.store.trend[0].h, 2);
+  Engine.reviewMode = false;
+  // 跨天开新条目
+  Engine._now = () => DAY1 + DAY;
+  Engine.recordAnswer(q, "call", { ok: true });
+  assert.equal(Engine.store.trend.length, 2);
+  assert.equal(Engine.store.trend[1].h, 1);
+});
+
+test("trend keeps at most 180 days", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.save = function () {};
+  Engine.store.trend = Array.from({ length: 180 }, (_, i) => ({ d: "2025-x-" + i, h: 1, c: 1 }));
+  Engine._now = () => DAY1;
+  Engine.courseId = "c2";
+  const q = { id: "c2-qt2", type: "action", correct: ["call"], leak: "mdf", spot: { street: "flop" }, _courseId: "c2" };
+  Engine.recordAnswer(q, "call", { ok: true });
+  assert.equal(Engine.store.trend.length, 180);
+  assert.equal(Engine.store.trend[179].d, Engine._dateStrAt(DAY1));
+});
+
 test("statsByLeak tallies per-leak accuracy", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();

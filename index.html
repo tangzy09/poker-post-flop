@@ -117,6 +117,53 @@
     .badge.done-badge { background: rgba(52,176,116,.15); color: var(--call); }
     .badge.daily-badge { background: rgba(240,180,60,.18); color: var(--gold); }
     .badge.placement-badge { background: rgba(110,181,255,.18); color: #9fd0ff; }
+    /* 趋势图:hover 气泡 + 十字线容器 */
+    .trend-wrap { position: relative; }
+    .trend-tip {
+      position: absolute; top: -4px; pointer-events: none;
+      background: #0d1511; border: 1px solid var(--line); border-radius: 8px;
+      padding: 4px 9px; font-size: .74rem; color: var(--ink); white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0,0,0,.45);
+    }
+    /* 反馈闭环:动作对比条 + 错误归因 */
+    .fb-vs {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 10px 12px; margin: 0 0 10px;
+    }
+    .fb-vs-side { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .fb-chips { display: flex; gap: 4px; }
+    /* chip 复用 .a-{act} 按钮渐变(色随实体,与刚按过的按钮一致),白字 */
+    .fb-chip {
+      color: #fff; font-weight: 800; font-size: .82rem;
+      padding: 4px 14px; border-radius: 999px;
+      text-shadow: 0 1px 2px rgba(0,0,0,.35);
+    }
+    .fb-chip-k { font-size: .68rem; color: var(--muted); }
+    .fb-vs-arrow { color: var(--muted); font-weight: 700; }
+    .fb-leak {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: rgba(224,84,79,.08); border: 1px solid rgba(224,84,79,.25);
+      border-radius: 12px; padding: 8px 12px; margin: 0 0 10px;
+    }
+    .fb-leak-txt { font-size: .84rem; color: var(--ink); }
+    /* 新手引导 overlay */
+    .intro-ov {
+      position: fixed; inset: 0; z-index: 50;
+      background: rgba(6,14,11,.72); backdrop-filter: blur(3px);
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .intro-card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+      padding: 24px 20px; max-width: 340px; width: 100%; text-align: center;
+      box-shadow: 0 18px 50px rgba(0,0,0,.5);
+    }
+    .intro-ic { font-size: 2rem; margin-bottom: 6px; }
+    .intro-card h3 { margin: 0 0 8px; font-size: 1.12rem; }
+    .intro-card p { margin: 0 0 14px; color: var(--muted); font-size: .88rem; line-height: 1.55; }
+    .intro-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 14px; }
+    .intro-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+    .intro-dot.on { background: var(--gold); }
     /* 姐妹站互链卡 */
     .cross-card { display: block; text-decoration: none; border-left: 3px solid #9fd0ff; }
     .cross-card h3 { color: var(--ink); }

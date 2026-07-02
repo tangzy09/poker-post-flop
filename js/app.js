@@ -41,7 +41,9 @@ function render() {
 
   switch (Engine.screen) {
     case "courses":
-      root.innerHTML = renderCourses();
+      root.innerHTML =
+        renderCourses() +
+        (!Engine.store.seenIntro ? renderIntro() : "");
       break;
     case "learn":
       root.innerHTML = renderLearn();
@@ -79,6 +81,35 @@ function render() {
 
   applyI18n(document);
   bindEvents();
+}
+
+/* 新手引导:首启 3 步 overlay(任意关闭都置 seenIntro,不再弹) */
+let _introStep = 0;
+
+function renderIntro() {
+  const steps = [
+    { icon: "♦", title: t("intro.t1"), body: t("intro.b1") },
+    { icon: "🔁", title: t("intro.t2"), body: t("intro.b2") },
+    { icon: "🎯", title: t("intro.t3"), body: t("intro.b3") },
+  ];
+  const s = steps[Math.min(_introStep, 2)];
+  const dots = steps.map((_, i) => '<span class="intro-dot' + (i === _introStep ? " on" : "") + '"></span>').join("");
+  const isLast = _introStep >= 2;
+  const btns = isLast
+    ? '<button class="btn secondary" data-action="intro-skip">' + t("intro.browse") + "</button>" +
+      '<button class="btn primary" data-action="intro-placement">' + t("intro.goPlacement") + "</button>"
+    : '<button class="btn secondary" data-action="intro-skip">' + t("intro.skip") + "</button>" +
+      '<button class="btn primary" data-action="intro-next">' + t("intro.next") + "</button>";
+  return (
+    '<div class="intro-ov">' +
+    '<div class="intro-card">' +
+    '<div class="intro-ic">' + s.icon + "</div>" +
+    "<h3>" + s.title + "</h3>" +
+    "<p>" + s.body + "</p>" +
+    '<div class="intro-dots">' + dots + "</div>" +
+    '<div class="btn-row">' + btns + "</div>" +
+    "</div></div>"
+  );
 }
 
 function renderDailyCard() {
@@ -291,6 +322,42 @@ function renderDrill() {
 
 let _pendingFeedback = null;
 
+/* 反馈闭环①:动作对比条「参考 ■X ↔ 你 ■Y」(仅 action 题答错时)。
+   chip 复用动作按钮的 .a-{act} 渐变 —— 与用户刚按过的按钮完全同色(色随实体)。 */
+function fbCompareHtml(q, choice) {
+  if (q.type === "choice") return "";
+  const correct = q.correct || [];
+  if (!correct.length || correct.includes(choice)) return "";
+  const chips = (acts) => acts.map((a) => '<span class="fb-chip a-' + a + '">' + t("action." + a) + "</span>").join("");
+  const side = (label, acts) =>
+    '<span class="fb-vs-side"><span class="fb-chips">' + chips(acts) + "</span>" +
+    '<span class="fb-chip-k">' + label + "</span></span>";
+  return (
+    '<div class="fb-vs">' +
+    side(t("fb.vs.ref"), correct) +   // 多正确动作(如 call/raise 皆可)全部展示
+    '<span class="fb-vs-arrow">↔</span>' +
+    side(t("fb.vs.you"), [choice]) +
+    "</div>"
+  );
+}
+
+/* 反馈闭环②:错误归因 + 一键专练这类。
+   摸底测试(testMode)是考试:不做教练式归因,也不给会打断考试的跳转按钮。 */
+function fbLeakHtml(q, ok) {
+  if (ok || Engine.testMode) return "";
+  const leak = q.leak || "other";
+  const s = (Engine.store.statsByLeak || {})[leak];
+  const n = s ? Math.max(1, s.h - s.c) : 1; // 该类累计错次(recordAnswer 已含本题)
+  const txt = n >= 2 ? t("fb.leakLine", { name: Coach.leakLabel(leak), n }) : t("fb.leakFirst", { name: Coach.leakLabel(leak) });
+  return (
+    '<div class="fb-leak">' +
+    '<span class="fb-leak-txt">' + txt + "</span>" +
+    '<button type="button" class="btn btn-sm outline" data-action="drill-leak" data-leak="' + leak + '">' +
+    t("fb.drillLeak") + "</button>" +
+    "</div>"
+  );
+}
+
 function renderFeedback() {
   const fb = _pendingFeedback;
   if (!fb) return renderDrill();
@@ -303,9 +370,11 @@ function renderFeedback() {
     '<section class="screen feedback-screen">' +
     '<div class="fb-grade ' + fb.result.grade + '">' + t("grade." + fb.result.grade) + "</div>" +
     '<p class="fb-correct">' + t("fb.correct") + ": <b>" + correct + "</b></p>" +
+    fbCompareHtml(fb.question, fb.choice) +
     '<div class="fb-block"><h4>' + t(fb.result.ok ? "fb.whyRight" : "fb.whyWrong") + "</h4><p>" + detail.reason + "</p></div>" +
     '<div class="fb-block"><h4>' + t("fb.concept") + "</h4><p>" + detail.concept + "</p></div>" +
     (detail.ctx ? '<div class="fb-block"><h4>' + t("fb.context") + "</h4><p>" + detail.ctx + "</p></div>" : "") +
+    fbLeakHtml(fb.question, fb.result.ok) +
     '<div class="btn-stack">' +
     '<button class="btn primary" data-action="next-q">' +
     (Engine.qIdx + 1 >= Engine.currentQuestions().length ? t("fb.finish") : t("fb.next")) +
@@ -558,6 +627,91 @@ function renderCourseBars() {
     .join("");
 }
 
+function renderTrendCard() {
+  const tr_ = (Engine.store.trend || []).filter((e) => e.h > 0);
+  if (tr_.length < 2) return '<p class="coach-note">' + t("trend.empty") + "</p>";
+  const days = tr_.slice(-30); // 图上最多 30 天
+  // 双面板共享 x 轴:上=准确率折线(0-100),下=手数柱(自有刻度)。
+  // 不共用绘图区 —— 两个量纲挤一个坐标系是双轴反模式,刻度对齐纯属任意。
+  const W = 400, PL = 30, PR = 8;
+  const PT = 12, AH = 84;            // 上面板:准确率
+  const GAP = 10, BH = 26;           // 下面板:手数条
+  const XB = 16;                     // 底部日期标签带
+  const H = PT + AH + GAP + BH + XB;
+  const iw = W - PL - PR;
+  const n = days.length, maxH = Math.max(...days.map((e) => e.h), 1);
+  const x = (i) => PL + (n === 1 ? iw / 2 : (i * iw) / (n - 1));
+  const yAcc = (p) => PT + AH - (p / 100) * AH;
+  const barTop = PT + AH + GAP;
+  const acc = (e) => Math.round((e.c / e.h) * 100);
+
+  const grid = [0, 50, 100]
+    .map((p) => `<line x1="${PL}" y1="${yAcc(p).toFixed(1)}" x2="${W - PR}" y2="${yAcc(p).toFixed(1)}" stroke="rgba(255,255,255,.08)"/>` +
+      `<text x="${PL - 5}" y="${(yAcc(p) + 3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--muted)">${p}</text>`)
+    .join("");
+  const pts = days.map((e, i) => `${x(i).toFixed(1)},${yAcc(acc(e)).toFixed(1)}`);
+  const dots = days
+    .map((e, i) => `<circle cx="${x(i).toFixed(1)}" cy="${yAcc(acc(e)).toFixed(1)}" r="3" fill="var(--best)"/>`)
+    .join("");
+  // 选择性直标:只标最新一点
+  const last = days[n - 1], lastAcc = acc(last);
+  const lastLbl = `<text x="${(x(n - 1) - 6).toFixed(1)}" y="${(yAcc(lastAcc) - 7).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--ink)">${lastAcc}%</text>`;
+
+  // 下面板:手数柱(4px 圆角贴基线,柱间留隙)
+  const bw = Math.max(2, Math.min(14, (iw / n) * 0.6));
+  const bars = days
+    .map((e, i) => `<rect x="${(x(i) - bw / 2).toFixed(1)}" y="${(barTop + BH - (e.h / maxH) * BH).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1.5, (e.h / maxH) * BH).toFixed(1)}" rx="2" fill="rgba(232,198,106,.45)"/>`)
+    .join("");
+  const barLbl = `<text x="${PL - 5}" y="${(barTop + BH - 1).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--muted)">${t("trend.hands")}</text>` +
+    `<text x="${W - PR}" y="${(barTop - 2).toFixed(1)}" text-anchor="end" font-size="8" fill="var(--muted)">max ${maxH}</text>`;
+
+  const lbl = (i) => days[i].d.slice(5).replace("-", "/");
+  const xl = [0, n - 1]
+    .filter((v, i, a) => a.indexOf(v) === i)
+    .map((i) => `<text x="${x(i).toFixed(1)}" y="${H - 4}" text-anchor="middle" font-size="8.5" fill="var(--muted)">${lbl(i)}</text>`)
+    .join("");
+  // hover/点按层:每日一根命中列(贯穿两面板),tooltip 由 bindEvents 绑定
+  const colW = n === 1 ? iw : iw / (n - 1);
+  const hits = days
+    .map((e, i) => `<rect class="tr-hit" data-d="${lbl(i)}" data-acc="${acc(e)}" data-h="${e.h}" data-x="${x(i).toFixed(1)}" x="${(x(i) - colW / 2).toFixed(1)}" y="0" width="${colW.toFixed(1)}" height="${H - XB}" fill="transparent"><title>${lbl(i)} · ${acc(e)}% · ${e.h}</title></rect>`)
+    .join("");
+
+  return (
+    '<div class="trend-wrap">' +
+    `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">${grid}${bars}${barLbl}` +
+    `<polyline points="${pts.join(" ")}" fill="none" stroke="var(--best)" stroke-width="2" stroke-linejoin="round"/>${dots}${lastLbl}${xl}` +
+    `<line class="tr-cross" x1="0" x2="0" y1="${PT}" y2="${barTop + BH}" stroke="rgba(255,255,255,.25)" stroke-width="1" style="display:none"/>${hits}</svg>` +
+    '<div class="trend-tip" style="display:none"></div>' +
+    "</div>" +
+    '<p class="coach-note" style="margin:6px 0 0">' + t("trend.note", { n: tr_.length, acc: lastAcc, h: last.h }) + "</p>"
+  );
+}
+
+/* 趋势图 hover/点按:十字线 + 气泡(渲染后由 bindEvents 调用) */
+function bindTrendHover() {
+  const wrap = $(".trend-wrap");
+  if (!wrap) return;
+  const tip = wrap.querySelector(".trend-tip");
+  const cross = wrap.querySelector(".tr-cross");
+  const svg = wrap.querySelector("svg");
+  wrap.querySelectorAll(".tr-hit").forEach((r) => {
+    const show = () => {
+      const vb = svg.viewBox.baseVal;
+      const px = (parseFloat(r.getAttribute("data-x")) / vb.width) * svg.clientWidth;
+      tip.textContent = t("trend.tip", { date: r.getAttribute("data-d"), acc: r.getAttribute("data-acc"), h: r.getAttribute("data-h") });
+      tip.style.display = "block";
+      tip.style.left = Math.max(4, Math.min(px - tip.offsetWidth / 2, svg.clientWidth - tip.offsetWidth - 4)) + "px";
+      cross.style.display = "block";
+      cross.setAttribute("x1", r.getAttribute("data-x"));
+      cross.setAttribute("x2", r.getAttribute("data-x"));
+    };
+    const hide = () => { tip.style.display = "none"; cross.style.display = "none"; };
+    r.addEventListener("mouseenter", show);
+    r.addEventListener("mouseleave", hide);
+    r.addEventListener("touchstart", (ev) => { ev.preventDefault(); show(); }, { passive: false });
+  });
+}
+
 function renderLeakHeatmap() {
   const m = Engine.store.statsByLeak || {};
   const rows = Object.keys(m)
@@ -731,6 +885,11 @@ function renderStats() {
     t("stats.overallAcc") +
     "</div></div>" +
     "</div>" +
+    '<article class="coach-card"><h3>📈 ' +
+    t("trend.title") +
+    "</h3>" +
+    renderTrendCard() +
+    "</article>" +
     '<article class="coach-card"><h3>' +
     t("stats.courseAccTitle") +
     "</h3>" +
@@ -796,6 +955,8 @@ function bindEvents() {
     };
   });
 
+  bindTrendHover();
+
   const spotMount = $("#spot-mount");
   if (spotMount) {
     const qs = Engine.currentQuestions();
@@ -845,6 +1006,22 @@ function handleAction(action, el) {
     case "start-daily":
       resetChoiceShuffle();
       Engine.startDaily();
+      break;
+    case "intro-next":
+      _introStep = Math.min(_introStep + 1, 2);
+      break;
+    case "intro-skip":
+      Engine.store.seenIntro = true;
+      Engine.save();
+      _introStep = 0;
+      break;
+    case "intro-placement":
+      Engine.store.seenIntro = true;
+      Engine.store.onboardingSeen = true;
+      Engine.save();
+      _introStep = 0;
+      resetChoiceShuffle();
+      Engine.startPlacementTest();
       break;
     case "onboard-start":
       Engine.store.onboardingSeen = true; Engine.save();
@@ -897,6 +1074,12 @@ function handleAction(action, el) {
     case "review-mistakes":
       resetChoiceShuffle();
       Engine.startReview({ courseId: Engine.courseId });
+      break;
+    case "drill-leak":
+      // 反馈屏「专练这类」:按漏洞类型定向复习(答错的题已入堆,至少 1 题)
+      _pendingFeedback = null;
+      resetChoiceShuffle();
+      Engine.startReview({ leak: el.getAttribute("data-leak") || undefined });
       break;
     case "review-due":
       if (Engine.dueReviewCount()) {

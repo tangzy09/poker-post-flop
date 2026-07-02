@@ -104,6 +104,11 @@ const Engine = {
     if (!this.store.statsByCourse) this.store.statsByCourse = {};
     if (!this.store.statsByStreet) this.store.statsByStreet = {};
     if (!this.store.statsByLeak) this.store.statsByLeak = {};
+    if (!this.store.trend) this.store.trend = [];
+    if (this.store.seenIntro === undefined) {
+      // 老用户(已有进度/摸底记录)不补弹新手引导
+      this.store.seenIntro = Object.keys(this.store.progress || {}).length > 0 || !!this.store.placement;
+    }
     if (!this.store.daily) this.store.daily = { lastDone: null, streakDays: 0, bestStreak: 0, history: {}, session: null };
     (this.store.reviewPile || []).forEach((r) => {
       if (!r.wrong) r.wrong = 1;
@@ -148,8 +153,10 @@ const Engine = {
       statsByCourse: {},
       statsByStreet: {},
       statsByLeak: {},
+      trend: [],
       placement: null,
       onboardingSeen: false,
+      seenIntro: false,
       daily: { lastDone: null, streakDays: 0, bestStreak: 0, history: {}, session: null },
     };
   },
@@ -259,6 +266,17 @@ const Engine = {
       if (result.ok) this.store.statsByStreet[street].c++;
       if (!this.store.statsByLeak) this.store.statsByLeak = {};
       this._tally(this.store.statsByLeak, normalizeLeak(question.leak), result.ok);
+      // 按天记录准确率趋势(正常训练+每日;复习/测试不计),保留最近 180 天
+      const dk = this._todayStr();
+      if (!this.store.trend) this.store.trend = [];
+      let te = this.store.trend[this.store.trend.length - 1];
+      if (!te || te.d !== dk) {
+        te = { d: dk, h: 0, c: 0 };
+        this.store.trend.push(te);
+        if (this.store.trend.length > 180) this.store.trend.shift();
+      }
+      te.h++;
+      if (result.ok) te.c++;
     }
 
     // 连击计分:答对 10 + 连击加成(最多 +5);答错清零连击
@@ -590,6 +608,8 @@ const Engine = {
     this.reviewMode = true;
     this.dailyMode = false;
     this.dailyQueue = [];
+    this.testMode = false;
+    this.testQueue = [];
     this._resetScore();
     this.courseId = this.reviewQueue[0]._courseId;
     this.qIdx = 0;

@@ -176,6 +176,20 @@ test("startReview with all:true ignores due scheduling", () => {
   assert.equal(Engine.reviewQueue.length, 2);
 });
 
+test("startReview defensively clears test mode (drill-leak from placement feedback)", () => {
+  const { Engine } = loadEngine();
+  Engine.store = freshStore();
+  Engine.testMode = true;
+  Engine.testQueue = [{ id: "x" }];
+  Engine.store.reviewPile = [{ courseId: "c2", qid: "c2-q1", box: 0, due: 0, wrong: 1, leak: "too_tight" }];
+  Engine.screen = "courses";
+  Engine.startReview({ leak: "too_tight" });
+  assert.equal(Engine.testMode, false);
+  assert.equal(Engine.testQueue.length, 0);
+  assert.equal(Engine.reviewMode, true);
+  assert.equal(Engine.currentQuestions()[0].id, "c2-q1"); // 不再被 testQueue 劫持
+});
+
 test("dueReviewCount and nextDueAt reflect scheduling", () => {
   const { Engine } = loadEngine();
   Engine.store = freshStore();
