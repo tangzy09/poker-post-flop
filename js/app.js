@@ -429,6 +429,79 @@ function renderOver() {
   );
 }
 
+/* 每日成绩分享卡:Canvas 纯前端生成品牌竖图(720×960),移动端走系统分享,桌面下载 */
+function buildDailyShareCanvas(s) {
+  const W = 720, H = 960;
+  const cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  const c = cv.getContext("2d");
+  const F = '"Space Grotesk","Noto Sans SC",system-ui,sans-serif';
+
+  // 毛毡绿径向渐变背景(与站点/og 图同款)
+  const g = c.createRadialGradient(W / 2, -H * 0.1, 80, W / 2, H * 0.45, H);
+  g.addColorStop(0, "#14463a"); g.addColorStop(0.5, "#0c2a22"); g.addColorStop(1, "#0a201a");
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+
+  c.textAlign = "center";
+  // 花色
+  c.font = "44px " + F;
+  c.fillStyle = "#e8c66a"; c.fillText("♠", W / 2 - 90, 110); c.fillText("♣", W / 2 + 90, 110);
+  c.fillStyle = "#e0544f"; c.fillText("♥", W / 2 - 30, 110); c.fillText("♦", W / 2 + 30, 110);
+  // 标题 + 日期
+  c.fillStyle = "#f1f5ee"; c.font = "700 44px " + F;
+  c.fillText(t("share.title"), W / 2, 185);
+  c.fillStyle = "#8fa79a"; c.font = "26px " + F;
+  c.fillText(Engine._todayStr(), W / 2, 228);
+  // 大比分
+  c.fillStyle = "#e8c66a"; c.font = "800 170px " + F;
+  c.fillText(s.correct + "/" + s.total, W / 2, 430);
+  c.fillStyle = "#8fa79a"; c.font = "30px " + F;
+  c.fillText(t("over.accuracy", { pct: s.pct }), W / 2, 486);
+  // 连续天数
+  c.fillStyle = "#f1f5ee"; c.font = "700 52px " + F;
+  c.fillText("🔥 " + t("daily.streak", { n: s.streakDays }), W / 2, 590);
+  // 积分 · 连击
+  c.fillStyle = "#8fa79a"; c.font = "30px " + F;
+  const line = t("over.points", { n: s.score }) + (s.maxCombo > 1 ? " · " + t("over.combo", { n: s.maxCombo }) : "");
+  c.fillText(line, W / 2, 648);
+  // 底部品牌 pill
+  const pw = 560, ph = 78, px = (W - pw) / 2, py = 790;
+  const pg = c.createLinearGradient(0, py, 0, py + ph);
+  pg.addColorStop(0, "#e8c66a"); pg.addColorStop(1, "#b8902f");
+  c.fillStyle = pg;
+  c.beginPath();
+  if (c.roundRect) c.roundRect(px, py, pw, ph, 39);
+  else c.rect(px, py, pw, ph); // 旧浏览器直角兜底
+  c.fill();
+  c.fillStyle = "#16110a"; c.font = "800 30px " + F;
+  c.fillText("post-flop-coach.ai-speeds.com", W / 2, py + 50);
+  c.fillStyle = "#8fa79a"; c.font = "26px " + F;
+  c.fillText(t("share.brand"), W / 2, 920);
+  return cv;
+}
+
+function shareDailyCard() {
+  const s = Engine.dailySummary || Engine.dailyStatus().todayScore && {
+    correct: Engine.dailyStatus().todayScore.c, total: Engine.dailyStatus().todayScore.t,
+    pct: Math.round((Engine.dailyStatus().todayScore.c / Engine.dailyStatus().todayScore.t) * 100),
+    score: 0, maxCombo: 0, streakDays: Engine.dailyStatus().streakDays,
+  };
+  if (!s) return;
+  const cv = buildDailyShareCanvas(s);
+  cv.toBlob((blob) => {
+    const file = new File([blob], "daily-training.png", { type: "image/png" });
+    // 移动端系统分享面板(微信/相册);不支持则下载
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: t("share.title") }).catch(() => {});
+    } else {
+      const a = document.createElement("a");
+      a.href = cv.toDataURL("image/png");
+      a.download = "daily-training.png";
+      a.click();
+    }
+  }, "image/png");
+}
+
 function renderDailyOver() {
   const s = Engine.dailySummary || { correct: 0, total: 0, pct: 0, score: 0, maxCombo: 0, streakDays: 0, bestStreak: 0 };
   const comboTxt = s.maxCombo > 1 ? " · " + t("over.combo", { n: s.maxCombo }) : "";
@@ -441,6 +514,7 @@ function renderDailyOver() {
     '<p class="daily-flame big-flame">🔥 ' + t("daily.streak", { n: s.streakDays }) + "</p>" +
     (s.bestStreak > s.streakDays ? '<p class="muted">' + t("daily.best", { n: s.bestStreak }) + "</p>" : "") +
     '<div class="btn-stack">' +
+    '<button class="btn secondary" data-action="share-daily">📤 ' + t("share.btn") + "</button>" +
     '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button>" +
     "</div></section>"
   );
@@ -1025,6 +1099,9 @@ function handleAction(action, el) {
       resetChoiceShuffle();
       Engine.startDaily();
       break;
+    case "share-daily":
+      shareDailyCard();
+      return; // 不重渲,分享面板/下载即时触发
     case "intro-lang":
       setLang(el.getAttribute("data-lang")); // onLangChange 会重渲,_introStep 保留
       return;

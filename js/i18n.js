@@ -257,6 +257,9 @@ reg("daily.doneBadge", "Done today", "今日已完成");
 reg("daily.streak", "{n}-day streak", "连续 {n} 天");
 reg("daily.best", "Best streak: {n} days", "最佳纪录 {n} 天");
 reg("daily.over.title", "Daily training complete", "今日训练完成");
+reg("share.btn", "Share result", "分享成绩");
+reg("share.title", "Daily Training", "今日训练");
+reg("share.brand", "Postflop Coach · free HU postflop trainer", "翻后训练营 · 免费单挑翻后训练");
 /* 计分与评级 */
 reg("over.points", "Points: {n}", "积分 {n}");
 reg("over.combo", "Best combo ×{n}", "最高连击 ×{n}");
