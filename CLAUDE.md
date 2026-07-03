@@ -4,7 +4,7 @@
 
 双语（EN / 中文）单挑翻后扑克训练器：30 课（C1 为初始测试）、699 道训练题，以**纯静态站点**形式提供（网页端无打包器、无构建步骤）。同时通过 Capacitor 打包成 Android 应用。
 
-硬性规则（i18n、术语、类名冲突）见 **[AGENTS.md](AGENTS.md)**；VS Code 工作流见 **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)**；题库格式见 **[docs/CONTENT.md](docs/CONTENT.md)**。本文件是精简总览。
+硬性规则（i18n、术语、类名冲突）见 **[AGENTS.md](AGENTS.md)**；VS Code 工作流见 **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)**；题库格式见 **[docs/CONTENT.md](docs/CONTENT.md)**；**产品定位、商业化模型与红线见 [PRODUCT.md](PRODUCT.md)**（要点：web 仅测试期免费,正式上线后付费只在 App、web 收费内容引导跳 App 下载——加功能/改文案前先读它）。本文件是精简总览。
 
 ## 常用命令
 
