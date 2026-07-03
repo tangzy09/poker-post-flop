@@ -1,6 +1,4 @@
 node_modules/
-www/
-android/
 ios/
 .DS_Store
 Thumbs.db
@@ -9,3 +7,6 @@ server-log.txt
 .cursor/
 tools/audit-report.json
 .solve/
+# capacitor-assets 的输入副本(icon.png 为源)
+assets/icon-only.png
+assets/splash*.png

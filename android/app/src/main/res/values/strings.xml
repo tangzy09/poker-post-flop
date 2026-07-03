@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Poker Post-Flop</string>
+    <string name="title_activity_main">Poker Post-Flop</string>
+    <string name="package_name">com.pokerpostflop.trainer</string>
+    <string name="custom_url_scheme">com.pokerpostflop.trainer</string>
+</resources>
