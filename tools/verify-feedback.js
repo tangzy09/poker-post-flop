@@ -96,3 +96,6 @@ console.log("=== 计算式反馈全量验证 ===");
 console.log(`数学题核对 ${checkedMath} 道 | 听牌题核对 ${checkedDraw} 道`);
 if (!issues.length) console.log("未发现算式与答案的矛盾。");
 else { console.log(`\n发现 ${issues.length} 处矛盾:\n`); for (const i of issues) console.log(i); }
+
+// 供 CI/测试收编:发现矛盾即以非零码退出
+if (issues.length) process.exitCode = 1;

@@ -118,3 +118,6 @@ for (let i = 1; i <= 30; i++) for (const q of getQuestions("c" + i)) {
 console.log("=== 牌力评估校验（成牌/听牌重算 vs 文案声明）===");
 if (!findings.length) console.log("未发现牌力标签与实际牌力的矛盾。");
 else { console.log(`发现 ${findings.length} 处疑点：\n`); for (const f of findings) console.log(`[${f.kind}] ${f.id}: ${f.msg}`); }
+
+// 供 CI/测试收编:发现矛盾即以非零码退出
+if (findings.length) process.exitCode = 1;
