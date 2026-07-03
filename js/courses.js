@@ -44,13 +44,17 @@ const PRO_KEY = "pokerPostFlopPro";
 const PRO_KEY_LEGACY = "postflopPro";
 
 function isProUnlocked() {
-  try {
-    const legacy = localStorage.getItem(PRO_KEY_LEGACY);
-    if (legacy && !localStorage.getItem(PRO_KEY)) localStorage.setItem(PRO_KEY, legacy);
-    return localStorage.getItem(PRO_KEY) === "1";
-  } catch (e) {
-    return false;
+  // 原生 App:读 RevenueCat 'pro' entitlement 缓存(js/purchases.js 写入 Engine.store.proEntitled)
+  if (typeof CAP !== "undefined" && CAP.native()) {
+    try {
+      return !!(typeof Engine !== "undefined" && Engine.store && Engine.store.proEntitled);
+    } catch (e) {
+      return false;
+    }
   }
+  // web:测试期全解锁(见 PRODUCT.md;正式上线后此处改为 false,收费触点弹 App 下载引导)。
+  // 旧 localStorage 调试钩子(pokerPostFlopPro)废弃 —— web 恒解锁后无意义,native 下留后门有盗版面。
+  return true;
 }
 
 function canAccessCourse(course) {

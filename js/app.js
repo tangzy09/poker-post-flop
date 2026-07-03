@@ -1279,6 +1279,8 @@ function onLangChange() {
 function boot() {
   syncLangButtons();
   render();
+  // 原生 App:初始化 RevenueCat 并刷新 pro entitlement 缓存(浏览器为空跑)
+  if (typeof Pay !== "undefined" && Pay.init) Pay.init();
 }
 
 document.addEventListener("DOMContentLoaded", boot);

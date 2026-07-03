@@ -20,7 +20,7 @@
 
 ### 定价与捆绑
 
-- 沿用 preflop 已定:**年 $12.99(主推)/ 月 $4.99**,RevenueCat 统一。
+- 定价跟随 preflop,**以 pokerPreFlop/js/purchases.js 头注释为唯一事实源**(2026-07 现价:年 $29.99 主推 / 月 $4.99),RevenueCat 统一。
 - **倾向捆绑**:一个 Pro entitlement 同时解锁翻前+翻后两个 App,**不加价**——本站单独可锁的 power features 较薄(见下),捆绑才有价值感;对比 GTO Wizard $480+/年,定位「普通玩家的第一个训练器」。
 
 ### 免费 / Pro 切分(App 内;web 上线后免费范围另定,宜慷慨)
