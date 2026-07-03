@@ -1,0 +1,102 @@
+# Codemagic CI/CD —— 云端 macOS 构建 iOS app 并上传 TestFlight
+# 照搬自 japansese-study/codemagic.yaml(已验证跑通的流程),按本仓库适配。
+# Windows 本机无法构建 iOS(苹果硬性要求 macOS+Xcode),故用 Codemagic 的云端 Mac。
+# ⚠ 一次性设置见 docs/IOS-CODEMAGIC.md —— 账号级资产(ASC API Key / 签名私钥 / Codemagic 集成)
+#   已在 japanese-study 项目配过,本仓库只需:注册 App ID + ASC 建 app 记录 + Codemagic 加仓库。
+#
+# 与 japanese-study 的关键差异:
+#   - RevenueCat 不拆:那边 v8 pod 的 SubscriptionPeriod 与 iOS18 SDK 撞名被迫 uninstall;
+#     本仓库用 v13.2.x(已修),IAP 随包构建 —— 正是收费需要的形态。
+#   - web 产物:npm run build:www(tools/build-www.js 解析 index.html 抄清单),前置 npm test 门禁。
+#   - ios/ 不入 git(.gitignore 已排除),每次云端 `npx cap add ios` 新鲜生成。
+
+workflows:
+
+  postflop-testflight:
+    name: Poker Post-Flop iOS → TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+
+    integrations:
+      app_store_connect: ASC API Key   # 账号级集成,与 japanese-study 共用;名字须与 Codemagic 后台一字不差
+
+    environment:
+      groups:
+        - ios_signing                          # 含 CERTIFICATE_PRIVATE_KEY(与 japanese-study 同一把;在本 app 的 Environment variables 里挂上这个组)
+      vars:
+        BUNDLE_ID: "com.pokerpostflop.trainer" # 与 capacitor.config.json 的 appId 一致
+        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
+        XCODE_SCHEME: "App"
+        # ↓ App Store Connect 里创建本 app 记录后拿到的数字 Apple ID(见 docs/IOS-CODEMAGIC.md 第②步)
+        APP_STORE_APP_ID: "REPLACE_WITH_POSTFLOP_NUMERIC_APP_ID"
+      node: 20
+      xcode: latest        # 苹果强制新 SDK 才可上传;若某次升级把构建搞挂,钉成上次成功版本
+      cocoapods: default
+
+    scripts:
+      - name: 装 npm 依赖
+        script: npm ci
+
+      - name: 测试门禁 + 构建 web 产物到 www
+        script: |
+          npm test             # 73 项测试全绿才继续(含题库审计锁)
+          npm run build:www
+
+      - name: 生成 iOS 工程(ios/ 不入 git,云端现场生成)
+        script: |
+          npx cap add ios
+          npx cap sync ios
+
+      - name: 生成 app 图标 + 启动屏
+        script: |
+          npx @capacitor/assets generate --ios \
+            --iconBackgroundColor '#0c2a22' \
+            --iconBackgroundColorDark '#0c2a22' \
+            --splashBackgroundColor '#0c2a22' \
+            --splashBackgroundColorDark '#0a201a'
+
+      - name: 设置 Info.plist(免出口合规问询)
+        script: plutil -replace ITSAppUsesNonExemptEncryption -bool false ios/App/App/Info.plist
+
+      - name: 拉取/创建签名文件(用 CERTIFICATE_PRIVATE_KEY 建发布证书 + 描述文件)+ 诊断
+        script: |
+          set -e
+          keychain initialize
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create
+          keychain add-certificates
+          set +e
+          xcode-project use-profiles
+          echo "========== 签名诊断 =========="
+          echo "[工程 bundle id]"; grep -m3 "PRODUCT_BUNDLE_IDENTIFIER" ios/App/App.xcodeproj/project.pbxproj || true
+          echo "[已装描述文件]"; ls -la "$HOME/Library/MobileDevice/Provisioning Profiles/" 2>/dev/null || echo "(目录为空/不存在)"
+          echo "[代码签名身份]"; security find-identity -v -p codesigning || true
+          echo "=============================="
+
+      - name: 递增构建号(取 TestFlight 上最新 +1)
+        script: |
+          cd ios/App
+          LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APP_ID" 2>/dev/null || echo 0)
+          agvtool new-version -all $(($LATEST + 1))
+
+      - name: 构建 IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+      email:
+        recipients:
+          - tangzy09@gmail.com
+        notify:
+          success: true
+          failure: true
