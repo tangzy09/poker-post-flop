@@ -5,21 +5,26 @@
    - 浏览器:没有 bridge → 空跑(按 PRODUCT.md,web 测试期全解锁;正式上线后 web 收费触点只做
      App 下载引导,永不接支付)。
 
-   捆绑策略(PRODUCT.md):与翻前训练营共用 RevenueCat project 与 entitlement 'pro'——
-   一次订阅解锁两个 App。上架前需在 RevenueCat 给本 app(com.pokerpostflop.trainer)配置
-   Android 公开 key 并填到下面;产品 id 与 preflop 同一套(pro_monthly / pro_yearly)。
+   RevenueCat 配置(2026-07-05 用 sk_ v2 API 实查坐实):本 app 有**独立** project
+   "Postflop Coach" = projc5134d3a(≠ preflop 的项目),entitlement entl1a48452563 lookup 'pro',
+   4 产品全挂 entitlement + default offering(current)的 $rc_annual/$rc_monthly 包挂齐 iOS+Android。
+   ⚠ 「与翻前共用 entitlement 捆绑解锁」是 PRODUCT.md 的设想,但两站是**不同 RC project**、
+   entitlement 不互通——跨站捆绑若要成立需另做机制,别默认已捆绑(待与 PRODUCT.md 对齐)。
+   app config 已在 dashboard 建好(com.pokerpostflop.trainer / Play 包),appl_/goog_ 公开 key 见下。
+   ⚠ 产品 id 必须带 postflop_ 前缀(postflop_pro_monthly / postflop_pro_yearly)——Apple/Play
+   产品 id 账号级唯一,裸 pro_* 已被 Mando/preflop 占用(见 skill appstore-connect-iap-api 坑⑦)。
    定价以 preflop/js/purchases.js 头注释为唯一事实源(2026-07:年 $29.99 / 月 $4.99)。 */
 (function(){
  const USE_TEST_STORE = false;
  const RC_API_KEY = {
   test:    'test_REPLACE_ME',   // ← RevenueCat Test Store key(沙盒跑通购买;同 project 可复用 preflop 的)
-  android: 'goog_REPLACE_ME',   // ← 本 app 在 RevenueCat 的 Google Play 公开 key(上架时填)
-  ios:     'appl_REPLACE_ME',
+  android: 'goog_vdJcVmHvvCYWbKAlytKzgoFTGpr',   // ← 本 app 在 RevenueCat 的 Google Play 公开 key(上架时填)
+  ios:     'appl_ABKmuZTWZgBaJMKeDPoFklGzQqK',
  };
- const ENTITLEMENT = 'pro';     // 与 preflop 共用同一 entitlement = 捆绑解锁
+ const ENTITLEMENT = 'pro';     // 本 project(projc5134d3a)的 entitlement lookup_key,非跨站共用
  const MATCH = {
-  sub:  { types:['MONTHLY','WEEKLY','TWO_MONTH','THREE_MONTH','SIX_MONTH'], ids:['pro_monthly','monthly'] },
-  year: { types:['ANNUAL'], ids:['pro_yearly','pro_annual','annual','yearly'] },
+  sub:  { types:['MONTHLY','WEEKLY','TWO_MONTH','THREE_MONTH','SIX_MONTH'], ids:['postflop_pro_monthly','pro_monthly','monthly'] },
+  year: { types:['ANNUAL'], ids:['postflop_pro_yearly','pro_yearly','pro_annual','annual','yearly'] },
  };
 
  const cap=CAP.cap, native=CAP.native;           // 共享桥接 helper(见 js/cap.js)

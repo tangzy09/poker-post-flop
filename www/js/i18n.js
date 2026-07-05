@@ -83,12 +83,40 @@ reg("course.lessons", "{n} lessons", "{n} 节课");
 reg("course.questions", "{n} questions", "{n} 道题");
 reg("course.progress", "{done}/{total} done", "已完成 {done}/{total}");
 reg("course.accuracy", "{pct}% accuracy", "准确率 {pct}%");
-reg("course.locked", "Pro course — unlock coming soon", "专业版课程 — 即将解锁");
+reg("course.locked", "🔒 Pro — tap to unlock", "🔒 专业版 — 点击解锁");
 reg("course.start", "Start course", "开始课程");
 reg("course.continue", "Continue", "继续");
 reg("course.reviewLearn", "Review lessons", "重新上课");
 reg("course.practice", "Practice", "做题");
 reg("course.completed", "Completed", "已完成");
+
+// ——— 付费墙(Pro) ———
+reg("paywall.title", "Unlock PostFlop Pro", "解锁 PostFlop 专业版");
+reg("paywall.whyDefault", "Unlock every lesson and the full drill bank.", "解锁全部课程与完整题库。");
+reg("paywall.whyCourse", "This lesson is part of Pro.", "本课属于专业版。");
+// 卖点(一行一条,\n 分隔)
+reg(
+  "paywall.pitch",
+  "Full lesson track + all 699 drills unlocked\nLeak heat-map, profile & training plan\n180-day accuracy trend & grade history\nSpaced-repetition review, forever",
+  "全部课程 + 699 道题全解锁\n漏洞热图、画像与个性化训练计划\n180 天准确率趋势与评级历史\n间隔重复复习，永久保留"
+);
+reg("paywall.year", "Go Pro — Yearly", "升级年度会员");
+reg("paywall.yearTrial", "Start {d}-day free trial", "开始 {d} 天免费试用");
+reg("paywall.yearDyn", "Go Pro — {p}/yr", "升级年度会员 — {p}/年");
+reg("paywall.yearNote", "{p}/year · cancel anytime", "{p}/年 · 随时取消");
+reg("paywall.yearTrialNote", "then {p}/year, cancel anytime", "之后 {p}/年，随时取消");
+reg("paywall.sub", "Monthly", "按月订阅");
+reg("paywall.subNote", "{p}/month", "{p}/月");
+reg("paywall.restore", "Restore purchase", "恢复购买");
+reg("paywall.close", "Maybe later", "以后再说");
+reg("paywall.foot", "Auto-renews until cancelled. Manage in the store.", "自动续订至取消，可在商店随时管理。");
+reg("paywall.unlocked", "Pro unlocked 🎉", "已解锁专业版 🎉");
+reg("paywall.buyFail", "Purchase failed — please try again.", "购买失败 — 请重试。");
+reg("paywall.noPurchase", "No purchase found to restore.", "没有可恢复的购买。");
+// web(未来收费触点):引导下载 App
+reg("paywall.webTitle", "Get Pro in the app", "在 App 里解锁专业版");
+reg("paywall.webDesc", "Pro subscriptions are available in the iOS and Android app.", "专业版订阅在 iOS 与安卓 App 内提供。");
+reg("paywall.webCta", "Download the app", "下载 App");
 
 reg("learn.title", "Learn", "原理");
 reg("learn.next", "Next", "下一页");
