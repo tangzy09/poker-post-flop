@@ -5,9 +5,11 @@
    - 浏览器:没有 bridge → 空跑(按 PRODUCT.md,web 测试期全解锁;正式上线后 web 收费触点只做
      App 下载引导,永不接支付)。
 
-   捆绑策略(PRODUCT.md):与翻前训练营共用 RevenueCat project 与 entitlement 'pro'——
-   一次订阅解锁两个 App。上架前需在 RevenueCat 给本 app(com.pokerpostflop.trainer)配置
-   Android 公开 key 并填到下面;产品 id 与 preflop 同一套(pro_monthly / pro_yearly)。
+   捆绑策略(PRODUCT.md):与翻前训练营共用 RevenueCat project(projab0f2fdf)与 entitlement
+   'pro'——本 app 的产品挂到同一 entitlement。上架前需在 RevenueCat dashboard 给本 app
+   (com.pokerpostflop.trainer)建 app config、传 IAP/SA 凭据,取 appl_/goog_ 公开 key 填下面。
+   ⚠ 产品 id 必须带 postflop_ 前缀(postflop_pro_monthly / postflop_pro_yearly)——Apple/Play
+   产品 id 账号级唯一,裸 pro_* 已被 Mando/preflop 占用(见 skill appstore-connect-iap-api 坑⑦)。
    定价以 preflop/js/purchases.js 头注释为唯一事实源(2026-07:年 $29.99 / 月 $4.99)。 */
 (function(){
  const USE_TEST_STORE = false;
@@ -18,8 +20,8 @@
  };
  const ENTITLEMENT = 'pro';     // 与 preflop 共用同一 entitlement = 捆绑解锁
  const MATCH = {
-  sub:  { types:['MONTHLY','WEEKLY','TWO_MONTH','THREE_MONTH','SIX_MONTH'], ids:['pro_monthly','monthly'] },
-  year: { types:['ANNUAL'], ids:['pro_yearly','pro_annual','annual','yearly'] },
+  sub:  { types:['MONTHLY','WEEKLY','TWO_MONTH','THREE_MONTH','SIX_MONTH'], ids:['postflop_pro_monthly','pro_monthly','monthly'] },
+  year: { types:['ANNUAL'], ids:['postflop_pro_yearly','pro_yearly','pro_annual','annual','yearly'] },
  };
 
  const cap=CAP.cap, native=CAP.native;           // 共享桥接 helper(见 js/cap.js)
