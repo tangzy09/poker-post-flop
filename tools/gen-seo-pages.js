@@ -10,6 +10,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const SLUGS = require('./seo-slugs.js');
+const FAQ = require('./seo-faq.js');
 
 const root = path.join(__dirname, '..');
 const SITE = 'https://post-flop-coach.ai-speeds.com';
@@ -43,7 +44,7 @@ const L = {
     descTail: (n) => `Free heads-up postflop poker lesson with ${n} verified practice drills and computed feedback. No signup.`,
     sample: 'Sample drill from this lesson', board: 'Board', hand: 'Your hand', bestAction: 'Best action',
     why: 'Why', cta: (n) => `Practice all ${n} questions free →`,
-    prev: '← Previous lesson', next: 'Next lesson →', home: 'All 30 lessons',
+    prev: '← Previous lesson', next: 'Next lesson →', home: 'All 30 lessons', faqH: 'FAQ',
     method: 'Every answer in the 699-question bank is independently verified (adversarial blind-solve) before publication.',
     sister: 'Also train preflop: Preflop Camp (GTO preflop trainer by the same maker)',
     breadcrumbHome: 'Postflop Coach',
@@ -55,7 +56,7 @@ const L = {
     descTail: (n) => `免费单挑德州扑克翻后课程,附 ${n} 道验证过的实战练习题与计算式讲解,无需注册。`,
     sample: '本课样题', board: '公共牌', hand: '你的手牌', bestAction: '最佳行动',
     why: '为什么', cta: (n) => `免费练全部 ${n} 题 →`,
-    prev: '← 上一课', next: '下一课 →', home: '全部 30 课',
+    prev: '← 上一课', next: '下一课 →', home: '全部 30 课', faqH: '常见问题',
     method: '题库 699 题全部经独立盲解验证(隐藏答案由独立求解流程复核)后才发布。',
     sister: '翻前也要练?同一作者的「翻前训练营」(GTO 翻前训练器)',
     breadcrumbHome: '翻后训练营',
@@ -73,6 +74,9 @@ a{color:#e8c66a}h1{font-size:1.5rem;line-height:1.35;margin:.2em 0 .4em}h2{font-
 .cta{display:block;text-align:center;background:linear-gradient(180deg,#e8c66a,#b8902f);color:#16110a;font-weight:800;padding:14px;border-radius:12px;text-decoration:none;margin:22px 0}
 .navrow{display:flex;justify-content:space-between;gap:10px;font-size:.9rem;margin-top:26px}
 .foot{color:#8fa79a;font-size:.8rem;border-top:1px solid #28332a;margin-top:30px;padding-top:14px}
+details.faq{background:#161d18;border:1px solid #28332a;border-radius:10px;padding:10px 14px;margin:8px 0}
+details.faq summary{cursor:pointer;font-weight:700;color:#f1f5ee}
+details.faq p{margin:.6em 0 .2em;color:#cdd8cf}
 .langsw{float:right;font-size:.85rem}`;
 
 function pageHtml(lang, course, order, prevC, nextC) {
@@ -108,6 +112,12 @@ function pageHtml(lang, course, order, prevC, nextC) {
     .map((s) => `<h2>${esc(T(lang, s.titleKey))}</h2><p>${T(lang, s.bodyKey)}</p>`) // 正文是自家可信 HTML(含 <b>/<br>),不转义
     .join('\n');
 
+  // 每课 FAQ:可见 <details> + FAQPage JSON-LD(问答必须页面可见,只写 JSON-LD 违规)
+  const faq = FAQ[cid] || [];
+  const faqHtml = faq.length
+    ? `<h2>${l.faqH}</h2>` + faq.map((f) => `<details class="faq"><summary>${esc(f.q[lang])}</summary><p>${esc(f.a[lang])}</p></details>`).join('')
+    : '';
+
   const nav =
     `<div class="navrow">` +
     (prevC ? `<a href="${SLUGS[prevC.id]}.html">${l.prev} ${esc(T(lang, prevC.titleKey))}</a>` : '<span></span>') +
@@ -129,6 +139,10 @@ function pageHtml(lang, course, order, prevC, nextC) {
         { '@type': 'ListItem', position: 2, name: title, item: url },
       ],
     },
+    ...(faq.length ? [{
+      '@context': 'https://schema.org', '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q[lang], acceptedAnswer: { '@type': 'Answer', text: f.a[lang] } })),
+    }] : []),
   ]);
 
   return `<!DOCTYPE html>
@@ -157,6 +171,7 @@ function pageHtml(lang, course, order, prevC, nextC) {
 <p class="eyebrow">${l.lesson(order)} · ${esc(sub)} · ${l.questions(nQ)}</p>
 ${slidesHtml}
 ${sampleHtml}
+${faqHtml}
 <a class="cta" href="${lang === 'zh' ? '../../' : '../'}">${l.cta(nQ)}</a>
 ${nav}
 <p class="eyebrow" style="margin-top:18px"><a href="${lang === 'zh' ? '../../' : '../'}">${l.home}</a></p>

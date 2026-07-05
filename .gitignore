@@ -10,3 +10,4 @@ tools/audit-report.json
 # capacitor-assets 的输入副本(icon.png 为源)
 assets/icon-only.png
 assets/splash*.png
+tools/.indexnow-key
