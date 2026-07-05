@@ -15,8 +15,8 @@
  const USE_TEST_STORE = false;
  const RC_API_KEY = {
   test:    'test_REPLACE_ME',   // ← RevenueCat Test Store key(沙盒跑通购买;同 project 可复用 preflop 的)
-  android: 'goog_REPLACE_ME',   // ← 本 app 在 RevenueCat 的 Google Play 公开 key(上架时填)
-  ios:     'appl_REPLACE_ME',
+  android: 'goog_vdJcVmHvvCYWbKAlytKzgoFTGpr',   // ← 本 app 在 RevenueCat 的 Google Play 公开 key(上架时填)
+  ios:     'appl_ABKmuZTWZgBaJMKeDPoFklGzQqK',
  };
  const ENTITLEMENT = 'pro';     // 与 preflop 共用同一 entitlement = 捆绑解锁
  const MATCH = {

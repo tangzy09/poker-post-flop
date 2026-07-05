@@ -1095,6 +1095,92 @@ function bindEvents() {
   }
 }
 
+/* 付费墙(Pro):原生走 RevenueCat IAP,web 引导下载 App(测试期 web 全解锁,此分支面向未来收费触点)。
+   全内联样式,类名一律 pw- 前缀 —— 绝不用 .btn(与全局 .btn 冲突,见 CLAUDE.md)。 */
+function showPaywall(why) {
+  const old = document.getElementById("paywall");
+  if (old) old.remove(); // 重开则重建,文案随当前语言刷新
+  const P = typeof Pay !== "undefined" ? Pay : null;
+  const native = !!(P && P.native);
+  const yearPrice = (P && P.yearPrice) || "$29.99";
+  const subPrice = (P && P.subPrice) || "$4.99";
+  const trialDays = (P && P.yearTrialDays) || 0;
+
+  const S = {
+    card: "max-width:360px;width:100%;background:var(--panel,#161d18);border:1px solid var(--gold,#e8c66a);border-radius:18px;padding:22px 20px;box-shadow:0 20px 60px rgba(0,0,0,.5)",
+    title: "font-weight:700;font-size:21px;color:var(--gold,#e8c66a);text-align:center",
+    why: "text-align:center;color:var(--muted,#8fa79a);font-size:13px;margin:4px 0 14px",
+    list: "display:flex;flex-direction:column;gap:9px;font-size:13.5px;color:var(--ink,#f1f5ee)",
+    year: "appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;font-size:16px;color:#16110a;background:linear-gradient(180deg,var(--gold,#e8c66a),var(--gold2,#b8902f));width:100%;padding:13px;border-radius:13px;margin-top:16px;display:flex;flex-direction:column;gap:1px;align-items:center;text-decoration:none",
+    sub: "appearance:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:16px;color:var(--gold,#e8c66a);background:transparent;border:1px solid var(--gold,#e8c66a);width:100%;padding:13px;border-radius:13px;margin-top:9px;display:flex;flex-direction:column;gap:1px;align-items:center",
+    small: "font-weight:500;font-size:11px;opacity:.72",
+    restore: "appearance:none;border:0;cursor:pointer;font-family:inherit;font-size:13px;color:var(--muted,#8fa79a);background:transparent;width:100%;padding:8px;margin-top:8px;text-decoration:underline",
+    close: "appearance:none;border:0;cursor:pointer;font-family:inherit;font-size:14px;color:var(--muted,#8fa79a);background:transparent;width:100%;padding:10px;margin-top:2px",
+    foot: "text-align:center;color:var(--fold,#5b6f63);font-size:11px;margin-top:6px",
+    msg: "text-align:center;color:var(--wrong,#e0544f);font-size:12.5px;margin-top:10px",
+  };
+
+  let body;
+  if (!native) {
+    body =
+      '<div style="' + S.card + '">' +
+      '<div style="' + S.title + '">' + t("paywall.webTitle") + "</div>" +
+      '<div style="' + S.why + '">' + t("paywall.webDesc") + "</div>" +
+      '<a style="' + S.year + '" href="https://post-flop-coach.ai-speeds.com/" target="_blank" rel="noopener">' + t("paywall.webCta") + "</a>" +
+      '<button style="' + S.close + '" data-pw="close">' + t("paywall.close") + "</button>" +
+      "</div>";
+  } else {
+    const yearLabel = trialDays > 0 ? t("paywall.yearTrial", { d: trialDays }) : t("paywall.yearDyn", { p: yearPrice });
+    const yearNote = trialDays > 0 ? t("paywall.yearTrialNote", { p: yearPrice }) : t("paywall.yearNote", { p: yearPrice });
+    const pitch = t("paywall.pitch").split("\n").map((s) => "<div>· " + s + "</div>").join("");
+    body =
+      '<div style="' + S.card + '">' +
+      '<div style="' + S.title + '">' + t("paywall.title") + "</div>" +
+      '<div style="' + S.why + '">' + (why || t("paywall.whyDefault")) + "</div>" +
+      '<div style="' + S.list + '">' + pitch + "</div>" +
+      '<button style="' + S.year + '" data-pw="year"><span>' + yearLabel + '</span><small style="' + S.small + '">' + yearNote + "</small></button>" +
+      '<button style="' + S.sub + '" data-pw="sub"><span>' + t("paywall.sub") + '</span><small style="' + S.small + '">' + t("paywall.subNote", { p: subPrice }) + "</small></button>" +
+      '<button style="' + S.restore + '" data-pw="restore">' + t("paywall.restore") + "</button>" +
+      '<button style="' + S.close + '" data-pw="close">' + t("paywall.close") + "</button>" +
+      '<div style="' + S.foot + '">' + t("paywall.foot") + "</div>" +
+      "</div>";
+  }
+
+  const el = document.createElement("div");
+  el.id = "paywall";
+  el.style.cssText = "position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.66);padding:24px";
+  el.innerHTML = body;
+  document.body.appendChild(el);
+
+  const close = () => el.remove();
+  const showMsg = (txt) => {
+    let m = el.querySelector(".pw-msg");
+    if (!m) { m = document.createElement("div"); m.className = "pw-msg"; m.style.cssText = S.msg; el.firstChild.appendChild(m); }
+    m.textContent = txt;
+  };
+  el.addEventListener("click", (e) => { if (e.target === el) close(); }); // 点遮罩关闭
+
+  const buy = async (kind) => {
+    let ok = false;
+    try { ok = P ? await P.buy(kind) : true; } catch (e) {}
+    if (ok === true) { close(); render(); return; }
+    if (ok !== "cancel") showMsg(t("paywall.buyFail")); // 真实失败发声;用户取消不打扰
+  };
+  el.querySelectorAll("[data-pw]").forEach((b) => {
+    const k = b.getAttribute("data-pw");
+    b.onclick = async () => {
+      if (k === "close") return close();
+      if (k === "year") return buy("year");
+      if (k === "sub") return buy("sub");
+      if (k === "restore") {
+        let ok = false;
+        try { ok = P ? await P.restore() : false; } catch (e) {}
+        if (ok) { close(); render(); } else showMsg(t("paywall.noPurchase"));
+      }
+    };
+  });
+}
+
 function handleAction(action, el) {
   switch (action) {
     case "start-course":

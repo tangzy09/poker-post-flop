@@ -70,6 +70,6 @@ courses.js（30 课元数据）
 
 ## 部署
 
-- **EC2（唯一发布通道）**：`powershell -File tools/deploy-ec2.ps1` → https://post-flop-coach.ai-speeds.com/（需 SSH 密钥）。上传清单：`index.html`、`robots.txt`、`sitemap.xml`、`og-image.png`、GSC 验证文件、`js/`、`data/`、`courses/`。
+- **EC2（唯一发布通道）**：`powershell -File tools/deploy-ec2.ps1` → https://post-flop-coach.ai-speeds.com/（需 SSH 密钥）。上传清单：`index.html`、`privacy.html`、`robots.txt`、`sitemap.xml`、`og-image.png`、GSC 验证文件、`js/`、`data/`、`courses/`。
 - **GitHub Pages 未启用**（镜像 404；本地 `.github/` 保持**未跟踪** —— push 的 PAT 无 `workflow` scope，入库会导致整个 push 被拒）。
 - **SEO**：主站已提交 Google Search Console（HTML 文件验证，在部署清单内）；sitemap 59 URL。

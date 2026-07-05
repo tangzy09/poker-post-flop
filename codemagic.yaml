@@ -26,8 +26,8 @@ workflows:
       vars:
         BUNDLE_ID: "com.pokerpostflop.trainer" # 与 capacitor.config.json 的 appId 一致
         XCODE_SCHEME: "App"
-        # ↓ App Store Connect 里创建本 app 记录后拿到的数字 Apple ID(见 docs/IOS-CODEMAGIC.md 第②步)
-        APP_STORE_APP_ID: "REPLACE_WITH_POSTFLOP_NUMERIC_APP_ID"
+        # ↓ App Store Connect 数字 Apple ID(App 记录已建:PostFlop GTO Poker Trainer)
+        APP_STORE_APP_ID: "6787552890"
       node: 22             # Cap8 CLI 要求 Node ≥22(node:20 实测 cap add ios 直接 fatal;preflop 云端踩过)
       xcode: latest        # 苹果强制新 SDK 才可上传;若某次升级把构建搞挂,钉成上次成功版本
       cocoapods: default
