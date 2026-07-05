@@ -39,8 +39,8 @@ test("sitemap.xml lists root + 2/course + glossary + 2/term, all resolving to fi
   const courses = loadCourses();
   const sm = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  // 根 + 2×课程 + 2×术语表 pillar(en/zh)+ 2×术语页
-  assert.equal(locs.length, 1 + courses.length * 2 + 2 + TERMS.length * 2, "sitemap URL 数不符 — 跑 gen-seo-pages");
+  // 根 + 2×课程 + 2×术语表 pillar(en/zh)+ 2×术语页 + 2×工具页(calc en/zh)
+  assert.equal(locs.length, 1 + courses.length * 2 + 2 + TERMS.length * 2 + 2, "sitemap URL 数不符 — 跑 gen-seo-pages");
   for (const loc of locs) {
     assert.ok(loc.startsWith(SITE), "sitemap 出现异站 URL: " + loc);
     const rel = loc.slice(SITE.length).replace(/^\//, "");
@@ -67,6 +67,18 @@ test("term pages: frozen slug, en/zh on disk, paired hreflang, self canonical, F
   }
   assert.ok(fs.existsSync(path.join(root, "terms", "index.html")), "缺术语表 pillar terms/index.html");
   assert.ok(fs.existsSync(path.join(root, "terms", "zh", "index.html")), "缺术语表 pillar terms/zh/index.html");
+});
+
+test("equity calculator tool pages: en/zh on disk, self canonical, paired hreflang, loads engine", () => {
+  for (const rel of ["calc/equity-calculator.html", "calc/zh/equity-calculator.html"]) {
+    assert.ok(fs.existsSync(path.join(root, rel)), `缺 ${rel}`);
+    const page = fs.readFileSync(path.join(root, rel), "utf8");
+    assert.match(page, /hreflang="en"/, rel + " 缺 hreflang en");
+    assert.match(page, /hreflang="zh"/, rel + " 缺 hreflang zh");
+    assert.match(page, /src="[^"]*js\/equity\.js"/, rel + " 未加载 equity.js 引擎");
+    const canon = (page.match(/rel="canonical" href="([^"]+)"/) || [])[1];
+    assert.equal(canon, SITE + "/" + rel, rel + " canonical 应自指");
+  }
 });
 
 test("index.html SEO block links every course page and matches the course count", () => {

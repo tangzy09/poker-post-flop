@@ -48,6 +48,10 @@ ${lis}
       <ul>
 ${TERMS.map((t) => `      <li><a href="terms/zh/${t.slug}.html">${esc(t.term.zh)}</a> · <a href="terms/${t.slug}.html" hreflang="en">${esc(t.term.en)}</a></li>`).join('\n')}
       </ul>
+      <h2 style="font-size:1.1rem">免费工具 · Free tools</h2>
+      <ul>
+      <li><a href="calc/zh/equity-calculator.html">德州扑克胜率计算器</a> · <a href="calc/equity-calculator.html" hreflang="en">Poker Equity Calculator</a> — 范围对范围 + 牌面,蒙特卡洛精确胜率</li>
+      </ul>
       <p><a href="https://pre-flop.ai-speeds.com/">翻前训练营 Preflop Camp — 同一作者的免费 GTO 翻前训练器</a></p>
       <noscript><p>本应用需要启用 JavaScript 才能练习;以上课程页为纯静态,可直接阅读。This app requires JavaScript; the lesson pages above are static and readable without it.</p></noscript>
     </div>

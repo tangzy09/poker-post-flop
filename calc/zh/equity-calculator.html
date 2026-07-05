@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>德州扑克胜率计算器 — 范围对范围·带牌面 | 翻后训练营</title>
+<meta name="description" content="免费德州扑克胜率(equity)计算器:输入两个范围和可选的翻牌/转牌/河牌牌面,蒙特卡洛精确计算胜率。无需注册。范围写法如 AKs、QQ+、A2s+。">
+<link rel="canonical" href="https://post-flop-coach.ai-speeds.com/calc/zh/equity-calculator.html">
+<link rel="alternate" hreflang="en" href="https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html">
+<link rel="alternate" hreflang="zh" href="https://post-flop-coach.ai-speeds.com/calc/zh/equity-calculator.html">
+<link rel="alternate" hreflang="x-default" href="https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="德州扑克胜率计算器 — 翻后训练营">
+<meta property="og:description" content="免费范围对范围德州扑克胜率计算器,支持牌面。无需注册。">
+<meta property="og:url" content="https://post-flop-coach.ai-speeds.com/calc/zh/equity-calculator.html">
+<meta property="og:image" content="https://post-flop-coach.ai-speeds.com/og-image.png">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebApplication","name":"德州扑克胜率计算器","url":"https://post-flop-coach.ai-speeds.com/calc/zh/equity-calculator.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"inLanguage":"zh-CN","description":"免费范围对范围德州扑克胜率计算器,支持翻牌/转牌/河牌牌面,由精确蒙特卡洛模拟计算。"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"翻后训练营","item":"https://post-flop-coach.ai-speeds.com/"},{"@type":"ListItem","position":2,"name":"德州扑克胜率计算器","item":"https://post-flop-coach.ai-speeds.com/calc/zh/equity-calculator.html"}]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"胜率计算器是怎么算的?","acceptedAnswer":{"@type":"Answer","text":"用蒙特卡洛模拟:根据你输入的范围和牌面发出数万次随机走牌,统计每一方获胜的频率。数字是实时算出来的,不是查表或编造。"}},{"@type":"Question","name":"范围支持什么写法?","acceptedAnswer":{"@type":"Answer","text":"标准简写:对子如 QQ+ 或 22-66,同花如 A2s+ 或 T8s,非同花如 KJo+,用逗号分隔。填入牌面(如 Kh 7d 2c)得到翻后胜率;留空则算翻前范围对范围。"}},{"@type":"Question","name":"这个计算器免费吗?","acceptedAnswer":{"@type":"Answer","text":"完全免费、无需注册,全部在你的浏览器里运行。"}}]}]</script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Space Grotesk","Noto Sans SC",system-ui,sans-serif;background:radial-gradient(120% 80% at 50% -10%,#14463a 0%,#0c2a22 45%,#0a201a 100%);color:#f1f5ee;line-height:1.65}
+.wrap{max-width:640px;margin:0 auto;padding:28px 20px 60px}
+a{color:#e8c66a}h1{font-size:1.5rem;line-height:1.35;margin:.2em 0 .3em}h2{font-size:1.12rem;margin:1.6em 0 .5em;color:#e8c66a}
+.eyebrow{color:#8fa79a;font-size:.85rem;margin:0}.lead{font-size:1.1rem;margin:.4em 0 1.2em}
+.langsw{float:right}.muted{color:#8fa79a;font-size:.92rem}
+.panel{background:#161d18;border:1px solid #28332a;border-radius:14px;padding:16px 18px;margin:14px 0}
+label{display:block;font-size:.85rem;color:#8fa79a;margin:12px 0 4px}
+input{width:100%;background:#0e1613;border:1px solid #28332a;border-radius:9px;color:#f1f5ee;font:inherit;padding:11px 12px}
+button{appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:1rem;color:#16110a;background:linear-gradient(180deg,#e8c66a,#b8902f);width:100%;padding:13px;border-radius:11px;margin-top:16px}
+.err{color:#e0544f;font-size:.92rem;margin-top:10px}
+.eqbar{margin:12px 0}.eqbar .bl{display:flex;justify-content:space-between;font-weight:700;margin-bottom:4px}
+.track{height:14px;background:#0e1613;border-radius:8px;overflow:hidden}.track i{display:block;height:100%}
+.cta{display:block;text-align:center;background:linear-gradient(180deg,#e8c66a,#b8902f);color:#16110a;font-weight:800;padding:14px;border-radius:12px;text-decoration:none;margin:22px 0}
+details{background:#161d18;border:1px solid #28332a;border-radius:10px;padding:10px 14px;margin:8px 0}details summary{cursor:pointer;font-weight:700}
+.foot{color:#8fa79a;font-size:.8rem;border-top:1px solid #28332a;margin-top:30px;padding-top:14px}
+</style>
+<script src="../../js/equity.js"></script>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow"><a href="../../">翻后训练营 — 免费单挑德州扑克翻牌后训练器</a><span class="langsw"><a href="../equity-calculator.html">EN</a></span></p>
+<h1>德州扑克胜率计算器</h1>
+<p class="lead">输入两个范围和可选的牌面,在浏览器里用蒙特卡洛模拟算出精确胜率。免费、无需注册。</p>
+
+<div class="panel">
+  <label for="eqHero">你的范围</label>
+  <input id="eqHero" value="AA, KK, QQ, AKs" autocomplete="off" spellcheck="false">
+  <label for="eqVill">对手范围</label>
+  <input id="eqVill" value="TT+, AQs+, AKo" autocomplete="off" spellcheck="false">
+  <label for="eqBoard">牌面(可选 — 3 到 5 张,如 Kh 7d 2c)</label>
+  <input id="eqBoard" value="" placeholder="留空 = 翻前" autocomplete="off" spellcheck="false">
+  <button id="eqBtn">计算胜率</button>
+  <div id="eqOut" style="margin-top:14px"></div>
+</div>
+
+<h2>怎么用</h2>
+<p>用标准扑克简写输入范围,逗号分隔:</p>
+<ul>
+  <li><b>对子:</b> <code>QQ+</code>(Q 及以上)、<code>22-66</code>(一段)</li>
+  <li><b>同花:</b> <code>A2s+</code>、<code>T8s</code>、<code>76s</code></li>
+  <li><b>非同花:</b> <code>KJo+</code>、<code>AQo</code></li>
+</ul>
+<p>填入<b>牌面</b>如 <code>Kh 7d 2c</code>(翻牌),再加转牌、河牌得到后续街道的翻后胜率。留空则计算翻前范围对范围。每张牌两个字符:点数(2-9、T、J、Q、K、A)+ 花色(s、h、d、c)。</p>
+
+<h2>常见问题</h2>
+<details><summary>胜率计算器是怎么算的?</summary><p>用蒙特卡洛模拟——根据你的范围和牌面发出数万次随机走牌,统计每一方获胜的频率。数字实时算出,绝不查表或编造。</p></details>
+<details><summary>范围支持什么写法?</summary><p>标准简写:对子 <code>QQ+</code> 或 <code>22-66</code>,同花 <code>A2s+</code> 或 <code>T8s</code>,非同花 <code>KJo+</code>,逗号分隔。填牌面(<code>Kh 7d 2c</code>)得翻后胜率;留空算翻前。</p></details>
+<details><summary>免费吗?</summary><p>完全免费、无需注册,全在你的浏览器里运行。</p></details>
+
+<a class="cta" href="../../">免费练翻后决策 — 30 课、699 道验证真题 →</a>
+<p class="eyebrow"><a href="../../terms/zh/">扑克术语表</a> · <a href="https://pre-flop.ai-speeds.com/">翻前训练营 — 免费翻前 GTO 训练器与 Nash 推弃图</a></p>
+<div class="foot"><p>胜率由精确牌力评估器在蒙特卡洛走牌上计算。学习工具,非真钱赌博。</p></div>
+</div>
+
+<script>
+(function(){
+  var RCR=["A","K","Q","J","T","9","8","7","6","5","4","3","2"],RCI={};RCR.forEach(function(r,i){RCI[r]=i;});
+  var RX="[2-9TJQKA]";
+  function expandRange(str){var out=new Set();if(!str)return out;str.split(",").map(function(s){return s.trim();}).filter(Boolean).forEach(function(tok){var m;
+    if((m=tok.match(new RegExp("^("+RX+")\\1\\+$")))){for(var i=RCI[m[1]];i>=0;i--)out.add(RCR[i]+RCR[i]);}
+    else if((m=tok.match(new RegExp("^("+RX+")\\1-("+RX+")\\2$")))){var a=RCI[m[1]],b=RCI[m[2]],lo=Math.min(a,b),hi=Math.max(a,b);for(var j=lo;j<=hi;j++)out.add(RCR[j]+RCR[j]);}
+    else if((m=tok.match(new RegExp("^("+RX+")\\1$")))){out.add(m[1]+m[1]);}
+    else if((m=tok.match(new RegExp("^("+RX+")("+RX+")([so])\\+$")))){var f=RCI[m[1]],s=RCI[m[2]],suf=m[3];for(var k=s;k>f;k--)out.add(RCR[f]+RCR[k]+suf);}
+    else if((m=tok.match(new RegExp("^("+RX+")("+RX+")([so])-("+RX+")("+RX+")\\3$")))){var f2=RCI[m[1]],s1=RCI[m[2]],s2=RCI[m[5]],su2=m[3],lo2=Math.min(s1,s2),hi2=Math.max(s1,s2);for(var t=lo2;t<=hi2;t++)if(t>f2)out.add(RCR[f2]+RCR[t]+su2);}
+    else if((m=tok.match(new RegExp("^("+RX+")("+RX+")([so])$")))){var a2=RCI[m[1]],b2=RCI[m[2]],hi3=Math.min(a2,b2),lo3=Math.max(a2,b2);out.add(RCR[hi3]+RCR[lo3]+m[3]);}
+  });return out;}
+  function parseBoard(s){var t=(s||"").replace(/[^A-Za-z0-9]/g,"");if(!t)return{cards:[]};if(t.length%2)return{err:"张数须为偶"};var out=[],seen={};for(var i=0;i<t.length;i+=2){var c;try{c=parseCard(t[i].toUpperCase()+t[i+1].toLowerCase());}catch(e){return{err:"无效牌 "+t.substr(i,2)};}if(seen[c])return{err:"重复牌"};seen[c]=1;out.push(c);}if(out.length<3||out.length>5)return{err:"牌面须 3 到 5 张"};return{cards:out};}
+  function run(){var out=document.getElementById("eqOut");
+    var hero=Array.from(expandRange(document.getElementById("eqHero").value));
+    var vill=Array.from(expandRange(document.getElementById("eqVill").value));
+    if(!hero.length||!vill.length){out.innerHTML='<div class="err">两边都要填有效范围(如 QQ+, AKs)。</div>';return;}
+    var bp=parseBoard(document.getElementById("eqBoard").value);
+    if(bp.err){out.innerHTML='<div class="err">牌面:'+bp.err+'</div>';return;}
+    out.innerHTML='<div class="muted">计算中…</div>';
+    setTimeout(function(){
+      var rng=mulberry32(0x5eed);
+      var e=bp.cards.length?rangeEquityBoard(hero,vill,bp.cards,60000,rng):rangeEquity(hero,vill,60000,rng);
+      if(e==null){out.innerHTML='<div class="err">这两个范围在该牌面上冲突(无合法组合)。</div>';return;}
+      var hp=e*100,vp=100-hp;
+      function bar(n,p,c){return '<div class="eqbar"><div class="bl"><span>'+n+'</span><span>'+p.toFixed(1)+'%</span></div><div class="track"><i style="width:'+p.toFixed(1)+'%;background:'+c+'"></i></div></div>';}
+      var note=bp.cards.length?('牌面 '+bp.cards.map(cardStr).join(" ")+' 的翻后胜率 · 蒙特卡洛 6 万次走牌。'):'翻前范围对范围胜率 · 蒙特卡洛 6 万次走牌。';
+      out.innerHTML=bar("你",hp,"#34b074")+bar("对手",vp,"#e0544f")+'<p class="muted">'+note+'</p>';
+    },20);
+  }
+  document.getElementById("eqBtn").onclick=run;
+})();
+</script>
+</body>
+</html>

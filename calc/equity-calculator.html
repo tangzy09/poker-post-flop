@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poker Equity Calculator — Range vs Range on Any Board | Postflop Coach</title>
+<meta name="description" content="Free poker equity calculator: enter two Texas Hold'em ranges and an optional flop/turn/river board, get exact Monte-Carlo win probability. No signup. Range notation like AKs, QQ+, A2s+.">
+<link rel="canonical" href="https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html">
+<link rel="alternate" hreflang="en" href="https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html">
+<link rel="alternate" hreflang="zh" href="https://post-flop-coach.ai-speeds.com/calc/zh/equity-calculator.html">
+<link rel="alternate" hreflang="x-default" href="https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Poker Equity Calculator — Postflop Coach">
+<meta property="og:description" content="Free range-vs-range Texas Hold'em equity calculator with board support. No signup.">
+<meta property="og:url" content="https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html">
+<meta property="og:image" content="https://post-flop-coach.ai-speeds.com/og-image.png">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebApplication","name":"Poker Equity Calculator","url":"https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"inLanguage":"en","description":"Free range-vs-range Texas Hold'em equity calculator with optional flop/turn/river board, computed by exact Monte-Carlo simulation."},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Postflop Coach","item":"https://post-flop-coach.ai-speeds.com/"},{"@type":"ListItem","position":2,"name":"Poker Equity Calculator","item":"https://post-flop-coach.ai-speeds.com/calc/equity-calculator.html"}]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the equity calculator work?","acceptedAnswer":{"@type":"Answer","text":"It runs a Monte-Carlo simulation: it deals thousands of random runouts consistent with your ranges and any board you enter, and reports how often each side wins. Numbers are computed, not looked up."}},{"@type":"Question","name":"What range notation does it accept?","acceptedAnswer":{"@type":"Answer","text":"Standard shorthand: pairs like QQ+ or 22-66, suited hands like A2s+ or T8s, offsuit like KJo+, separated by commas. Add a board like Kh 7d 2c to get post-flop equity; leave the board blank for preflop range-vs-range."}},{"@type":"Question","name":"Is the equity calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free with no signup. It runs entirely in your browser."}}]}]</script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Space Grotesk","Noto Sans SC",system-ui,sans-serif;background:radial-gradient(120% 80% at 50% -10%,#14463a 0%,#0c2a22 45%,#0a201a 100%);color:#f1f5ee;line-height:1.65}
+.wrap{max-width:640px;margin:0 auto;padding:28px 20px 60px}
+a{color:#e8c66a}h1{font-size:1.5rem;line-height:1.35;margin:.2em 0 .3em}h2{font-size:1.12rem;margin:1.6em 0 .5em;color:#e8c66a}
+.eyebrow{color:#8fa79a;font-size:.85rem;margin:0}.lead{font-size:1.1rem;margin:.4em 0 1.2em}
+.langsw{float:right}.muted{color:#8fa79a;font-size:.92rem}
+.panel{background:#161d18;border:1px solid #28332a;border-radius:14px;padding:16px 18px;margin:14px 0}
+label{display:block;font-size:.85rem;color:#8fa79a;margin:12px 0 4px}
+input{width:100%;background:#0e1613;border:1px solid #28332a;border-radius:9px;color:#f1f5ee;font:inherit;padding:11px 12px}
+button{appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:1rem;color:#16110a;background:linear-gradient(180deg,#e8c66a,#b8902f);width:100%;padding:13px;border-radius:11px;margin-top:16px}
+.err{color:#e0544f;font-size:.92rem;margin-top:10px}
+.eqbar{margin:12px 0}.eqbar .bl{display:flex;justify-content:space-between;font-weight:700;margin-bottom:4px}
+.track{height:14px;background:#0e1613;border-radius:8px;overflow:hidden}.track i{display:block;height:100%}
+.cta{display:block;text-align:center;background:linear-gradient(180deg,#e8c66a,#b8902f);color:#16110a;font-weight:800;padding:14px;border-radius:12px;text-decoration:none;margin:22px 0}
+details{background:#161d18;border:1px solid #28332a;border-radius:10px;padding:10px 14px;margin:8px 0}details summary{cursor:pointer;font-weight:700}
+.foot{color:#8fa79a;font-size:.8rem;border-top:1px solid #28332a;margin-top:30px;padding-top:14px}
+</style>
+<script src="../js/equity.js"></script>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow"><a href="../">Postflop Coach — free heads-up postflop poker trainer</a><span class="langsw"><a href="zh/equity-calculator.html">中文</a></span></p>
+<h1>Poker Equity Calculator</h1>
+<p class="lead">Enter two Texas Hold'em ranges and an optional board to get the exact win probability, computed by Monte-Carlo simulation right in your browser. Free, no signup.</p>
+
+<div class="panel">
+  <label for="eqHero">Your range</label>
+  <input id="eqHero" value="AA, KK, QQ, AKs" autocomplete="off" spellcheck="false">
+  <label for="eqVill">Opponent range</label>
+  <input id="eqVill" value="TT+, AQs+, AKo" autocomplete="off" spellcheck="false">
+  <label for="eqBoard">Board (optional — 3 to 5 cards, e.g. Kh 7d 2c)</label>
+  <input id="eqBoard" value="" placeholder="leave blank for preflop" autocomplete="off" spellcheck="false">
+  <button id="eqBtn">Calculate equity</button>
+  <div id="eqOut" style="margin-top:14px"></div>
+</div>
+
+<h2>How to use it</h2>
+<p>Type ranges in standard poker shorthand, separated by commas:</p>
+<ul>
+  <li><b>Pairs:</b> <code>QQ+</code> (queens and up), <code>22-66</code> (a band)</li>
+  <li><b>Suited:</b> <code>A2s+</code>, <code>T8s</code>, <code>76s</code></li>
+  <li><b>Offsuit:</b> <code>KJo+</code>, <code>AQo</code></li>
+</ul>
+<p>Add a <b>board</b> like <code>Kh 7d 2c</code> (flop), plus a turn and river card for later streets, to get post-flop equity. Leave the board blank for a preflop range-vs-range matchup. Cards are two characters: rank (2-9, T, J, Q, K, A) + suit (s, h, d, c).</p>
+
+<h2>FAQ</h2>
+<details><summary>How does the equity calculator work?</summary><p>It runs a Monte-Carlo simulation — dealing tens of thousands of random runouts consistent with your ranges and any board you enter, then reporting how often each side wins. The numbers are computed live, never looked up or invented.</p></details>
+<details><summary>What range notation does it accept?</summary><p>Standard shorthand: pairs like <code>QQ+</code> or <code>22-66</code>, suited hands like <code>A2s+</code> or <code>T8s</code>, offsuit like <code>KJo+</code>, comma-separated. Add a board (<code>Kh 7d 2c</code>) for post-flop equity; leave it blank for preflop.</p></details>
+<details><summary>Is it free?</summary><p>Yes — completely free, no signup, and it runs entirely in your browser.</p></details>
+
+<a class="cta" href="../">Train postflop decisions free — 30 lessons, 699 verified drills →</a>
+<p class="eyebrow"><a href="../terms/">Poker glossary</a> · <a href="https://pre-flop.ai-speeds.com/">Preflop Camp — free preflop GTO trainer & Nash push/fold charts</a></p>
+<div class="foot"><p>Equity is computed by an exact hand evaluator over Monte-Carlo runouts. A study tool, not real-money gambling.</p></div>
+</div>
+
+<script>
+(function(){
+  var RCR=["A","K","Q","J","T","9","8","7","6","5","4","3","2"],RCI={};RCR.forEach(function(r,i){RCI[r]=i;});
+  var RX="[2-9TJQKA]";
+  function expandRange(str){var out=new Set();if(!str)return out;str.split(",").map(function(s){return s.trim();}).filter(Boolean).forEach(function(tok){var m;
+    if((m=tok.match(new RegExp("^("+RX+")\\1\\+$")))){for(var i=RCI[m[1]];i>=0;i--)out.add(RCR[i]+RCR[i]);}
+    else if((m=tok.match(new RegExp("^("+RX+")\\1-("+RX+")\\2$")))){var a=RCI[m[1]],b=RCI[m[2]],lo=Math.min(a,b),hi=Math.max(a,b);for(var j=lo;j<=hi;j++)out.add(RCR[j]+RCR[j]);}
+    else if((m=tok.match(new RegExp("^("+RX+")\\1$")))){out.add(m[1]+m[1]);}
+    else if((m=tok.match(new RegExp("^("+RX+")("+RX+")([so])\\+$")))){var f=RCI[m[1]],s=RCI[m[2]],suf=m[3];for(var k=s;k>f;k--)out.add(RCR[f]+RCR[k]+suf);}
+    else if((m=tok.match(new RegExp("^("+RX+")("+RX+")([so])-("+RX+")("+RX+")\\3$")))){var f2=RCI[m[1]],s1=RCI[m[2]],s2=RCI[m[5]],su2=m[3],lo2=Math.min(s1,s2),hi2=Math.max(s1,s2);for(var t=lo2;t<=hi2;t++)if(t>f2)out.add(RCR[f2]+RCR[t]+su2);}
+    else if((m=tok.match(new RegExp("^("+RX+")("+RX+")([so])$")))){var a2=RCI[m[1]],b2=RCI[m[2]],hi3=Math.min(a2,b2),lo3=Math.max(a2,b2);out.add(RCR[hi3]+RCR[lo3]+m[3]);}
+  });return out;}
+  function parseBoard(s){var t=(s||"").replace(/[^A-Za-z0-9]/g,"");if(!t)return{cards:[]};if(t.length%2)return{err:"length must be even"};var out=[],seen={};for(var i=0;i<t.length;i+=2){var c;try{c=parseCard(t[i].toUpperCase()+t[i+1].toLowerCase());}catch(e){return{err:"bad card "+t.substr(i,2)};}if(seen[c])return{err:"duplicate card"};seen[c]=1;out.push(c);}if(out.length<3||out.length>5)return{err:"board must be 3 to 5 cards"};return{cards:out};}
+  function run(){var out=document.getElementById("eqOut");
+    var hero=Array.from(expandRange(document.getElementById("eqHero").value));
+    var vill=Array.from(expandRange(document.getElementById("eqVill").value));
+    if(!hero.length||!vill.length){out.innerHTML='<div class="err">Enter a valid range on both sides (e.g. QQ+, AKs).</div>';return;}
+    var bp=parseBoard(document.getElementById("eqBoard").value);
+    if(bp.err){out.innerHTML='<div class="err">Board: '+bp.err+'</div>';return;}
+    out.innerHTML='<div class="muted">Computing…</div>';
+    setTimeout(function(){
+      var rng=mulberry32(0x5eed);
+      var e=bp.cards.length?rangeEquityBoard(hero,vill,bp.cards,60000,rng):rangeEquity(hero,vill,60000,rng);
+      if(e==null){out.innerHTML='<div class="err">Those ranges conflict on this board (no valid combos left).</div>';return;}
+      var hp=e*100,vp=100-hp;
+      function bar(n,p,c){return '<div class="eqbar"><div class="bl"><span>'+n+'</span><span>'+p.toFixed(1)+'%</span></div><div class="track"><i style="width:'+p.toFixed(1)+'%;background:'+c+'"></i></div></div>';}
+      var note=bp.cards.length?('Post-flop equity on '+bp.cards.map(cardStr).join(" ")+' · Monte-Carlo, 60k runouts.'):'Preflop range-vs-range equity · Monte-Carlo, 60k runouts.';
+      out.innerHTML=bar("You",hp,"#34b074")+bar("Opponent",vp,"#e0544f")+'<p class="muted">'+note+'</p>';
+    },20);
+  }
+  document.getElementById("eqBtn").onclick=run;
+})();
+</script>
+</body>
+</html>

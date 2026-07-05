@@ -334,6 +334,10 @@ TERMS.forEach((t, i) => {
   urls.push({ loc: `${SITE}/terms/zh/${t.slug}.html`, priority: '0.7' });
 });
 
+// 独立免费工具页(手写静态页,非从数据生成,仅登记进 sitemap)
+urls.push({ loc: `${SITE}/calc/equity-calculator.html`, priority: '0.7' });
+urls.push({ loc: `${SITE}/calc/zh/equity-calculator.html`, priority: '0.7' });
+
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><priority>${u.priority}</priority></url>`).join('\n') +
