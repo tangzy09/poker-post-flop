@@ -9,6 +9,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const SLUGS = require('./seo-slugs.js');
+const TERMS = require('./seo-terms.js');
 
 const root = path.join(__dirname, '..');
 const files = ['js/i18n.js', 'data/solved-spots.js', 'js/courses.js', 'js/content.js', 'js/content-ext.js', 'js/table.js', 'js/engine.js'];
@@ -42,6 +43,10 @@ const block = `<!--SEO-->
       <h2 style="font-size:1.1rem">30 课目录 · All lessons</h2>
       <ul>
 ${lis}
+      </ul>
+      <h2 style="font-size:1.1rem"><a href="terms/">扑克术语表 · Postflop poker glossary</a></h2>
+      <ul>
+${TERMS.map((t) => `      <li><a href="terms/zh/${t.slug}.html">${esc(t.term.zh)}</a> · <a href="terms/${t.slug}.html" hreflang="en">${esc(t.term.en)}</a></li>`).join('\n')}
       </ul>
       <p><a href="https://pre-flop.ai-speeds.com/">翻前训练营 Preflop Camp — 同一作者的免费 GTO 翻前训练器</a></p>
       <noscript><p>本应用需要启用 JavaScript 才能练习;以上课程页为纯静态,可直接阅读。This app requires JavaScript; the lesson pages above are static and readable without it.</p></noscript>

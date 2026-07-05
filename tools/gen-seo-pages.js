@@ -11,6 +11,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const SLUGS = require('./seo-slugs.js');
 const FAQ = require('./seo-faq.js');
+const TERMS = require('./seo-terms.js');
 
 const root = path.join(__dirname, '..');
 const SITE = 'https://post-flop-coach.ai-speeds.com';
@@ -45,6 +46,10 @@ const L = {
     sample: 'Sample drill from this lesson', board: 'Board', hand: 'Your hand', bestAction: 'Best action',
     why: 'Why', cta: (n) => `Practice all ${n} questions free →`,
     prev: '← Previous lesson', next: 'Next lesson →', home: 'All 30 lessons', faqH: 'FAQ',
+    glossary: 'Poker Glossary', example: 'Worked example', learnMore: (t) => `Full lesson: ${t} →`,
+    backGlossary: '← All postflop terms', termTail: 'Postflop Poker Term | Postflop Coach',
+    glossaryTitle: 'Postflop Poker Glossary', ctaTerm: 'Train these spots free →',
+    glossaryIntro: 'Plain-English definitions of the postflop poker concepts this trainer drills — pot odds, MDF, c-bets, ranges and more — each with the formula, a worked example, and a link to the full lesson.',
     method: 'Every answer in the 699-question bank is independently verified (adversarial blind-solve) before publication.',
     sister: 'Also train preflop: Preflop Camp (GTO preflop trainer by the same maker)',
     breadcrumbHome: 'Postflop Coach',
@@ -57,6 +62,10 @@ const L = {
     sample: '本课样题', board: '公共牌', hand: '你的手牌', bestAction: '最佳行动',
     why: '为什么', cta: (n) => `免费练全部 ${n} 题 →`,
     prev: '← 上一课', next: '下一课 →', home: '全部 30 课', faqH: '常见问题',
+    glossary: '扑克术语表', example: '算例', learnMore: (t) => `完整课程:${t} →`,
+    backGlossary: '← 全部翻后术语', termTail: '翻后扑克术语 | 翻后训练营',
+    glossaryTitle: '翻后扑克术语表', ctaTerm: '免费练这些局面 →',
+    glossaryIntro: '用大白话讲清这个训练器所练的翻后扑克概念——底池赔率、MDF、持续下注、范围优势等——每个都带公式、算例和通往完整课程的链接。',
     method: '题库 699 题全部经独立盲解验证(隐藏答案由独立求解流程复核)后才发布。',
     sister: '翻前也要练?同一作者的「翻前训练营」(GTO 翻前训练器)',
     breadcrumbHome: '翻后训练营',
@@ -74,6 +83,8 @@ a{color:#e8c66a}h1{font-size:1.5rem;line-height:1.35;margin:.2em 0 .4em}h2{font-
 .cta{display:block;text-align:center;background:linear-gradient(180deg,#e8c66a,#b8902f);color:#16110a;font-weight:800;padding:14px;border-radius:12px;text-decoration:none;margin:22px 0}
 .navrow{display:flex;justify-content:space-between;gap:10px;font-size:.9rem;margin-top:26px}
 .foot{color:#8fa79a;font-size:.8rem;border-top:1px solid #28332a;margin-top:30px;padding-top:14px}
+.lead{font-size:1.12rem;color:#f1f5ee;margin:.2em 0 1em}
+.termlist a{font-weight:700}.termlist p{margin:.2em 0 1.1em;color:#8fa79a;font-size:.95rem}
 details.faq{background:#161d18;border:1px solid #28332a;border-radius:10px;padding:10px 14px;margin:8px 0}
 details.faq summary{cursor:pointer;font-weight:700;color:#f1f5ee}
 details.faq p{margin:.6em 0 .2em;color:#cdd8cf}
@@ -185,6 +196,108 @@ ${nav}
 `;
 }
 
+// —— 术语长尾页(pillar-spoke)——
+function termHead(lang, l, name, desc, url, urlEn, urlZh, jsonld) {
+  return `<!DOCTYPE html>
+<html lang="${l.locale}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(name)} — ${l.termTail}</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${url}">
+<link rel="alternate" hreflang="en" href="${urlEn}">
+<link rel="alternate" hreflang="zh" href="${urlZh}">
+<link rel="alternate" hreflang="x-default" href="${urlEn}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${esc(name)} — ${l.brand}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${SITE}/og-image.png">
+<script type="application/ld+json">${jsonld}</script>
+<style>${CSS}</style>
+</head>
+<body>
+<div class="wrap">`;
+}
+
+function termPageHtml(lang, term, prevT, nextT) {
+  const l = L[lang];
+  const slug = term.slug;
+  const urlEn = `${SITE}/terms/${slug}.html`;
+  const urlZh = `${SITE}/terms/zh/${slug}.html`;
+  const url = lang === 'zh' ? urlZh : urlEn;
+  const glossaryUrl = `${SITE}/terms/${lang === 'zh' ? 'zh/' : ''}`;
+  const name = term.term[lang];
+  const short = term.short[lang];
+  const rc = COURSES.find((c) => c.id === term.course);
+  const rcSlug = SLUGS[term.course];
+  const rcTitle = rc ? T(lang, rc.titleKey) : '';
+  const courseHref = (lang === 'zh' ? '../../courses/zh/' : '../courses/') + rcSlug + '.html';
+  const home = lang === 'zh' ? '../../' : '../';
+  const faq = term.faq || [];
+  const faqHtml = faq.length ? `<h2>${l.faqH}</h2>` + faq.map((f) => `<details class="faq"><summary>${esc(f.q[lang])}</summary><p>${esc(f.a[lang])}</p></details>`).join('') : '';
+  const jsonld = JSON.stringify([
+    { '@context': 'https://schema.org', '@type': 'DefinedTerm', name, description: short, inLanguage: l.locale,
+      inDefinedTermSet: { '@type': 'DefinedTermSet', name: l.glossaryTitle, url: glossaryUrl } },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: l.breadcrumbHome, item: SITE + '/' },
+      { '@type': 'ListItem', position: 2, name: l.glossaryTitle, item: glossaryUrl },
+      { '@type': 'ListItem', position: 3, name, item: url },
+    ] },
+    ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q[lang], acceptedAnswer: { '@type': 'Answer', text: f.a[lang] } })) }] : []),
+  ]);
+  const relNav = `<div class="navrow">` +
+    (prevT ? `<a href="${prevT.slug}.html">← ${esc(prevT.term[lang])}</a>` : '<span></span>') +
+    (nextT ? `<a href="${nextT.slug}.html">${esc(nextT.term[lang])} →</a>` : '<span></span>') + `</div>`;
+  return termHead(lang, l, name, short, url, urlEn, urlZh, jsonld) + `
+<p class="eyebrow"><a href="${home}">${l.brandLong}</a><span class="langsw"><a href="${lang === 'zh' ? urlEn : urlZh}">${lang === 'zh' ? 'EN' : '中文'}</a></span></p>
+<p class="eyebrow"><a href="index.html">${l.glossary}</a></p>
+<h1>${esc(name)}</h1>
+<p class="lead">${esc(short)}</p>
+<p>${term.body[lang]}</p>
+<h2>${l.example}</h2><div class="panel">${term.example[lang]}</div>
+${faqHtml}
+<p style="margin-top:18px"><a href="${courseHref}">${esc(l.learnMore(rcTitle))}</a></p>
+<a class="cta" href="${home}">${l.ctaTerm}</a>
+${relNav}
+<p class="eyebrow" style="margin-top:18px"><a href="index.html">${l.backGlossary}</a></p>
+<div class="foot"><p>${l.method}</p></div>
+</div>
+</body>
+</html>
+`;
+}
+
+function glossaryIndexHtml(lang) {
+  const l = L[lang];
+  const urlEn = `${SITE}/terms/`;
+  const urlZh = `${SITE}/terms/zh/`;
+  const url = lang === 'zh' ? urlZh : urlEn;
+  const home = lang === 'zh' ? '../../' : '../';
+  const jsonld = JSON.stringify([
+    { '@context': 'https://schema.org', '@type': 'CollectionPage', name: l.glossaryTitle, description: l.glossaryIntro, url, inLanguage: l.locale },
+    { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: TERMS.map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.term[lang], url: `${url}${t.slug}.html` })) },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: l.breadcrumbHome, item: SITE + '/' },
+      { '@type': 'ListItem', position: 2, name: l.glossaryTitle, item: url },
+    ] },
+  ]);
+  const items = TERMS.map((t) => `<div class="termlist"><a href="${t.slug}.html">${esc(t.term[lang])}</a><p>${esc(t.short[lang])}</p></div>`).join('\n');
+  return termHead(lang, l, l.glossaryTitle, l.glossaryIntro, url, urlEn, urlZh, jsonld) + `
+<p class="eyebrow"><a href="${home}">${l.brandLong}</a><span class="langsw"><a href="${lang === 'zh' ? urlEn : urlZh}">${lang === 'zh' ? 'EN' : '中文'}</a></span></p>
+<h1>${l.glossaryTitle}</h1>
+<p class="lead">${l.glossaryIntro}</p>
+${items}
+<a class="cta" href="${home}">${l.ctaTerm}</a>
+<p class="eyebrow" style="margin-top:18px"><a href="${home}">${l.home}</a></p>
+<div class="foot"><p>${l.method}</p></div>
+</div>
+</body>
+</html>
+`;
+}
+
 // —— 生成 ——
 const courses = COURSES.filter((c) => !c.placement);
 const outEn = path.join(root, 'courses');
@@ -204,6 +317,23 @@ courses.forEach((c, i) => {
   urls.push({ loc: `${SITE}/courses/zh/${slug}.html`, priority: '0.8' });
 });
 
+// 术语长尾页 + 术语表 pillar
+const outTerms = path.join(root, 'terms');
+const outTermsZh = path.join(root, 'terms', 'zh');
+fs.mkdirSync(outTermsZh, { recursive: true });
+fs.writeFileSync(path.join(outTerms, 'index.html'), glossaryIndexHtml('en'));
+fs.writeFileSync(path.join(outTermsZh, 'index.html'), glossaryIndexHtml('zh'));
+urls.push({ loc: SITE + '/terms/', priority: '0.7' });
+urls.push({ loc: SITE + '/terms/zh/', priority: '0.7' });
+TERMS.forEach((t, i) => {
+  const prevT = TERMS[i - 1] || null;
+  const nextT = TERMS[i + 1] || null;
+  fs.writeFileSync(path.join(outTerms, t.slug + '.html'), termPageHtml('en', t, prevT, nextT));
+  fs.writeFileSync(path.join(outTermsZh, t.slug + '.html'), termPageHtml('zh', t, prevT, nextT));
+  urls.push({ loc: `${SITE}/terms/${t.slug}.html`, priority: '0.7' });
+  urls.push({ loc: `${SITE}/terms/zh/${t.slug}.html`, priority: '0.7' });
+});
+
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><priority>${u.priority}</priority></url>`).join('\n') +
@@ -212,4 +342,4 @@ fs.writeFileSync(path.join(root, 'sitemap.xml'), sitemap);
 
 fs.writeFileSync(path.join(root, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
-console.log(`done — ${courses.length}×2 course pages, sitemap (${urls.length} urls), robots.txt`);
+console.log(`done — ${courses.length}×2 course pages, ${TERMS.length}×2 term pages + glossary, sitemap (${urls.length} urls), robots.txt`);

@@ -9,6 +9,7 @@ const vm = require("node:vm");
 
 const root = path.join(__dirname, "..");
 const SLUGS = require(path.join(root, "tools", "seo-slugs.js"));
+const TERMS = require(path.join(root, "tools", "seo-terms.js"));
 const SITE = "https://post-flop-coach.ai-speeds.com";
 
 function loadCourses() {
@@ -34,17 +35,38 @@ test("every non-placement course has a frozen slug and both en/zh pages on disk"
   }
 });
 
-test("sitemap.xml lists exactly root + 2 pages per course, all resolving to files", () => {
+test("sitemap.xml lists root + 2/course + glossary + 2/term, all resolving to files", () => {
   const courses = loadCourses();
   const sm = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.equal(locs.length, 1 + courses.length * 2, "sitemap URL 数 ≠ 1 + 2×课程数 — 跑 gen-seo-pages");
+  // 根 + 2×课程 + 2×术语表 pillar(en/zh)+ 2×术语页
+  assert.equal(locs.length, 1 + courses.length * 2 + 2 + TERMS.length * 2, "sitemap URL 数不符 — 跑 gen-seo-pages");
   for (const loc of locs) {
     assert.ok(loc.startsWith(SITE), "sitemap 出现异站 URL: " + loc);
     const rel = loc.slice(SITE.length).replace(/^\//, "");
     if (!rel) continue; // 根
-    assert.ok(fs.existsSync(path.join(root, rel)), `sitemap 指向不存在的文件: ${rel}`);
+    const fp = rel.endsWith("/") ? rel + "index.html" : rel; // 目录 URL 映射到 index.html
+    assert.ok(fs.existsSync(path.join(root, fp)), `sitemap 指向不存在的文件: ${fp}`);
   }
+});
+
+test("term pages: frozen slug, en/zh on disk, paired hreflang, self canonical, FAQPage", () => {
+  const seen = new Set();
+  for (const t of TERMS) {
+    assert.ok(t.slug && !seen.has(t.slug), `术语 slug 缺失或重复: ${t.slug}`);
+    seen.add(t.slug);
+    for (const [rel] of [["terms/" + t.slug + ".html"], ["terms/zh/" + t.slug + ".html"]]) {
+      assert.ok(fs.existsSync(path.join(root, rel)), `缺 ${rel} — 跑 node tools/gen-seo-pages.js`);
+      const page = fs.readFileSync(path.join(root, rel), "utf8");
+      assert.match(page, /hreflang="en"/, rel + " 缺 hreflang en");
+      assert.match(page, /hreflang="zh"/, rel + " 缺 hreflang zh");
+      assert.match(page, /"@type":"FAQPage"/, rel + " 缺 FAQPage JSON-LD");
+      const canon = (page.match(/rel="canonical" href="([^"]+)"/) || [])[1];
+      assert.equal(canon, SITE + "/" + rel, rel + " canonical 应自指");
+    }
+  }
+  assert.ok(fs.existsSync(path.join(root, "terms", "index.html")), "缺术语表 pillar terms/index.html");
+  assert.ok(fs.existsSync(path.join(root, "terms", "zh", "index.html")), "缺术语表 pillar terms/zh/index.html");
 });
 
 test("index.html SEO block links every course page and matches the course count", () => {
