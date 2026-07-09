@@ -53,10 +53,11 @@ test("c1 is the placement test, c2 has 27 drill questions", () => {
   assert.equal(ctx.__out.getQuestions("c2").length, 27);
 });
 
-test("all courses are free", () => {
+test("free/Pro split: c1–c12 free, c13–c30 Pro (App 内锁;web 经 isProUnlocked 恒解锁)", () => {
   const ctx = loadScripts("globalThis.__out = { COURSES };");
-  const free = ctx.__out.COURSES.filter((c) => c.free);
-  assert.equal(free.length, 30);
+  for (const c of ctx.__out.COURSES) {
+    assert.equal(c.free, c.order <= 12, c.id + " free flag");
+  }
 });
 
 test("solver spots present", () => {

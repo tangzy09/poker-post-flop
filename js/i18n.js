@@ -110,6 +110,8 @@ reg("paywall.subNote", "{p}/month", "{p}/月");
 reg("paywall.restore", "Restore purchase", "恢复购买");
 reg("paywall.close", "Maybe later", "以后再说");
 reg("paywall.foot", "Auto-renews until cancelled. Manage in the store.", "自动续订至取消，可在商店随时管理。");
+reg("paywall.terms", "Terms of Use (EULA)", "使用条款 (EULA)");
+reg("paywall.privacy", "Privacy Policy", "隐私政策");
 reg("paywall.unlocked", "Pro unlocked 🎉", "已解锁专业版 🎉");
 reg("paywall.buyFail", "Purchase failed — please try again.", "购买失败 — 请重试。");
 reg("paywall.noPurchase", "No purchase found to restore.", "没有可恢复的购买。");

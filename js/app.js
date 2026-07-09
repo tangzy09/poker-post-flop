@@ -200,11 +200,11 @@ function renderCourses() {
     // 整卡可点:未学过 → 课程(先 Learn);学过 → 直接进 Drill(「复习原理」在 drill 屏内仍有入口)
     if (locked) {
       cards += (
-        '<article class="course-card lesson-card locked">' +
+        '<button class="course-card lesson-card locked" data-action="show-paywall">' +
         '<div class="cc-top">' + ring + badges + "</div>" +
         "<h3>" + t(c.titleKey) + "</h3>" +
         '<p class="cc-lock">' + t("course.locked") + "</p>" +
-        "</article>"
+        "</button>"
       );
     } else {
       cards += (
@@ -1117,6 +1117,8 @@ function showPaywall(why) {
     restore: "appearance:none;border:0;cursor:pointer;font-family:inherit;font-size:13px;color:var(--muted,#8fa79a);background:transparent;width:100%;padding:8px;margin-top:8px;text-decoration:underline",
     close: "appearance:none;border:0;cursor:pointer;font-family:inherit;font-size:14px;color:var(--muted,#8fa79a);background:transparent;width:100%;padding:10px;margin-top:2px",
     foot: "text-align:center;color:var(--fold,#5b6f63);font-size:11px;margin-top:6px",
+    links: "text-align:center;font-size:11px;margin-top:4px",
+    link: "color:var(--muted,#8fa79a);text-decoration:underline",
     msg: "text-align:center;color:var(--wrong,#e0544f);font-size:12.5px;margin-top:10px",
   };
 
@@ -1143,6 +1145,12 @@ function showPaywall(why) {
       '<button style="' + S.restore + '" data-pw="restore">' + t("paywall.restore") + "</button>" +
       '<button style="' + S.close + '" data-pw="close">' + t("paywall.close") + "</button>" +
       '<div style="' + S.foot + '">' + t("paywall.foot") + "</div>" +
+      // 3.1.2 合规:订阅 paywall 必须有可点的条款(苹果标准 EULA)与隐私政策链接(原生外链走系统浏览器)
+      '<div style="' + S.links + '">' +
+      '<a style="' + S.link + '" href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">' + t("paywall.terms") + "</a>" +
+      " · " +
+      '<a style="' + S.link + '" href="https://post-flop-coach.ai-speeds.com/privacy.html" target="_blank" rel="noopener">' + t("paywall.privacy") + "</a>" +
+      "</div>" +
       "</div>";
   }
 
@@ -1183,6 +1191,9 @@ function showPaywall(why) {
 
 function handleAction(action, el) {
   switch (action) {
+    case "show-paywall":
+      showPaywall(t("paywall.whyCourse"));
+      break;
     case "start-course":
       Engine.startCourse(el.getAttribute("data-id"));
       break;
