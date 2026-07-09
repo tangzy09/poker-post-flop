@@ -9,12 +9,12 @@
 
 | | App Store (iOS) | Google Play (Android) |
 |---|---|---|
-| 计费/订阅 | ✅ RevenueCat + 月/年订阅 | ✅ 同 RevenueCat + Play 订阅 |
-| 安装包 | 🔄 build 3 出包中(含付费墙修复) | ⚠ AAB versionCode 1(**旧包未锁内容,需重出**) |
+| 计费/订阅 | ⚠ 订阅卡 Developer Action Needed(ASC bug,工单处理中) | ✅ 同 RevenueCat + Play 订阅 |
+| 安装包 | ✅ build 3(付费墙修复,已挂 1.0) | ⚠ AAB versionCode 1(**旧包未锁内容,需重出**) |
 | 图标/截图/图形 | ✅ | ✅ icon+feature+4截图 |
 | 39 语言商店文案 | ✅(已修 subtitle 价格词+补 EULA) | ✅ |
 | App content/隐私声明 | ✅ (UI 已填) | ✅ (UI 已填) |
-| **发布状态** | **首审被拒 4 项,已全修,待挂 build 3 重提** | **已发布内测 (internal, completed)** |
+| **发布状态** | **已重新送审 WAITING_FOR_REVIEW(submission c22eb34e);订阅未随审,等苹果支持工单** | **已发布内测 (internal, completed)** |
 
 ## 2026-07-09 iOS 首审被拒(1.0 build 2)与修复
 
@@ -25,7 +25,13 @@
 3. **3.1.2(c) 缺 EULA**:39 locale 描述尾部补标准 Apple EULA + 隐私政策链接;app 内 paywall 也加了两个可点链接。
 4. **2.1(b) 审核员找不到内购(根因=真 bug)**:原 30 课全 free、`showPaywall` 无调用点,原生端付费墙不可达 → **C13–C30 改 Pro 锁**(切分线=两套内容系统边界),锁定卡可点弹付费墙;web 不受影响(`isProUnlocked()` web 恒 true)。审核备注已写明 IAP 入口路径。
 
-重提流程:build 3 VALID → 挂 1.0 → ASC 回复审核信(说明 IAP 路径+非赌博声明,3.1.2(c) 那条苹果要求附录屏)→ resubmit。
+重提(2026-07-09 当晚全部完成):build 3 全 API 出包(Codemagic 6 分钟)→ 挂 1.0(204)→ 撤销旧 submission → **新 submission `c22eb34e` WAITING_FOR_REVIEW**(被拒的旧车不能原地 resubmit,恒 409;Resolution Center 回复框随撤销消失,修复说明全写进了审核备注)。
+
+### ⚠ 订阅卡死(ASC 已知 bug)与工单
+
+拒审把两订阅打回 `DEVELOPER_ACTION_NEEDED`,根子=订阅本地化 4 条+组本地化 2 条全 REJECTED。REJECTED 本地化不可编辑,只能删+原文重建——**每订阅第一条删得动,第二条 UI/API 双双持续报错(500)= ASC 已知 bug(苹果论坛 713221),无自助解**。连锁:订阅非 Ready to Submit → 版本页 IAP 区块整个消失 → **当前审核只含 app 不含订阅**(若 app 先过审,订阅悬空,上线不可购,需后续单独提)。
+**已提苹果支持工单 Case `102937900822`**(2026-07-09,Contact Us→App Setup→Other→Email;诉求=手动把两订阅推进当前审核或清掉卡死本地化;先例=支持推进 In Review 后即过审,不用新包)。≤2 工作日邮件回复。
+细节与全部实锤见全局 skill `appstore-connect-iap-api` 坑⑨。
 
 ## 标识符
 
@@ -66,7 +72,7 @@ cd android && ./gradlew bundleRelease \
 
 ## 待办 / 下一步
 
-- **iOS**:build 3 出包中(Codemagic `6a500e3e`)→ 挂版本 → 回复审核信+重提(见上节)。
+- **iOS(等两件事)**:① 苹果支持工单 Case `102937900822` 回复(订阅推进审核即闭环);② app 审核结果(submission `c22eb34e`)。若 app 先过审而订阅仍卡:订阅页有独立 Submit for Review 按钮,状态修复后单独提。
 - **Android 重出 AAB**:内测轨道的 versionCode 1 是未锁内容的旧包,iOS 过审后用新代码重出(versionCode 2)。
 - **Android 内测**:Play Console → 内部测试 → 加测试员邮箱 + 发 opt-in 链接,测试员才能装。
 - **Android 转生产**:新个人开发者账号首次生产发布需**封闭测试 12–20 人 × 14 天**,跑完才开生产轨道。
