@@ -3,18 +3,29 @@
 > 双端(App Store + Google Play)上架进度与复用信息。**本文件在 git 里,绝不写任何密钥/密码/token 本体——只记位置。**
 > 全链路实操见全局 skill:`appstore-listing`(iOS 商店页/提交)、`appstore-connect-iap-api`(订阅+RevenceCat)、`googleplay-publish`(Play)、`capacitor-ios-codemagic`(iOS 出包)。
 
-最后更新:2026-07-05。
+最后更新:2026-07-09。
 
 ## 一句话状态
 
 | | App Store (iOS) | Google Play (Android) |
 |---|---|---|
 | 计费/订阅 | ✅ RevenueCat + 月/年订阅 | ✅ 同 RevenueCat + Play 订阅 |
-| 安装包 | ✅ build 2 (VALID, TestFlight) | ✅ AAB versionCode 1 |
+| 安装包 | 🔄 build 3 出包中(含付费墙修复) | ⚠ AAB versionCode 1(**旧包未锁内容,需重出**) |
 | 图标/截图/图形 | ✅ | ✅ icon+feature+4截图 |
-| 39 语言商店文案 | ✅ | ✅ |
+| 39 语言商店文案 | ✅(已修 subtitle 价格词+补 EULA) | ✅ |
 | App content/隐私声明 | ✅ (UI 已填) | ✅ (UI 已填) |
-| **发布状态** | **已送审, WAITING_FOR_REVIEW** | **已发布内测 (internal, completed)** |
+| **发布状态** | **首审被拒 4 项,已全修,待挂 build 3 重提** | **已发布内测 (internal, completed)** |
+
+## 2026-07-09 iOS 首审被拒(1.0 build 2)与修复
+
+4 项拒审原因,全部已修(ASC 侧 API 实查落地,代码侧 commit `b3f9b61`):
+
+1. **模拟赌博×个人账号(苹果 2026-07 新政)**:个人账号禁发 simulated gambling app → 分级 `gamblingSimulated` 改 **NONE**(本 app 无真钱/无筹码/无下注,是教学工具,合规)。
+2. **2.3.7 subtitle 价格词**:12 个 locale 副标题含 free/gratis/gratuit 等 → 全部改中性关键词。**教训:名称/副标题永远不能提价格,「免费」只能写进描述。**
+3. **3.1.2(c) 缺 EULA**:39 locale 描述尾部补标准 Apple EULA + 隐私政策链接;app 内 paywall 也加了两个可点链接。
+4. **2.1(b) 审核员找不到内购(根因=真 bug)**:原 30 课全 free、`showPaywall` 无调用点,原生端付费墙不可达 → **C13–C30 改 Pro 锁**(切分线=两套内容系统边界),锁定卡可点弹付费墙;web 不受影响(`isProUnlocked()` web 恒 true)。审核备注已写明 IAP 入口路径。
+
+重提流程:build 3 VALID → 挂 1.0 → ASC 回复审核信(说明 IAP 路径+非赌博声明,3.1.2(c) 那条苹果要求附录屏)→ resubmit。
 
 ## 标识符
 
@@ -55,7 +66,8 @@ cd android && ./gradlew bundleRelease \
 
 ## 待办 / 下一步
 
-- **iOS**:等苹果审核(邮件 tangzy09@gmail.com);被拒看原因改→ reviewSubmissions 撤回重提。
+- **iOS**:build 3 出包中(Codemagic `6a500e3e`)→ 挂版本 → 回复审核信+重提(见上节)。
+- **Android 重出 AAB**:内测轨道的 versionCode 1 是未锁内容的旧包,iOS 过审后用新代码重出(versionCode 2)。
 - **Android 内测**:Play Console → 内部测试 → 加测试员邮箱 + 发 opt-in 链接,测试员才能装。
 - **Android 转生产**:新个人开发者账号首次生产发布需**封闭测试 12–20 人 × 14 天**,跑完才开生产轨道。
 - **ASO**:27 个 locale 的关键词标了「需母语复核」(zh-Hant ja ko de fr fr-CA es-ES es-MX it pt-BR pt-PT nl uk pl cs sk hu hr ro el fi ca ar he th vi hi),上线后按数据让母语者微调。

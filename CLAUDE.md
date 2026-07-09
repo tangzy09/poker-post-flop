@@ -59,7 +59,7 @@ courses.js（30 课元数据）
 - **SEO 静态块**：`index.html` 的 `#screens` 里有 `<!--SEO-->…<!--/SEO-->` 静态内容块（爬虫/百度可读），`render()` 首帧覆写 —— **不要手改**，由 `tools/gen-seo-block.js` 生成。
 - **课程页 slug 定版**：`tools/seo-slugs.js` 里的 URL slug **发布后不可更改**（外链/收录会断）；课程改名只改标题不改 slug。`courses/` 是 `gen-seo-pages.js` 的生成产物（29 课 × en/zh + sitemap.xml + robots.txt），改题库/Learn 文案后需重跑。
 - **字体已内嵌**（base64 Space Grotesk latin，`tools/embed-fonts.js` 再生）—— **不要**再加 Google Fonts CDN `<link>`（大陆被墙）；中文走系统字体回退。
-- **门控**：`isProUnlocked()`（courses.js）——web 恒 true（测试期,见 PRODUCT.md）;原生 App 读 `Engine.store.proEntitled`（js/purchases.js 的 RevenueCat 适配层写入,js/cap.js 为桥接 helper,与 pokerPreFlop 同构）。旧 `pokerPostFlopPro` localStorage 钩子已废弃。
+- **门控**：`isProUnlocked()`（courses.js）——web 恒 true（测试期,见 PRODUCT.md）;原生 App 读 `Engine.store.proEntitled`（js/purchases.js 的 RevenueCat 适配层写入,js/cap.js 为桥接 helper,与 pokerPreFlop 同构）。**C13–C30 为 `free:false`（Pro 锁,苹果 2.1(b) 要求 IAP 在 app 内可达,勿改回全免费）**——锁定课卡可点、弹 `showPaywall`;paywall 内的 EULA+隐私链接是 3.1.2 合规要求,别删。旧 `pokerPostFlopPro` localStorage 钩子已废弃。
 - 调试：`localStorage.setItem('pokerPostFlopLang','zh')`（切语言）、`localStorage.removeItem('pokerPostFlop_v1')`（清进度）。
 - **未经用户明确要求，不要 commit、push 或部署。**
 
