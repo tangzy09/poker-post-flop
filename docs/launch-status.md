@@ -30,11 +30,11 @@
 
 ## 凭据位置(本机,均不进 git)
 
-- ASC API key(.p8, ES256):`C:\Users\tangz\Documents\AuthKey_6TLMXCG564.p8`(Key ID `6TLMXCG564`,Issuer `f723569b-c38d-4acf-96da-fde9db2b0b63`)——账号级,所有 app 复用
-- IAP key(给 RevenueCat):`C:\Users\tangz\Documents\SubscriptionKey_4N977536WH.p8`
-- Play 服务账号 JSON:`C:\Users\tangz\Documents\play-sa.json`(`revenuecat@triple-backbone-469007-i5.iam.gserviceaccount.com`,有发布权限)
-- **Android 上传 keystore**:`C:\Users\tangz\Documents\postflop-upload.jks`,密码/别名见同目录 `postflop-keystore-pw.txt`(alias `postflop`)
-- iOS 签名私钥:锁在 Codemagic(`ios_signing` 组 `CERTIFICATE_PRIVATE_KEY`)+ 本机 `C:\Users\tangz\Documents\ios_signing_key.pem`(供复用避苹果 2 证书上限)
+- ASC API key(.p8, ES256):`C:\Users\tangz\Documents\credentials\AuthKey_6TLMXCG564.p8`(Key ID `6TLMXCG564`,Issuer `f723569b-c38d-4acf-96da-fde9db2b0b63`)——账号级,所有 app 复用
+- IAP key(给 RevenueCat):`C:\Users\tangz\Documents\credentials\SubscriptionKey_4N977536WH.p8`
+- Play 服务账号 JSON:`C:\Users\tangz\Documents\credentials\play-sa.json`(`revenuecat@triple-backbone-469007-i5.iam.gserviceaccount.com`,有发布权限)
+- **Android 上传 keystore**:`C:\Users\tangz\Documents\credentials\postflop-upload.jks`,密码/别名见同目录 `postflop-keystore-pw.txt`(alias `postflop`)
+- iOS 签名私钥:锁在 Codemagic(`ios_signing` 组 `CERTIFICATE_PRIVATE_KEY`)+ 本机 `C:\Users\tangz\Documents\credentials\ios_signing_key.pem`(供复用避苹果 2 证书上限)
 - Codemagic API token / RevenueCat sk_:**不留存**,需用时各自后台生成
 
 ## 本地出 Android AAB(可重复)
@@ -46,7 +46,7 @@ export ANDROID_HOME="/c/Users/tangz/AppData/Local/Android/Sdk"
 npm run build:www && npx cap sync android
 npx @capacitor/assets generate --android --iconBackgroundColor '#0c2a22' ...   # 图标变更时
 cd android && ./gradlew bundleRelease \
-  -Pandroid.injected.signing.store.file=C:/Users/tangz/Documents/postflop-upload.jks \
+  -Pandroid.injected.signing.store.file=C:/Users/tangz/Documents/credentials/postflop-upload.jks \
   -Pandroid.injected.signing.store.password=<见 pw.txt> -Pandroid.injected.signing.key.alias=postflop \
   -Pandroid.injected.signing.key.password=<见 pw.txt> -Pandroid.injected.version.code=N
 # 产物 android/app/build/outputs/bundle/release/app-release.aab(下次 versionCode 要 +1)

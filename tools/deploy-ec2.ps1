@@ -1,7 +1,7 @@
 # Deploy static site to EC2 (post-flop-coach)
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
-$Key = "C:\Users\tangz\Documents\ec2_1.pem"
+$Key = "C:\Users\tangz\Documents\credentials\ec2_1.pem"
 $Remote = "ec2-user@3.26.95.240"
 $Dest = "/var/www/post-flop-coach"
 
