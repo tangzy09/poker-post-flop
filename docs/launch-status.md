@@ -35,7 +35,7 @@
 - Play 服务账号 JSON:`C:\Users\tangz\Documents\credentials\play-sa.json`(`revenuecat@triple-backbone-469007-i5.iam.gserviceaccount.com`,有发布权限)
 - **Android 上传 keystore**:`C:\Users\tangz\Documents\credentials\postflop-upload.jks`,密码/别名见同目录 `postflop-keystore-pw.txt`(alias `postflop`)
 - iOS 签名私钥:锁在 Codemagic(`ios_signing` 组 `CERTIFICATE_PRIVATE_KEY`)+ 本机 `C:\Users\tangz\Documents\credentials\ios_signing_key.pem`(供复用避苹果 2 证书上限)
-- Codemagic API token / RevenueCat sk_:**不留存**,需用时各自后台生成
+- Codemagic API token(账号级,2026-07-09 起留存):`C:\Users\tangz\Documents\credentials\codemagic-api-token.txt`;RevenueCat sk_ 仍不留存,需用时后台生成
 
 ## 本地出 Android AAB(可重复)
 
