@@ -111,6 +111,7 @@
     .course-grid > .onboard-banner,
     .course-grid > .daily-card,
     .course-grid > .placement-card,
+    .course-grid > .pro-card,
     .course-grid > .cross-card { grid-column: 1 / -1; }
     /* 整卡可点的课程卡(压缩版):课号进度环 + 标题 + 题数/正确率 */
     .lesson-card {
@@ -222,6 +223,16 @@
     .cross-card h3 { color: var(--ink); }
     .cross-card .cc-sub { margin-bottom: 10px; }
     .cross-go { color: #9fd0ff; font-weight: 700; font-size: .88rem; }
+    /* Pro 入口卡(首屏常驻,未解锁时;苹果 2.1(b) 要求内购显眼可达) */
+    .pro-card {
+      display: block; text-align: left; cursor: pointer; width: 100%;
+      border: 1px solid var(--gold); border-left: 3px solid var(--gold);
+      background: linear-gradient(180deg, rgba(232,198,106,.09), rgba(232,198,106,.03));
+    }
+    .pro-card h3 { color: var(--gold); }
+    .pro-card .cc-sub { margin-bottom: 10px; }
+    .pro-go { color: var(--gold); font-weight: 700; font-size: .88rem; }
+    .badge.pro-badge { background: rgba(232,198,106,.18); color: var(--gold); }
     /* 课程评级徽章 (S/A/B/C) */
     .badge.grade-badge { font-weight: 800; min-width: 20px; text-align: center; }
     .grade-S { background: rgba(240,180,60,.22); color: var(--gold); }
@@ -828,19 +839,19 @@
   </main>
   </div>
 
-  <script defer src="js/i18n.js?v=723f256"></script>
-  <script defer src="data/solved-spots.js?v=723f256"></script>
-  <script defer src="js/courses.js?v=723f256"></script>
-  <script defer src="js/content.js?v=723f256"></script>
-  <script defer src="js/content-ext.js?v=723f256"></script>
-  <script defer src="js/equity.js?v=723f256"></script>
-  <script defer src="js/range-chart.js?v=723f256"></script>
-  <script defer src="js/table.js?v=723f256"></script>
-  <script defer src="js/explain.js?v=723f256"></script>
-  <script defer src="js/engine.js?v=723f256"></script>
-  <script defer src="js/coach.js?v=723f256"></script>
-  <script defer src="js/cap.js?v=723f256"></script>
-  <script defer src="js/purchases.js?v=723f256"></script>
-  <script defer src="js/app.js?v=723f256"></script>
+  <script defer src="js/i18n.js?v=0788a1f"></script>
+  <script defer src="data/solved-spots.js?v=0788a1f"></script>
+  <script defer src="js/courses.js?v=0788a1f"></script>
+  <script defer src="js/content.js?v=0788a1f"></script>
+  <script defer src="js/content-ext.js?v=0788a1f"></script>
+  <script defer src="js/equity.js?v=0788a1f"></script>
+  <script defer src="js/range-chart.js?v=0788a1f"></script>
+  <script defer src="js/table.js?v=0788a1f"></script>
+  <script defer src="js/explain.js?v=0788a1f"></script>
+  <script defer src="js/engine.js?v=0788a1f"></script>
+  <script defer src="js/coach.js?v=0788a1f"></script>
+  <script defer src="js/cap.js?v=0788a1f"></script>
+  <script defer src="js/purchases.js?v=0788a1f"></script>
+  <script defer src="js/app.js?v=0788a1f"></script>
 </body>
 </html>

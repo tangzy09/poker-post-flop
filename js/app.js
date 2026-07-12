@@ -164,6 +164,17 @@ function renderCourses() {
       <button class="btn primary" data-action="onboard-start">${t("placement.start")}</button>
       </div></div>`;
   }
+  // Pro 入口:首屏顶部常驻(未解锁时)。苹果 2.1(b) 两次打回「找不到内购」——只靠「滚到第 13 课点锁定卡」
+  // 审核员没走到,故给一个零滚动、零前置条件的入口。解锁后自动消失。
+  if (!isProUnlocked()) {
+    cards +=
+      '<button class="course-card pro-card" data-action="show-paywall">' +
+      '<div class="cc-head"><span class="badge pro-badge">⭐ ' + t("pro.badge") + "</span></div>" +
+      "<h3>" + t("pro.cardTitle") + "</h3>" +
+      '<p class="cc-sub">' + t("pro.cardSub") + "</p>" +
+      '<span class="pro-go">' + t("pro.cardCta") + "</span>" +
+      "</button>";
+  }
   cards += renderDailyCard();
   COURSES.forEach((c) => {
     if (c.placement) {
@@ -200,7 +211,7 @@ function renderCourses() {
     // 整卡可点:未学过 → 课程(先 Learn);学过 → 直接进 Drill(「复习原理」在 drill 屏内仍有入口)
     if (locked) {
       cards += (
-        '<button class="course-card lesson-card locked" data-action="show-paywall">' +
+        '<button class="course-card lesson-card locked" data-action="show-paywall" data-why="course">' +
         '<div class="cc-top">' + ring + badges + "</div>" +
         "<h3>" + t(c.titleKey) + "</h3>" +
         '<p class="cc-lock">' + t("course.locked") + "</p>" +
@@ -1192,7 +1203,8 @@ function showPaywall(why) {
 function handleAction(action, el) {
   switch (action) {
     case "show-paywall":
-      showPaywall(t("paywall.whyCourse"));
+      // 锁定课卡 → 「本课属于 Pro」;首屏 Pro 卡 → 通用文案
+      showPaywall(el.getAttribute("data-why") === "course" ? t("paywall.whyCourse") : t("paywall.whyDefault"));
       break;
     case "start-course":
       Engine.startCourse(el.getAttribute("data-id"));
