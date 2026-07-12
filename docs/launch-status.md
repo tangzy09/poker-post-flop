@@ -9,12 +9,12 @@
 
 | | App Store (iOS) | Google Play (Android) |
 |---|---|---|
-| 计费/订阅 | ⚠ 订阅卡 Developer Action Needed(ASC bug,工单处理中) | ✅ 同 RevenueCat + Play 订阅 |
-| 安装包 | ✅ build 3(付费墙修复,已挂 1.0) | ⚠ AAB versionCode 1(**旧包未锁内容,需重出**) |
+| 计费/订阅 | ✅ 两订阅均 WAITING_FOR_REVIEW(随 app 一起审) | ✅ 同 RevenueCat + Play 订阅 |
+| 安装包 | ✅ build 4(首屏 Pro 入口卡,已挂 1.0) | ⚠ AAB versionCode 1(**旧包未锁内容,需重出**) |
 | 图标/截图/图形 | ✅ | ✅ icon+feature+4截图 |
 | 39 语言商店文案 | ✅(已修 subtitle 价格词+补 EULA) | ✅ |
 | App content/隐私声明 | ✅ (UI 已填) | ✅ (UI 已填) |
-| **发布状态** | **已重新送审 WAITING_FOR_REVIEW(submission c22eb34e);订阅未随审,等苹果支持工单** | **已发布内测 (internal, completed)** |
+| **发布状态** | **第三次送审 WAITING_FOR_REVIEW(submission `dafb05eb`,2026-07-12);订阅同在审核队列** | **已发布内测 (internal, completed)** |
 
 ## 2026-07-09 iOS 首审被拒(1.0 build 2)与修复
 
@@ -27,7 +27,17 @@
 
 重提(2026-07-09 当晚全部完成):build 3 全 API 出包(Codemagic 6 分钟)→ 挂 1.0(204)→ 撤销旧 submission → **新 submission `c22eb34e` WAITING_FOR_REVIEW**(被拒的旧车不能原地 resubmit,恒 409;Resolution Center 回复框随撤销消失,修复说明全写进了审核备注)。
 
-### ⚠ 订阅卡死(ASC 已知 bug)与工单
+### 2026-07-12 第二次被拒(1.0 build 3)与最终解法
+
+苹果复读了两条:① 模拟赌博 —— **实为复读旧 issue**(实查分级早已 `gamblingSimulated=NONE`+`gambling=false`,苹果信首句写着"previously identified issues still need your attention");② **2.1(b) 仍找不到内购 —— 这才是真问题,两个病因**:
+
+1. **订阅从未进入审核队列**(卡 `DEVELOPER_ACTION_NEEDED`)→ 审核员沙盒里产品不存在,app 怎么改都没用。
+   **解法(关键发现,推翻了"只能提工单"的判断)**:**`POST /v1/subscriptionSubmissions`** `{relationships:{subscription:{data:{type:'subscriptions',id}}}}` → 201,订阅**直接转 WAITING_FOR_REVIEW**。不需要挂进版本、不需要 UI 勾选、不需要工单,**首订阅也照样能提**。⚠ 附带惊喜:订阅一进审核队列,**之前 UI+API 双双删不掉的 REJECTED 本地化立刻能删了**——先提交、后清理,顺序反了就死。
+2. **paywall 入口藏太深**:唯一入口是"滚到第 13 课点锁定卡",审核员两次都没走到。
+   **解法**:首屏顶部常驻金色 **Pro 入口卡**(`.pro-card`,解锁后自动消失),一点即开付费墙,零滚动零前置(commit `f44d8d9`,build 4)。
+   ⚠ 验证要点:web 端 `isProUnlocked()` 恒 true → 卡片在浏览器里根本不渲染。**注入 `window.Capacitor={isNativePlatform:()=>true,...}` 再 render()**,即可跑出与审核员 iPhone 一致的代码路径(实测:native=true / 18 门课锁定 / Pro 卡可见 / 付费墙走原生分支带订阅+恢复购买+EULA 链接)。
+
+### (历史)订阅卡死排查过程与工单
 
 拒审把两订阅打回 `DEVELOPER_ACTION_NEEDED`,根子=订阅本地化 4 条+组本地化 2 条全 REJECTED。REJECTED 本地化不可编辑,只能删+原文重建——**每订阅第一条删得动,第二条 UI/API 双双持续报错(500)= ASC 已知 bug(苹果论坛 713221),无自助解**。连锁:订阅非 Ready to Submit → 版本页 IAP 区块整个消失 → **当前审核只含 app 不含订阅**(若 app 先过审,订阅悬空,上线不可购,需后续单独提)。
 **已提苹果支持工单 Case `102937900822`**(2026-07-09,Contact Us→App Setup→Other→Email;诉求=手动把两订阅推进当前审核或清掉卡死本地化;先例=支持推进 In Review 后即过审,不用新包)。≤2 工作日邮件回复。
@@ -72,7 +82,7 @@ cd android && ./gradlew bundleRelease \
 
 ## 待办 / 下一步
 
-- **iOS(等两件事)**:① 苹果支持工单 Case `102937900822` 回复(订阅推进审核即闭环);② app 审核结果(submission `c22eb34e`)。若 app 先过审而订阅仍卡:订阅页有独立 Submit for Review 按钮,状态修复后单独提。
+- **iOS**:等审核结果(submission `dafb05eb`,app + 两订阅同在队列)。工单 Case `102937900822` 已无需苹果介入(问题自解),回信可忽略。
 - **Android 重出 AAB**:内测轨道的 versionCode 1 是未锁内容的旧包,iOS 过审后用新代码重出(versionCode 2)。
 - **Android 内测**:Play Console → 内部测试 → 加测试员邮箱 + 发 opt-in 链接,测试员才能装。
 - **Android 转生产**:新个人开发者账号首次生产发布需**封闭测试 12–20 人 × 14 天**,跑完才开生产轨道。
