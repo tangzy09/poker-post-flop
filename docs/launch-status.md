@@ -87,6 +87,10 @@ cd android && ./gradlew bundleRelease \
 ## 待办 / 下一步
 
 - ~~**iOS 审核**~~ ✅ **2026-07-13 过审上线,两订阅 APPROVED**(工单 Case `102937900822` 已无需苹果介入,问题自解,回信可忽略)。
+- **评分弹窗待随下个包生效(2026-07-13 实装)**:`js/rating.js` + `@capacitor-community/in-app-review` 已接线并自测通过(stub 原生环境验过插件真被调用、重复请求被挡),但**原生插件需重新出包才进得了 App** —— iOS 1.0.1 / Android versionCode 2 出包时自动带上,无需额外操作。web 端按设计不弹。
+  - 意见反馈 + 就地纠错(`js/feedback.js`)**已随 web 上线并端到端验证通过**(线上表单 → EC2 `postflop-feedback` 服务 → jsonl 落库),原生包里同样可用。
+  - 上线后**每周只看两个数**:商店后台新增评分数、90 天滚动均分(请求次数不是 KPI:系统 3 次/年限额 + 用户可关闭开关,调用 ≠ 曝光)。触发规则在 web 资产里,可 OTA 调整、不用过审。
+  - **1–3 星 100% 回复**(回复后 4.4% 用户上调评分,不回复只有 0.7%);中英两个市场评分分开呈现,都要养。
 - **iOS 下个版本(1.0.1)**:① 修 `CFBundleLocalizations`(见上方"已知待办");② 真机验一遍订阅可购(审核过了不等于线上购买链路一定通——RevenueCat offering 拉不到包会静默失败)。
 - **Android**:内测轨道的 AAB 是**未锁内容的旧包**(C13–C30 当时还是全免费),要用现在的代码重出 versionCode 2 再放量。
 - **Android 重出 AAB**:内测轨道的 versionCode 1 是未锁内容的旧包,iOS 过审后用新代码重出(versionCode 2)。
