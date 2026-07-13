@@ -3,18 +3,22 @@
 > 双端(App Store + Google Play)上架进度与复用信息。**本文件在 git 里,绝不写任何密钥/密码/token 本体——只记位置。**
 > 全链路实操见全局 skill:`appstore-listing`(iOS 商店页/提交)、`appstore-connect-iap-api`(订阅+RevenceCat)、`googleplay-publish`(Play)、`capacitor-ios-codemagic`(iOS 出包)。
 
-最后更新:2026-07-09。
+最后更新:2026-07-13。
 
-## 一句话状态
+## 🎉 一句话状态:**iOS 已上线 App Store**
+
+https://apps.apple.com/us/app/postflop-gto-poker-trainer/id6787552890 (免费 · 4+ · 2026-07-13 发布)
 
 | | App Store (iOS) | Google Play (Android) |
 |---|---|---|
-| 计费/订阅 | ✅ 两订阅均 WAITING_FOR_REVIEW(随 app 一起审) | ✅ 同 RevenueCat + Play 订阅 |
-| 安装包 | ✅ build 4(首屏 Pro 入口卡,已挂 1.0) | ⚠ AAB versionCode 1(**旧包未锁内容,需重出**) |
+| 计费/订阅 | ✅ **Pro Yearly / Pro Monthly 均 APPROVED** | ✅ 同 RevenueCat + Play 订阅 |
+| 安装包 | ✅ build 4(首屏 Pro 入口卡) | ⚠ AAB versionCode 1(**旧包未锁内容,需重出**) |
 | 图标/截图/图形 | ✅ | ✅ icon+feature+4截图 |
-| 39 语言商店文案 | ✅(已修 subtitle 价格词+补 EULA) | ✅ |
+| 39 语言商店文案 | ✅ | ✅ |
 | App content/隐私声明 | ✅ (UI 已填) | ✅ (UI 已填) |
-| **发布状态** | **第三次送审 WAITING_FOR_REVIEW(submission `dafb05eb`,2026-07-12);订阅同在审核队列** | **已发布内测 (internal, completed)** |
+| **发布状态** | ✅ **READY_FOR_SALE**(1.0 build 4,第三次送审过) | **已发布内测 (internal, completed)** |
+
+**⚠ 已知待办(下个版本修)**:商品页「语言」栏只显示 English —— `languageCodesISO2A=["EN"]`,因为 Capacitor 包里没有 `.lproj`、Info.plist 未声明 `CFBundleLocalizations`。app 实际是中英双语,中文用户看到"语言:英语"会误以为不支持。修法(preflop 已修,可照抄):codemagic.yaml 里 `plutil -replace CFBundleLocalizations -json '["en","zh-Hans"]' ios/App/App/Info.plist`。**要出新包才生效**。
 
 ## 2026-07-09 iOS 首审被拒(1.0 build 2)与修复
 
@@ -82,7 +86,9 @@ cd android && ./gradlew bundleRelease \
 
 ## 待办 / 下一步
 
-- **iOS**:等审核结果(submission `dafb05eb`,app + 两订阅同在队列)。工单 Case `102937900822` 已无需苹果介入(问题自解),回信可忽略。
+- ~~**iOS 审核**~~ ✅ **2026-07-13 过审上线,两订阅 APPROVED**(工单 Case `102937900822` 已无需苹果介入,问题自解,回信可忽略)。
+- **iOS 下个版本(1.0.1)**:① 修 `CFBundleLocalizations`(见上方"已知待办");② 真机验一遍订阅可购(审核过了不等于线上购买链路一定通——RevenueCat offering 拉不到包会静默失败)。
+- **Android**:内测轨道的 AAB 是**未锁内容的旧包**(C13–C30 当时还是全免费),要用现在的代码重出 versionCode 2 再放量。
 - **Android 重出 AAB**:内测轨道的 versionCode 1 是未锁内容的旧包,iOS 过审后用新代码重出(versionCode 2)。
 - **Android 内测**:Play Console → 内部测试 → 加测试员邮箱 + 发 opt-in 链接,测试员才能装。
 - **Android 转生产**:新个人开发者账号首次生产发布需**封闭测试 12–20 人 × 14 天**,跑完才开生产轨道。
