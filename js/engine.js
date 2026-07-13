@@ -142,6 +142,17 @@ const Engine = {
     }
     if (this.store.placement === undefined) this.store.placement = null;
     if (this.store.onboardingSeen === undefined) this.store.onboardingSeen = false;
+    if (!this.store.review) {
+      // 老用户已经用了一阵子:installedAt 回溯,别让「装机满 3 天/满 3 次会话」的门槛白等一遍
+      const veteran = Object.keys(this.store.progress || {}).length > 0 || !!this.store.placement;
+      this.store.review = {
+        installedAt: Date.now() - (veteran ? 7 * 864e5 : 0),
+        sessions: veteran ? 3 : 0,
+        events: [],
+        asked: [],
+        invitedWrite: false,
+      };
+    }
   },
 
   save() {
@@ -172,6 +183,8 @@ const Engine = {
       onboardingSeen: false,
       seenIntro: false,
       daily: { lastDone: null, streakDays: 0, bestStreak: 0, history: {}, session: null },
+      // 求好评状态(js/rating.js):幸福度事件、已请求记录、写评论邀请是否已发过
+      review: { installedAt: Date.now(), sessions: 0, events: [], asked: [], invitedWrite: false },
     };
   },
 

@@ -353,6 +353,34 @@
       display: inline-block; background: var(--raise); color: #fff;
       border-radius: 999px; padding: 1px 6px; font-size: .65rem; margin-left: 2px;
     }
+    /* 反馈入口 + 就地纠错 + 写评论邀请卡(见 js/feedback.js / js/rating.js) */
+    .fbk-entry {
+      display: block; margin: 18px auto 6px; padding: 8px 14px;
+      background: transparent; border: 1px solid var(--line); border-radius: 999px;
+      color: var(--muted); font-size: .78rem; cursor: pointer;
+    }
+    .fbk-entry:active { background: rgba(255,255,255,.04); }
+    .report-q {
+      display: block; margin: 14px auto 0; padding: 6px 10px;
+      background: transparent; border: 0; color: var(--fold);
+      font-size: .74rem; text-decoration: underline; cursor: pointer;
+    }
+    .rate-invite {
+      margin-top: var(--space-4); padding: 14px 16px;
+      border: 1px solid rgba(232,198,106,.35); border-radius: var(--card-r);
+      background: rgba(232,198,106,.06); text-align: left;
+    }
+    .rate-invite h4 { margin: 0 0 4px; font-size: .95rem; color: var(--gold); }
+    .rate-invite p { margin: 0 0 10px; font-size: .8rem; color: var(--muted); line-height: 1.5; }
+    .rate-invite .ri-row { display: flex; gap: 8px; }
+    .rate-invite .ri-later, .rate-invite .ri-go {
+      flex: 1; min-height: 38px; border-radius: 10px; font-size: .82rem; font-weight: 600; cursor: pointer;
+    }
+    .rate-invite .ri-later { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+    .rate-invite .ri-go {
+      border: 0; color: #16110a;
+      background: linear-gradient(180deg, var(--gold), var(--gold2));
+    }
     .back-btn {
       display: inline-flex;
       align-items: center;
@@ -852,6 +880,8 @@
   <script defer src="js/coach.js?v=0788a1f"></script>
   <script defer src="js/cap.js?v=0788a1f"></script>
   <script defer src="js/purchases.js?v=0788a1f"></script>
+  <script defer src="js/feedback.js?v=0788a1f"></script>
+  <script defer src="js/rating.js?v=0788a1f"></script>
   <script defer src="js/app.js?v=0788a1f"></script>
 </body>
 </html>

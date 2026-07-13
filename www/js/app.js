@@ -88,6 +88,35 @@ function render(depth) {
 
   applyI18n(document);
   bindEvents();
+  ratingHook();
+}
+
+/* 求好评择时钩子:只在「爽点」之后开火,且经 Rating 的禁火区/幸福度/节流三重过滤。
+   render() 会被语言切换等重渲多次调用 —— 用结算对象的引用去重,避免重复计分。 */
+let _ratedSummary = null;
+
+function ratingHook() {
+  if (typeof Rating === "undefined") return;
+  const s = Engine.screen;
+  const sum = s === "over" ? Engine.drillSummary : s === "daily-over" ? Engine.dailySummary : null;
+  if (!sum || _ratedSummary === sum) return;
+  _ratedSummary = sum;
+
+  const total = s === "over" ? Engine.answers.length : sum.total || 0;
+  const correct = s === "over" ? Engine.answers.filter((a) => a.ok).length : sum.correct || 0;
+  const pct = total ? correct / total : 0;
+
+  if (s === "over") {
+    Rating.track("drill_done");
+    if (sum.grade === "S" || sum.grade === "A") Rating.track("grade_high");
+  } else {
+    Rating.track("daily_done");
+    if (sum.streakDays > 1) Rating.track("streak_day");
+  }
+  if (sum.maxCombo && sum.maxCombo >= 5) Rating.track("personal_best");
+
+  // 表现差 = 挫败中,这时候要好评是在浪费一年只有 3 发的弹药
+  setTimeout(() => Rating.maybeAsk({ frustrated: pct < 0.75 }), 900);
 }
 
 /* 新手引导:首启 3 步 overlay(任意关闭都置 seenIntro,不再弹) */
@@ -164,6 +193,17 @@ function renderCourses() {
       <button class="btn primary" data-action="onboard-start">${t("placement.start")}</button>
       </div></div>`;
   }
+  // Pro 入口:首屏顶部常驻(未解锁时)。苹果 2.1(b) 两次打回「找不到内购」——只靠「滚到第 13 课点锁定卡」
+  // 审核员没走到,故给一个零滚动、零前置条件的入口。解锁后自动消失。
+  if (!isProUnlocked()) {
+    cards +=
+      '<button class="course-card pro-card" data-action="show-paywall">' +
+      '<div class="cc-head"><span class="badge pro-badge">⭐ ' + t("pro.badge") + "</span></div>" +
+      "<h3>" + t("pro.cardTitle") + "</h3>" +
+      '<p class="cc-sub">' + t("pro.cardSub") + "</p>" +
+      '<span class="pro-go">' + t("pro.cardCta") + "</span>" +
+      "</button>";
+  }
   cards += renderDailyCard();
   COURSES.forEach((c) => {
     if (c.placement) {
@@ -200,11 +240,11 @@ function renderCourses() {
     // 整卡可点:未学过 → 课程(先 Learn);学过 → 直接进 Drill(「复习原理」在 drill 屏内仍有入口)
     if (locked) {
       cards += (
-        '<article class="course-card lesson-card locked">' +
+        '<button class="course-card lesson-card locked" data-action="show-paywall" data-why="course">' +
         '<div class="cc-top">' + ring + badges + "</div>" +
         "<h3>" + t(c.titleKey) + "</h3>" +
         '<p class="cc-lock">' + t("course.locked") + "</p>" +
-        "</article>"
+        "</button>"
       );
     } else {
       cards += (
@@ -240,6 +280,8 @@ function renderCourses() {
     '<p class="muted">' + t("courses.progressLine", { done: doneCourses, total: totalCourses }) + "</p>" +
     "</header>" +
     '<div class="course-grid">' + cards + "</div>" +
+    // 常驻反馈入口:随时可点(与求好评完全无关,所以合规)。不满的人有个顺手的出口,就不会去写 1 星。
+    '<button class="fbk-entry" data-action="open-feedback">' + t("fbk.entry") + "</button>" +
     bottomNav("courses", dueN) +
     "</section>"
   );
@@ -406,7 +448,10 @@ function renderFeedback() {
     '<div class="btn-stack">' +
     '<button class="btn primary" data-action="next-q">' +
     (Engine.qIdx + 1 >= Engine.currentQuestions().length ? t("fb.finish") : t("fb.next")) +
-    "</button></div></section>"
+    "</button></div>" +
+    // 就地纠错:懂牌的人发现题错了,不给他渠道他就去商店写 1 星。点开自动附牌面/选项/判定。
+    '<button class="report-q" data-action="report-q">' + t("fbk.reportTitle") + "</button>" +
+    "</section>"
   );
 }
 
@@ -435,8 +480,15 @@ function renderOver() {
       : "") +
     '<button class="btn secondary" data-action="start-learn" data-id="' + Engine.courseId + '">' + t("course.reviewLearn") + "</button>" +
     '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button>" +
-    "</div></section>"
+    "</div>" +
+    ratingInvite() +
+    "</section>"
   );
+}
+
+/* 写评论邀请卡(深链跳商店评价页,不是评分 API)。只在成就页、且已吃过一次原生弹窗后出现一次。 */
+function ratingInvite() {
+  return typeof Rating !== "undefined" ? Rating.inviteHtml() : "";
 }
 
 /* 每日成绩分享卡:Canvas 纯前端生成品牌竖图(720×960),移动端走系统分享,桌面下载 */
@@ -528,7 +580,9 @@ function renderDailyOver() {
     '<div class="btn-stack">' +
     '<button class="btn secondary" data-action="share-daily">📤 ' + t("share.btn") + "</button>" +
     '<button class="btn primary" data-action="back-courses">' + t("over.back") + "</button>" +
-    "</div></section>"
+    "</div>" +
+    ratingInvite() +
+    "</section>"
   );
 }
 
@@ -1098,6 +1152,7 @@ function bindEvents() {
 /* 付费墙(Pro):原生走 RevenueCat IAP,web 引导下载 App(测试期 web 全解锁,此分支面向未来收费触点)。
    全内联样式,类名一律 pw- 前缀 —— 绝不用 .btn(与全局 .btn 冲突,见 CLAUDE.md)。 */
 function showPaywall(why) {
+  window.__lastPaywallAt = Date.now(); // 求好评禁火区:刚撞过付费墙的人,5 分钟内不弹评分
   const old = document.getElementById("paywall");
   if (old) old.remove(); // 重开则重建,文案随当前语言刷新
   const P = typeof Pay !== "undefined" ? Pay : null;
@@ -1117,6 +1172,8 @@ function showPaywall(why) {
     restore: "appearance:none;border:0;cursor:pointer;font-family:inherit;font-size:13px;color:var(--muted,#8fa79a);background:transparent;width:100%;padding:8px;margin-top:8px;text-decoration:underline",
     close: "appearance:none;border:0;cursor:pointer;font-family:inherit;font-size:14px;color:var(--muted,#8fa79a);background:transparent;width:100%;padding:10px;margin-top:2px",
     foot: "text-align:center;color:var(--fold,#5b6f63);font-size:11px;margin-top:6px",
+    links: "text-align:center;font-size:11px;margin-top:4px",
+    link: "color:var(--muted,#8fa79a);text-decoration:underline",
     msg: "text-align:center;color:var(--wrong,#e0544f);font-size:12.5px;margin-top:10px",
   };
 
@@ -1143,6 +1200,12 @@ function showPaywall(why) {
       '<button style="' + S.restore + '" data-pw="restore">' + t("paywall.restore") + "</button>" +
       '<button style="' + S.close + '" data-pw="close">' + t("paywall.close") + "</button>" +
       '<div style="' + S.foot + '">' + t("paywall.foot") + "</div>" +
+      // 3.1.2 合规:订阅 paywall 必须有可点的条款(苹果标准 EULA)与隐私政策链接(原生外链走系统浏览器)
+      '<div style="' + S.links + '">' +
+      '<a style="' + S.link + '" href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">' + t("paywall.terms") + "</a>" +
+      " · " +
+      '<a style="' + S.link + '" href="https://post-flop-coach.ai-speeds.com/privacy.html" target="_blank" rel="noopener">' + t("paywall.privacy") + "</a>" +
+      "</div>" +
       "</div>";
   }
 
@@ -1163,7 +1226,11 @@ function showPaywall(why) {
   const buy = async (kind) => {
     let ok = false;
     try { ok = P ? await P.buy(kind) : true; } catch (e) {}
-    if (ok === true) { close(); render(); return; }
+    if (ok === true) {
+      if (typeof Rating !== "undefined") Rating.track("subscribed");
+      window.__lastPaywallAt = 0; // 买成功不是挫败,解除禁火
+      close(); render(); return;
+    }
     if (ok !== "cancel") showMsg(t("paywall.buyFail")); // 真实失败发声;用户取消不打扰
   };
   el.querySelectorAll("[data-pw]").forEach((b) => {
@@ -1183,6 +1250,10 @@ function showPaywall(why) {
 
 function handleAction(action, el) {
   switch (action) {
+    case "show-paywall":
+      // 锁定课卡 → 「本课属于 Pro」;首屏 Pro 卡 → 通用文案
+      showPaywall(el.getAttribute("data-why") === "course" ? t("paywall.whyCourse") : t("paywall.whyDefault"));
+      break;
     case "start-course":
       Engine.startCourse(el.getAttribute("data-id"));
       break;
@@ -1313,6 +1384,21 @@ function handleAction(action, el) {
       if (rec) Engine.removeFromPile(rec);
       break;
     }
+    case "open-feedback":
+      if (typeof Feedback !== "undefined") Feedback.openForm();
+      return; // 弹层自管,不重渲(重渲会把它盖掉)
+    case "report-q":
+      if (typeof Feedback !== "undefined" && _pendingFeedback) {
+        const fb = _pendingFeedback;
+        Feedback.reportQuestion(fb.question, fb.choice, fb.result.ok);
+      }
+      return;
+    case "rate-write":
+      if (typeof Rating !== "undefined") Rating.openStore();
+      break;
+    case "rate-later":
+      if (typeof Rating !== "undefined") Rating.dismissInvite();
+      break;
     case "add-misses": {
       const ps = Engine.placementPseudoStore(Engine.store.placement.results);
       for (const r of ps.reviewPile) {
@@ -1367,6 +1453,8 @@ function boot() {
   render();
   // 原生 App:初始化 RevenueCat 并刷新 pro entitlement 缓存(浏览器为空跑)
   if (typeof Pay !== "undefined" && Pay.init) Pay.init();
+  if (typeof Rating !== "undefined") Rating.boot();
+  if (typeof Feedback !== "undefined") Feedback.flushQueue(); // 上次没发出去的反馈,补发
 }
 
 document.addEventListener("DOMContentLoaded", boot);

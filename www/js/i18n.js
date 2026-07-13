@@ -110,6 +110,13 @@ reg("paywall.subNote", "{p}/month", "{p}/月");
 reg("paywall.restore", "Restore purchase", "恢复购买");
 reg("paywall.close", "Maybe later", "以后再说");
 reg("paywall.foot", "Auto-renews until cancelled. Manage in the store.", "自动续订至取消，可在商店随时管理。");
+reg("paywall.terms", "Terms of Use (EULA)", "使用条款 (EULA)");
+reg("paywall.privacy", "Privacy Policy", "隐私政策");
+// 首屏常驻 Pro 入口(苹果 2.1(b):内购必须显眼可达)
+reg("pro.badge", "Pro", "专业版");
+reg("pro.cardTitle", "Unlock PostFlop Pro", "解锁 PostFlop 专业版");
+reg("pro.cardSub", "Lessons 13–30, the full drill bank, leak analysis and training plans.", "第 13–30 课、完整题库、漏洞分析与训练计划。");
+reg("pro.cardCta", "See plans & pricing →", "查看订阅方案 →");
 reg("paywall.unlocked", "Pro unlocked 🎉", "已解锁专业版 🎉");
 reg("paywall.buyFail", "Purchase failed — please try again.", "购买失败 — 请重试。");
 reg("paywall.noPurchase", "No purchase found to restore.", "没有可恢复的购买。");
