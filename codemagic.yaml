@@ -54,8 +54,13 @@ workflows:
             --splashBackgroundColor '#0c2a22' \
             --splashBackgroundColorDark '#0a201a'
 
-      - name: 设置 Info.plist(免出口合规问询)
-        script: plutil -replace ITSAppUsesNonExemptEncryption -bool false ios/App/App/Info.plist
+      - name: 设置 Info.plist(免出口合规问询 + 声明界面语言)
+        script: |
+          plutil -replace ITSAppUsesNonExemptEncryption -bool false ios/App/App/Info.plist
+          # App Store 商品页的「语言」栏**只读这个键**,不看商店页本地化。Capacitor 用 JS 切语言、包里
+          # 没有 .lproj → 不声明就只显示 "English",中文用户以为不支持中文(实测线上 1.0 正是如此)。
+          # ⚠ 只许列真实存在的 UI 语言(js/i18n.js 只认 en/zh);加语言时同步改这里。虚报=苹果 2.3。
+          plutil -replace CFBundleLocalizations -json '["en","zh-Hans"]' ios/App/App/Info.plist
 
       - name: 拉取/创建签名文件(用 CERTIFICATE_PRIVATE_KEY 建发布证书 + 描述文件)+ 诊断
         script: |
