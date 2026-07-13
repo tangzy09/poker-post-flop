@@ -1,21 +1,58 @@
-/* i18n — English default + 中文. Loads FIRST. */
+/* i18n — N 语显示层,最先加载。English 是默认与**唯一回退**语言。
+   en / zh **内联在本文件**(reg 的第 2、3 参数)→ 同步可用,setLang('en'|'zh') 立即生效。
+   其余语言(ja/de/es)是 **js/locales/<code>.js 懒加载**:文件调 I18N_REGISTER(code,{T:{key:译文}})
+   注册自己。用**动态 <script> 注入**而非 fetch —— Capacitor 的 file:// 下 fetch 取不到本地文件,
+   app 必须离线可跑。
+   ⚠ 缺键一律回落**英文**,绝不回落中文:否则德语用户屏幕上会蹦出中文。
+   **加一种语言 = 只碰 3 处**:I18N_SUPPORTED + I18N_NATIVE + js/locales/<code>.js
+   (还要同步 codemagic.yaml 的 CFBundleLocalizations —— 那是 App Store「语言」栏的唯一来源。) */
 const I18N_DEFAULT = "en";
+/* 只列**真正发货**的语言:翻译覆盖率以此为准,没译完别提前加进来 */
+const I18N_SUPPORTED = ["en", "zh", "ja", "de", "es"];
+const I18N_NATIVE = { en: "English", zh: "中文", ja: "日本語", de: "Deutsch", es: "Español" };
+const _I18N_INLINE = { en: 1, zh: 1 }; // 内联 = 同步可用,无需加载
 
 const LANG_KEY = "pokerPostFlopLang";
 const LANG_KEY_LEGACY = "postflopLang";
+
+/* 懒加载语言的译文表:code → { key: 译文 };js/locales/<code>.js 调本函数注册 */
+const LOCALES = Object.create(null);
+function I18N_REGISTER(code, data) {
+  try {
+    LOCALES[code] = (data && data.T) || {};
+  } catch (e) {}
+}
 
 function _readLang() {
   try {
     const legacy = localStorage.getItem(LANG_KEY_LEGACY);
     if (legacy && !localStorage.getItem(LANG_KEY)) localStorage.setItem(LANG_KEY, legacy);
     const s = localStorage.getItem(LANG_KEY);
-    return s === "zh" || s === "en" ? s : I18N_DEFAULT;
-  } catch (e) {
-    return I18N_DEFAULT;
-  }
+    if (s && I18N_SUPPORTED.indexOf(s) >= 0) return s;
+  } catch (e) {}
+  // 没存过 → 按设备语言猜(前缀表从 SUPPORTED 派生,别手写第二张)
+  try {
+    const pref = {};
+    I18N_SUPPORTED.forEach((l) => {
+      const p = l.split("-")[0];
+      if (!(p in pref)) pref[p] = l;
+    });
+    const navs =
+      typeof navigator !== "undefined" && navigator.languages && navigator.languages.length
+        ? navigator.languages
+        : [(typeof navigator !== "undefined" && navigator.language) || ""];
+    for (let i = 0; i < navs.length; i++) {
+      const p = String(navs[i]).toLowerCase().split("-")[0];
+      if (pref[p]) return pref[p];
+    }
+  } catch (e) {}
+  return I18N_DEFAULT;
 }
 
-let LANG = _readLang();
+const _i18nWant = _readLang();
+/* 非内联语言此刻还没加载 → 先以英文起步(同步可用),locale 到位后由 setLang 切过去。
+   走的仍是 setLang 那条唯一路径(别写第二条:两条路径=两份 bug)。 */
+let LANG = _I18N_INLINE[_i18nWant] ? _i18nWant : I18N_DEFAULT;
 
 function curLang() {
   return LANG;
@@ -28,9 +65,18 @@ function reg(key, en, zh) {
   STR.zh[key] = zh || en;
 }
 
+/* 取词优先级:懒加载语言 → 内联(en/zh) → **英文兜底** → key 本身(并告警一次) */
+function _lookup(key) {
+  const L = LOCALES[LANG];
+  if (L && L[key] !== undefined && L[key] !== "") return L[key];
+  const S = STR[LANG];
+  if (S && S[key] !== undefined) return S[key];
+  return STR.en[key];
+}
+
 const _tMissWarned = {};
 function t(key, vars) {
-  let s = (STR[LANG] && STR[LANG][key]) || STR.en[key];
+  let s = _lookup(key);
   if (s === undefined) {
     s = key; // 缺 key 回退为 key 本身,但控制台警告一次,避免新枚举忘 reg() 静默露 key
     if (!_tMissWarned[key] && typeof console !== "undefined") {
@@ -47,7 +93,7 @@ function t(key, vars) {
 }
 
 function hasKey(key) {
-  return !!(STR[LANG] && STR[LANG][key]) || !!STR.en[key];
+  return _lookup(key) !== undefined;
 }
 
 function tConcept(key) {
@@ -58,14 +104,64 @@ function tConcept(key) {
   return key;
 }
 
-function setLang(lang) {
-  if (lang !== "en" && lang !== "zh") return;
-  LANG = lang;
+/* 英文源串:给 explain.js 这类**需要解析题干数字**的地方用。
+   ⚠ 绝不能拿 t() 的结果去跑正则 —— 题干翻成德语后正则就不匹配了,计算式反馈会静默消失。 */
+function tEn(key) {
+  return STR.en[key];
+}
+
+function _hasDOM() {
+  return typeof document !== "undefined" && !!document.createElement;
+}
+/* locale 文件与 js/ 同级;生成的分语言静态页若在子目录,注入 window.__I18N_BASE 覆盖 */
+function _localeBase() {
   try {
-    localStorage.setItem(LANG_KEY, lang);
+    if (typeof window !== "undefined" && window.__I18N_BASE) return window.__I18N_BASE;
   } catch (e) {}
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-  if (typeof onLangChange === "function") onLangChange();
+  return "js/locales/";
+}
+/* 懒加载文件没有静态 <script> 标签 → stamp-version.js 打不到戳 → 手机端会吃旧缓存。
+   自己从已打戳的 script 上把 ?v=<hash> 抠出来带上。 */
+function _verSuffix() {
+  try {
+    const s = document.querySelector('script[src*="js/i18n.js?v="], script[src*="js/engine.js?v="]');
+    const m = s && s.getAttribute("src").match(/\?v=([\w.-]+)/);
+    return m ? "?v=" + m[1] : "";
+  } catch (e) {
+    return "";
+  }
+}
+
+/* 唯一的 locale 加载入口:内联/已加载 → 同步回调;其余 → 动态 <script>。
+   加载失败绝不白屏,只是留在当前语言。 */
+function ensureLocale(code, cb) {
+  if (_I18N_INLINE[code] || LOCALES[code]) return cb(true);
+  if (I18N_SUPPORTED.indexOf(code) < 0) return cb(false);
+  if (!_hasDOM()) return cb(false); // Node 测试 VM:不注入脚本
+  const s = document.createElement("script");
+  s.src = _localeBase() + code + ".js" + _verSuffix();
+  s.onload = function () {
+    cb(!!LOCALES[code]);
+  };
+  s.onerror = function () {
+    cb(false);
+  };
+  document.head.appendChild(s);
+}
+
+function setLang(lang) {
+  if (I18N_SUPPORTED.indexOf(lang) < 0) return;
+  ensureLocale(lang, function (ok) {
+    if (!ok) return; // 加载失败 → 留在当前语言,不白屏
+    LANG = lang;
+    try {
+      localStorage.setItem(LANG_KEY, lang);
+    } catch (e) {}
+    try {
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
+    } catch (e) {}
+    if (typeof onLangChange === "function") onLangChange();
+  });
 }
 
 // —— App shell ——
@@ -435,6 +531,169 @@ reg("theme.advanced", "Advanced spots", "进阶专题");
 // —— Navigation ——
 reg("course.back", "Back", "返回");
 
+/* —— 计算式反馈(explain.js)的模板 ——
+   ⚠ 铁律:**每个 key 必须是一个完整句子**,绝不能是句子片段。
+   explain.js 以前是 L(zh, en) 直接拼字符串("你的牌是"+tags+"，约"+outs+"个 outs…"),
+   那种拼法在德语(动词后置)和日语(助词/语序)下**根本拼不出通顺句**。
+   改成整句模板 + {占位符} 后,译者可以自由重排语序。
+   占位符含义:{tags}听牌标签 {outs}出张数 {pct}命中率 {pot}底池 {bet}下注 {total}下注后底池
+              {need}所需胜率 {ratio}赔率 {mdf}MDF {rec}正确动作 {cat}牌型 {ans}正确选项 {picked}所选选项
+   ⚠ 数字与不等号由代码算好后填入,**译文里不要改数值、不要动 ≥ < − 这些符号的含义**。 */
+
+// 动作词
+reg("fb.act.fold", "fold", "弃牌");
+reg("fb.act.call", "call", "跟注");
+reg("fb.act.raise", "raise", "加注");
+reg("fb.act.bet", "bet", "下注");
+reg("fb.act.check", "check", "过牌");
+reg("fb.act.jam", "jam", "全下");
+// 牌型词
+reg("fb.cat.set", "a set", "三条(set)");
+reg("fb.cat.twopair", "two pair", "两对");
+reg("fb.cat.trips", "trips", "三条");
+reg("fb.cat.straight", "a straight", "顺子");
+reg("fb.cat.flush", "a flush", "同花");
+reg("fb.cat.fullhouse", "a full house", "葫芦");
+reg("fb.cat.quads", "quads", "四条");
+reg("fb.cat.pair", "one pair", "一对");
+reg("fb.cat.high", "high card", "高牌");
+// 听牌词
+// ⚠ 坚果同花听是**独立词条**,不能写成 "nut" + "flush draw" 前缀拼接:
+//    西语形容词后置(proyecto de color máximo),前缀拼出来是 "nut proyecto de color" —— 不通顺。
+//    与整句模板同理:凡是要拼的地方,都让译者拿到完整词/句自行组织语序。
+reg("fb.draw.flushdraw", "flush draw", "同花听");
+reg("fb.draw.nutflushdraw", "nut flush draw", "坚果同花听");
+reg("fb.draw.openender", "open-ender", "两头顺听");
+reg("fb.draw.gutshot", "gutshot", "卡顺");
+
+// 选择题:计算式讲解
+reg(
+  "fb.choice.calc",
+  "After the bet the pot is {pot}+{bet}={total}; calling {bet} → {total}:{bet} = {ratio}:1 (needs {need}% equity); defender MDF = 1−{bet}/{total} = {mdf}%.",
+  "下注后底池 {pot}+{bet}={total}，跟 {bet} → {total}:{bet} = {ratio}:1（需胜率 {need}%）；防守方 MDF = 1−{bet}/{total} = {mdf}%。"
+);
+reg("fb.choice.right", "“{ans}” is right.", "「{ans}」正确。");
+reg("fb.choice.correct", "“{ans}” is correct.", "「{ans}」正确。");
+reg("fb.choice.picked", "You picked “{picked}”.", "你选了「{picked}」。");
+reg("fb.choice.answer", "The answer is “{ans}”.", "按此应选「{ans}」。");
+
+// 听牌局面:开头(四种组合各自成句,避免片段拼接)
+reg(
+  "fb.draw.head",
+  "You hold {tags} — about {outs} outs (≈{pct}% to hit on one card).",
+  "你的牌是 {tags}，约 {outs} 个 outs（一张牌≈{pct}% 命中）。"
+);
+reg(
+  "fb.draw.head.pair",
+  "You hold {tags} — about {outs} outs (≈{pct}% to hit on one card); you also hold a pair for showdown value (outs count the draw only — you are stronger than the raw number).",
+  "你的牌是 {tags}，约 {outs} 个 outs（一张牌≈{pct}% 命中）；另持一对有摊牌价值（outs 仅计听牌，实际更强）。"
+);
+reg(
+  "fb.draw.head.facing",
+  "You hold {tags} — about {outs} outs (≈{pct}% to hit on one card), and facing {bet} into {pot} you need {need}% ({ratio}:1).",
+  "你的牌是 {tags}，约 {outs} 个 outs（一张牌≈{pct}% 命中），面对 {bet} 注（底池 {pot}）需 {need}%（{ratio}:1）。"
+);
+reg(
+  "fb.draw.head.pair.facing",
+  "You hold {tags} — about {outs} outs (≈{pct}% to hit on one card); you also hold a pair for showdown value (outs count the draw only — you are stronger than the raw number). Facing {bet} into {pot} you need {need}% ({ratio}:1).",
+  "你的牌是 {tags}，约 {outs} 个 outs（一张牌≈{pct}% 命中）；另持一对有摊牌价值（outs 仅计听牌，实际更强）。面对 {bet} 注（底池 {pot}）需 {need}%（{ratio}:1）。"
+);
+// 听牌局面:结论(每条都是独立完整句)
+reg(
+  "fb.draw.tail.nobet.ok",
+  "Betting a strong draw (semi-bluff) combines fold equity with your outs — {rec} is right.",
+  "带强听牌主动下注（半诈唬）兼具弃牌率与命中价值 —— {rec} 正确。"
+);
+reg(
+  "fb.draw.tail.nobet.wrong",
+  "This is a semi-bluff spot — the answer is {rec}.",
+  "这是半诈唬下注/继续的好局面 —— 正确是 {rec}。"
+);
+reg(
+  "fb.draw.tail.short.ok",
+  "{pct}% < the {need}% needed, so folding is right ({rec}).",
+  "{pct}% < 所需 {need}%，价格不够，弃牌正确（{rec}）。"
+);
+reg(
+  "fb.draw.tail.short.wrong",
+  "{pct}% < the {need}% needed, so calling is −EV — the answer is {rec}.",
+  "{pct}% < 所需 {need}%，价格不够，跟注是 −EV —— 正确是 {rec}。"
+);
+reg(
+  "fb.draw.tail.reverse.ok",
+  "The raw odds are there, but a weak/dominated draw loses a big pot when it hits (reverse implied odds) or is out of position vs a big bet — folding is right ({rec}).",
+  "原始赔率虽够，但这类弱/被压制的同花听命中常输大池（反向隐含赔率）或无位置面对大注 —— 弃牌正确（{rec}）。"
+);
+reg(
+  "fb.draw.tail.reverse.wrong",
+  "The raw odds are there, but a weak/dominated draw loses a big pot when it hits (reverse implied odds) or is out of position vs a big bet — the answer is {rec}.",
+  "原始赔率虽够，但这类弱/被压制的同花听命中常输大池（反向隐含赔率）或无位置面对大注 —— 正确是 {rec}。"
+);
+reg(
+  "fb.draw.tail.clears.ok",
+  "{pct}% ≥ the {need}% needed, so continuing is clearly +EV ({rec}).",
+  "{pct}% ≥ 所需 {need}%，继续是明确 +EV（{rec}）。"
+);
+reg(
+  "fb.draw.tail.clears.wrong",
+  "{pct}% ≥ the {need}% needed, so folding spills a +EV continue — the answer is {rec}.",
+  "{pct}% ≥ 所需 {need}%，弃牌丢掉 +EV 的继续 —— 正确是 {rec}。"
+);
+reg(
+  "fb.draw.tail.implied.ok",
+  "The one-card {pct}% is short of {need}%, but implied odds plus semi-bluff fold equity favour continuing — {rec} is right.",
+  "单张 {pct}% 虽不足 {need}%，但靠隐含赔率与半诈唬弃牌率 —— 继续（{rec}）。"
+);
+reg(
+  "fb.draw.tail.implied.wrong",
+  "The one-card {pct}% is short of {need}%, but implied odds plus semi-bluff fold equity favour continuing — the answer is {rec}.",
+  "单张 {pct}% 虽不足 {need}%，但靠隐含赔率与半诈唬弃牌率 —— 正确是 {rec}。"
+);
+
+// 抓诈(MDF)
+reg(
+  "fb.bluffcatch.base",
+  "You hold {cat} as a bluff-catcher; vs a polarized bet, MDF = 1−{bet}/{total} = {mdf}%, and you only need ~{need}% to call.",
+  "你持{cat}作抓诈牌；对方下注极化，MDF = 1−{bet}/{total} = {mdf}%，只需约 {need}% 胜率即可跟。"
+);
+reg("fb.bluffcatch.call", "Calling is right.", "跟注正确。");
+reg("fb.bluffcatch.fold", "Folding lets every bluff auto-profit — call.", "弃牌让对手诈唬自动盈利 —— 应跟。");
+reg(
+  "fb.bluffcatch.raise",
+  "Raising turns a bluff-catcher into a bluff that only folds out worse — call.",
+  "加注把抓诈牌变诈唬，只赶走更差 —— 应跟。"
+);
+
+// 强成牌
+reg(
+  "fb.strong.value.ok",
+  "You have {cat} — {rec} for value and protection, charging worse hands and draws.",
+  "你成{cat}，{rec}取价值并保护，向更差的牌与听牌收费。"
+);
+reg(
+  "fb.strong.value.wrong",
+  "You have {cat}; the passive line forfeits value and protection — the answer is {rec}.",
+  "你成{cat}，被动打法损失价值与保护 —— 正确是 {rec}。"
+);
+reg(
+  "fb.strong.line.ok",
+  "You have {cat} — {rec} is the best line on this texture.",
+  "你成{cat}，{rec} 是这手牌在该牌面的最佳线。"
+);
+
+// 弱成牌/空气面对下注
+reg(
+  "fb.weak.ok",
+  "You only have {cat}; vs {bet} you need ~{need}%, but you mostly beat only bluffs and stay dominated when you improve → folding is right ({rec}).",
+  "你只有{cat}，面对 {bet} 注需约 {need}% 胜率，而你基本只赢诈唬、命中也常被压制 → 弃牌正确（{rec}）。"
+);
+reg(
+  "fb.weak.wrong",
+  "You only have {cat}; vs {bet} you need ~{need}%, but you mostly beat only bluffs and stay dominated when you improve, so calling bleeds chips — the answer is {rec}.",
+  "你只有{cat}，面对 {bet} 注需约 {need}% 胜率，而你基本只赢诈唬、命中也常被压制，跟注长期赔付 —— 正确是 {rec}。"
+);
+reg("fb.generic.ok", "{rec} is the best choice here.", "{rec} 是该局面的最佳选择。");
+
 function applyI18n(root) {
   root = root || document;
   root.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -444,3 +703,10 @@ function applyI18n(root) {
     document.title = t("app.title");
   }
 }
+
+/* boot:检测到的语言若是懒加载语言(ja/de/es),此刻还停在英文 —— 触发一次 setLang 把它切过去。
+   走的是 setLang → ensureLocale 那条唯一路径;加载完 onLangChange() 会重绘。
+   目前 SUPPORTED=['en','zh'] 全内联,本行 dormant;locale 文件落地并把语言加进 SUPPORTED 即生效。 */
+try {
+  if (_i18nWant !== LANG) setLang(_i18nWant);
+} catch (e) {}

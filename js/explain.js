@@ -40,7 +40,8 @@
   var TOCOME = { flop: 2, turn: 1, river: 0 };
   function drawTags(ev) {
     var o = 0, tags = [];
-    if (ev.fd) { o += 9; tags.push((ev.nut ? t("fb.draw.nut") : "") + t("fb.draw.flushdraw") + "(9)"); }
+    // 坚果同花听用独立词条,不做 "nut"+"flush draw" 前缀拼接(西语形容词后置,拼出来不通顺)
+    if (ev.fd) { o += 9; tags.push(t(ev.nut ? "fb.draw.nutflushdraw" : "fb.draw.flushdraw") + "(9)"); }
     if (ev.sRanks && ev.sRanks.length) {
       var so = 0;
       ev.sRanks.forEach(function (r) {

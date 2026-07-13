@@ -101,6 +101,21 @@
       background: rgba(232,198,106,.15);
       color: var(--gold);
     }
+    /* ≥3 语时 syncLangButtons() 把按钮换成这个下拉(原生 select 在深色主题里默认是白底,必须压掉) */
+    #lang-select {
+      appearance: none; -webkit-appearance: none;
+      border: 0; background: transparent; color: var(--gold);
+      font-family: inherit; font-size: .8rem; font-weight: 700;
+      padding: 6px 22px 6px 10px; cursor: pointer; outline: none;
+      /* 自绘下拉箭头(去掉原生的) */
+      background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                        linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+      background-position: right 10px top 50%, right 6px top 50%;
+      background-size: 4px 4px, 4px 4px;
+      background-repeat: no-repeat;
+    }
+    /* 展开的选项列表由系统渲染,只能设底色/字色 */
+    #lang-select option { background: var(--panel); color: var(--ink); }
     #screens { flex: 1; overflow-y: auto; padding-bottom: 80px; }
     .screen { padding: 12px 16px 24px; animation: fadeIn .2s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -798,7 +813,8 @@
         <h1 data-i18n="app.title">Poker Post-Flop</h1>
         <div class="sub" data-i18n="app.subtitle">30-lesson HU post-flop trainer</div>
       </div>
-      <div class="lang-switch">
+      <!-- ≤2 语时是这两个按钮;≥3 语时 syncLangButtons() 会把内容换成下拉(见 js/app.js) -->
+      <div class="lang-switch" id="lang-switch">
         <button id="lang-en" type="button">EN</button>
         <button id="lang-zh" type="button">中文</button>
       </div>
@@ -867,21 +883,21 @@
   </main>
   </div>
 
-  <script defer src="js/i18n.js?v=0788a1f"></script>
-  <script defer src="data/solved-spots.js?v=0788a1f"></script>
-  <script defer src="js/courses.js?v=0788a1f"></script>
-  <script defer src="js/content.js?v=0788a1f"></script>
-  <script defer src="js/content-ext.js?v=0788a1f"></script>
-  <script defer src="js/equity.js?v=0788a1f"></script>
-  <script defer src="js/range-chart.js?v=0788a1f"></script>
-  <script defer src="js/table.js?v=0788a1f"></script>
-  <script defer src="js/explain.js?v=0788a1f"></script>
-  <script defer src="js/engine.js?v=0788a1f"></script>
-  <script defer src="js/coach.js?v=0788a1f"></script>
-  <script defer src="js/cap.js?v=0788a1f"></script>
-  <script defer src="js/purchases.js?v=0788a1f"></script>
-  <script defer src="js/feedback.js?v=0788a1f"></script>
-  <script defer src="js/rating.js?v=0788a1f"></script>
-  <script defer src="js/app.js?v=0788a1f"></script>
+  <script defer src="js/i18n.js?v=1fd2935"></script>
+  <script defer src="data/solved-spots.js?v=1fd2935"></script>
+  <script defer src="js/courses.js?v=1fd2935"></script>
+  <script defer src="js/content.js?v=1fd2935"></script>
+  <script defer src="js/content-ext.js?v=1fd2935"></script>
+  <script defer src="js/equity.js?v=1fd2935"></script>
+  <script defer src="js/range-chart.js?v=1fd2935"></script>
+  <script defer src="js/table.js?v=1fd2935"></script>
+  <script defer src="js/explain.js?v=1fd2935"></script>
+  <script defer src="js/engine.js?v=1fd2935"></script>
+  <script defer src="js/coach.js?v=1fd2935"></script>
+  <script defer src="js/cap.js?v=1fd2935"></script>
+  <script defer src="js/purchases.js?v=1fd2935"></script>
+  <script defer src="js/feedback.js?v=1fd2935"></script>
+  <script defer src="js/rating.js?v=1fd2935"></script>
+  <script defer src="js/app.js?v=1fd2935"></script>
 </body>
 </html>

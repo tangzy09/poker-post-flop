@@ -136,13 +136,25 @@ function renderIntro() {
       '<button class="btn primary" data-action="intro-placement">' + t("intro.goPlacement") + "</button>"
     : '<button class="btn secondary" data-action="intro-skip">' + t("intro.skip") + "</button>" +
       '<button class="btn primary" data-action="intro-next">' + t("intro.next") + "</button>";
-  // 顶栏语言切换被 overlay 盖住 —— 引导内必须自带切换(默认英文,首启即可切中文)
+  // 顶栏语言切换被 overlay 盖住 —— 引导内必须自带切换(首启第一眼就能选语言)。
+  // ⚠ 别写死 中|EN:语言列表从 I18N_SUPPORTED 派生,加语言不用回来改这里。
+  // ≤3 语用按钮排;≥4 语用下拉(按钮会把引导卡撑破)。
   const lang = curLang();
+  const SHORT = { en: "EN", zh: "中", ja: "日", de: "DE", es: "ES" };
   const langSel =
-    '<div class="intro-lang">' +
-    '<button data-action="intro-lang" data-lang="zh"' + (lang === "zh" ? ' class="on"' : "") + ">中</button>" +
-    '<button data-action="intro-lang" data-lang="en"' + (lang === "en" ? ' class="on"' : "") + ">EN</button>" +
-    "</div>";
+    I18N_SUPPORTED.length <= 3
+      ? '<div class="intro-lang">' +
+        I18N_SUPPORTED.map(
+          (c) =>
+            '<button data-action="intro-lang" data-lang="' + c + '"' +
+            (lang === c ? ' class="on"' : "") + ">" + (SHORT[c] || c.toUpperCase()) + "</button>"
+        ).join("") +
+        "</div>"
+      : '<div class="intro-lang"><select data-action="intro-lang-select" id="intro-lang-select">' +
+        I18N_SUPPORTED.map(
+          (c) => '<option value="' + c + '"' + (lang === c ? " selected" : "") + ">" + (I18N_NATIVE[c] || c) + "</option>"
+        ).join("") +
+        "</select></div>";
   return (
     '<div class="intro-ov" role="dialog" aria-modal="true">' +
     '<div class="intro-card">' +
@@ -1089,7 +1101,9 @@ function correctLabel(q) {
 
 function bindEvents() {
   $$("[data-action]").forEach((el) => {
-    el.onclick = () => handleAction(el.getAttribute("data-action"), el);
+    // ⚠ <select> 不触发 onclick 的语义事件,必须绑 change —— 否则下拉选了「没反应」
+    if (el.tagName === "SELECT") el.onchange = () => handleAction(el.getAttribute("data-action"), el);
+    else el.onclick = () => handleAction(el.getAttribute("data-action"), el);
   });
   $$("[data-nav]").forEach((el) => {
     el.onclick = () => {
@@ -1285,6 +1299,9 @@ function handleAction(action, el) {
     case "intro-lang":
       setLang(el.getAttribute("data-lang")); // onLangChange 会重渲,_introStep 保留
       return;
+    case "intro-lang-select":
+      setLang(el.value); // ≥4 语时引导里是下拉(见 renderIntro)
+      return;
     case "intro-next":
       _introStep = Math.min(_introStep + 1, 2);
       break;
@@ -1429,18 +1446,46 @@ function submitChoice(choice) {
   render();
 }
 
+/* 语言切换:≤2 种语言沿用「中|EN」分段按钮;≥3 种自动换成下拉
+   (5 个语言塞不进分段控件,且循环切换要点 N-1 下)。UI 随 I18N_SUPPORTED 自适应,加语言不用改这里。 */
 function syncLangButtons() {
-  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
-  const enBtn = $("#lang-en");
-  const zhBtn = $("#lang-zh");
-  if (enBtn) {
-    enBtn.classList.toggle("active", LANG === "en");
-    enBtn.onclick = () => setLang("en");
+  document.documentElement.lang = curLang() === "zh" ? "zh-CN" : curLang();
+
+  const host = $("#lang-switch") || ($("#lang-en") && $("#lang-en").parentElement);
+  if (!host) return;
+
+  if (I18N_SUPPORTED.length <= 2) {
+    // 老的两态按钮:保持原样(en/zh 时的观感不变)
+    const enBtn = $("#lang-en");
+    const zhBtn = $("#lang-zh");
+    if (enBtn) {
+      enBtn.classList.toggle("active", curLang() === "en");
+      enBtn.onclick = () => setLang("en");
+    }
+    if (zhBtn) {
+      zhBtn.classList.toggle("active", curLang() === "zh");
+      zhBtn.onclick = () => setLang("zh");
+    }
+    return;
   }
-  if (zhBtn) {
-    zhBtn.classList.toggle("active", LANG === "zh");
-    zhBtn.onclick = () => setLang("zh");
+
+  // ≥3 语:下拉。只建一次,之后只更新选中态。
+  let sel = $("#lang-select");
+  if (!sel) {
+    host.innerHTML = "";
+    sel = document.createElement("select");
+    sel.id = "lang-select";
+    sel.title = "Language / 语言";
+    I18N_SUPPORTED.forEach((code) => {
+      const o = document.createElement("option");
+      o.value = code;
+      o.textContent = I18N_NATIVE[code] || code; // 每种语言显示自己的名字
+      sel.appendChild(o);
+    });
+    sel.onchange = () => setLang(sel.value);
+    host.appendChild(sel);
   }
+  sel.value = curLang();
 }
 
 function onLangChange() {

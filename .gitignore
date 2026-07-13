@@ -13,3 +13,8 @@ assets/splash*.png
 tools/.indexnow-key
 store-assets/play/
 _i18n/
+_langshots/
+
+# CLAUDE.md: .github/ 必须保持未跟踪 —— push 的 PAT 无 workflow scope,入库会让整个 push 被拒
+.github/
+.mcp.json

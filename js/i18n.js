@@ -8,7 +8,7 @@
    (还要同步 codemagic.yaml 的 CFBundleLocalizations —— 那是 App Store「语言」栏的唯一来源。) */
 const I18N_DEFAULT = "en";
 /* 只列**真正发货**的语言:翻译覆盖率以此为准,没译完别提前加进来 */
-const I18N_SUPPORTED = ["en", "zh"];
+const I18N_SUPPORTED = ["en", "zh", "ja", "de", "es"];
 const I18N_NATIVE = { en: "English", zh: "中文", ja: "日本語", de: "Deutsch", es: "Español" };
 const _I18N_INLINE = { en: 1, zh: 1 }; // 内联 = 同步可用,无需加载
 
@@ -558,8 +558,11 @@ reg("fb.cat.quads", "quads", "四条");
 reg("fb.cat.pair", "one pair", "一对");
 reg("fb.cat.high", "high card", "高牌");
 // 听牌词
-reg("fb.draw.nut", "nut ", "坚果");
+// ⚠ 坚果同花听是**独立词条**,不能写成 "nut" + "flush draw" 前缀拼接:
+//    西语形容词后置(proyecto de color máximo),前缀拼出来是 "nut proyecto de color" —— 不通顺。
+//    与整句模板同理:凡是要拼的地方,都让译者拿到完整词/句自行组织语序。
 reg("fb.draw.flushdraw", "flush draw", "同花听");
+reg("fb.draw.nutflushdraw", "nut flush draw", "坚果同花听");
 reg("fb.draw.openender", "open-ender", "两头顺听");
 reg("fb.draw.gutshot", "gutshot", "卡顺");
 
