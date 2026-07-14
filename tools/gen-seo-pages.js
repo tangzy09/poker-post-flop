@@ -28,6 +28,36 @@ const { STR, COURSES, getLearn, getQuestions, explainFeedback, setLang } = ctx._
 const T = (lang, k) => (STR[lang] && STR[lang][k]) || STR.en[k] || k;
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/* ——— title/desc 长度:SEO 阈值按**显示宽度**算,CJK 一个字顶两个 ———
+   title 30–60、desc 70–155(有效宽度)。按 .length 截中文必然溢出:
+   30 个中文 = effLen 60,看着才 30 个字符。 */
+const effLen = (s) => [...String(s)].reduce((a, c) => a + (/[⺀-鿿　-ヿ가-힯＀-￯]/.test(c) ? 2 : 1), 0);
+/* 按有效宽度截断,尽量断在词/句边界,超了才加省略号 */
+function clampEff(s, max) {
+  s = String(s).trim();
+  if (effLen(s) <= max) return s;
+  let out = '', w = 0;
+  for (const ch of s) {
+    const cw = /[⺀-鿿　-ヿ가-힯＀-￯]/.test(ch) ? 2 : 1;
+    if (w + cw > max - 1) break; // 留 1 位给省略号
+    out += ch; w += cw;
+  }
+  // 英文尽量断在词边界(中文没有空格,原样截)
+  const sp = out.lastIndexOf(' ');
+  if (sp > max * 0.6) out = out.slice(0, sp);
+  return out.replace(/[\s,;:—-]+$/, '') + '…';
+}
+/* 组标题:优先「名 — 中缀 | 品牌」;超 60 就先丢中缀,再截名字。
+   ⚠ 同时保下限:短名字必须留着品牌后缀,否则会掉到 <30 变 too-short(截上限时最容易忘的一半)。 */
+function buildTitle(name, mid, brand, max = 60) {
+  const full = `${name} — ${mid} | ${brand}`;
+  if (effLen(full) <= max) return full;
+  const noMid = `${name} | ${brand}`;
+  if (effLen(noMid) <= max) return noMid;
+  const room = max - effLen(` | ${brand}`);
+  return `${clampEff(name, room)} | ${brand}`;
+}
+
 const SUIT = { s: ['♠', '#1c2822'], h: ['♥', '#c0392b'], d: ['♦', '#c0392b'], c: ['♣', '#1c2822'] };
 function cardsHtml(cards) {
   return (cards || []).map((c) => {
@@ -41,13 +71,16 @@ const L = {
   en: {
     locale: 'en', dir: '', brand: 'Postflop Coach', brandLong: 'Postflop Coach — free heads-up postflop poker trainer',
     lesson: (o) => `Lesson ${o}`, questions: (n) => `${n} practice questions`,
-    titleTail: 'Texas Hold’em Postflop Lesson | Postflop Coach',
+    // 中缀与品牌分开:title 超 60 时 buildTitle 会先丢中缀,再截名字(而不是粗暴截尾)。
+    // 原来的 'Texas Hold’em Postflop Lesson | Postflop Coach' 光后缀就 46 字符,且 "Postflop" 一个标题里出现 3 次。
+    titleMid: 'Postflop Poker Lesson',
+    termMid: 'Postflop Poker Term',
     descTail: (n) => `Free heads-up postflop poker lesson with ${n} verified practice drills and computed feedback. No signup.`,
     sample: 'Sample drill from this lesson', board: 'Board', hand: 'Your hand', bestAction: 'Best action',
     why: 'Why', cta: (n) => `Practice all ${n} questions free →`,
     prev: '← Previous lesson', next: 'Next lesson →', home: 'All 30 lessons', faqH: 'FAQ',
     glossary: 'Poker Glossary', example: 'Worked example', learnMore: (t) => `Full lesson: ${t} →`,
-    backGlossary: '← All postflop terms', termTail: 'Postflop Poker Term | Postflop Coach',
+    backGlossary: '← All postflop terms',
     glossaryTitle: 'Postflop Poker Glossary', ctaTerm: 'Train these spots free →',
     glossaryIntro: 'Plain-English definitions of the postflop poker concepts this trainer drills — pot odds, MDF, c-bets, ranges and more — each with the formula, a worked example, and a link to the full lesson.',
     method: 'Every answer in the 699-question bank is independently verified (adversarial blind-solve) before publication.',
@@ -57,13 +90,14 @@ const L = {
   zh: {
     locale: 'zh-CN', dir: 'zh/', brand: '翻后训练营', brandLong: '翻后训练营 — 免费单挑德州扑克翻牌后训练器',
     lesson: (o) => `第 ${o} 课`, questions: (n) => `${n} 道练习题`,
-    titleTail: '德州扑克翻牌后教学 | 翻后训练营',
+    titleMid: '德州扑克翻牌后教学',
+    termMid: '翻后扑克术语',
     descTail: (n) => `免费单挑德州扑克翻后课程,附 ${n} 道验证过的实战练习题与计算式讲解,无需注册。`,
     sample: '本课样题', board: '公共牌', hand: '你的手牌', bestAction: '最佳行动',
     why: '为什么', cta: (n) => `免费练全部 ${n} 题 →`,
     prev: '← 上一课', next: '下一课 →', home: '全部 30 课', faqH: '常见问题',
     glossary: '扑克术语表', example: '算例', learnMore: (t) => `完整课程:${t} →`,
-    backGlossary: '← 全部翻后术语', termTail: '翻后扑克术语 | 翻后训练营',
+    backGlossary: '← 全部翻后术语',
     glossaryTitle: '翻后扑克术语表', ctaTerm: '免费练这些局面 →',
     glossaryIntro: '用大白话讲清这个训练器所练的翻后扑克概念——底池赔率、MDF、持续下注、范围优势等——每个都带公式、算例和通往完整课程的链接。',
     method: '题库 699 题全部经独立盲解验证(隐藏答案由独立求解流程复核)后才发布。',
@@ -161,15 +195,15 @@ function pageHtml(lang, course, order, prevC, nextC) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(title)} — ${l.titleTail}</title>
-<meta name="description" content="${esc(sub)}${lang==='zh'?'。':' — '}${l.descTail(nQ)}">
+<title>${esc(buildTitle(title, l.titleMid, l.brand))}</title>
+<meta name="description" content="${esc(clampEff(`${sub}${lang === 'zh' ? '。' : ' — '}${l.descTail(nQ)}`, 152))}">
 <link rel="canonical" href="${url}">
 <link rel="alternate" hreflang="en" href="${urlEn}">
 <link rel="alternate" hreflang="zh" href="${urlZh}">
 <link rel="alternate" hreflang="x-default" href="${urlEn}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${esc(title)} — ${l.brand}">
-<meta property="og:description" content="${esc(sub)}">
+<meta property="og:description" content="${esc(clampEff(sub, 152))}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${SITE}/og-image.png">
 <script type="application/ld+json">${jsonld}</script>
@@ -203,15 +237,15 @@ function termHead(lang, l, name, desc, url, urlEn, urlZh, jsonld) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(name)} — ${l.termTail}</title>
-<meta name="description" content="${esc(desc)}">
+<title>${esc(buildTitle(name, l.termMid, l.brand))}</title>
+<meta name="description" content="${esc(clampEff(desc, 152))}">
 <link rel="canonical" href="${url}">
 <link rel="alternate" hreflang="en" href="${urlEn}">
 <link rel="alternate" hreflang="zh" href="${urlZh}">
 <link rel="alternate" hreflang="x-default" href="${urlEn}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${esc(name)} — ${l.brand}">
-<meta property="og:description" content="${esc(desc)}">
+<meta property="og:description" content="${esc(clampEff(desc, 152))}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${SITE}/og-image.png">
 <script type="application/ld+json">${jsonld}</script>
@@ -247,12 +281,16 @@ function termPageHtml(lang, term, prevT, nextT) {
     ] },
     ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q[lang], acceptedAnswer: { '@type': 'Answer', text: f.a[lang] } })) }] : []),
   ]);
+  /* ⚠ 内链一律用**目录形式** `./`,绝不用 `index.html`:
+     canonical 与 sitemap 用的都是 `/terms/`,若内链写 `index.html`,爬虫就会把
+     `/terms/index.html` 当成**另一个 URL**(实测:入度 12、不在 sitemap、hreflang 互指判定失败,
+     6 个 error 全出在这)。同一页两个 URL = 内链权重被分走 + Google 困惑。 */
   const relNav = `<div class="navrow">` +
     (prevT ? `<a href="${prevT.slug}.html">← ${esc(prevT.term[lang])}</a>` : '<span></span>') +
     (nextT ? `<a href="${nextT.slug}.html">${esc(nextT.term[lang])} →</a>` : '<span></span>') + `</div>`;
   return termHead(lang, l, name, short, url, urlEn, urlZh, jsonld) + `
 <p class="eyebrow"><a href="${home}">${l.brandLong}</a><span class="langsw"><a href="${lang === 'zh' ? urlEn : urlZh}">${lang === 'zh' ? 'EN' : '中文'}</a></span></p>
-<p class="eyebrow"><a href="index.html">${l.glossary}</a></p>
+<p class="eyebrow"><a href="./">${l.glossary}</a></p>
 <h1>${esc(name)}</h1>
 <p class="lead">${esc(short)}</p>
 <p>${term.body[lang]}</p>
@@ -261,7 +299,7 @@ ${faqHtml}
 <p style="margin-top:18px"><a href="${courseHref}">${esc(l.learnMore(rcTitle))}</a></p>
 <a class="cta" href="${home}">${l.ctaTerm}</a>
 ${relNav}
-<p class="eyebrow" style="margin-top:18px"><a href="index.html">${l.backGlossary}</a></p>
+<p class="eyebrow" style="margin-top:18px"><a href="./">${l.backGlossary}</a></p>
 <div class="foot"><p>${l.method}</p></div>
 </div>
 </body>

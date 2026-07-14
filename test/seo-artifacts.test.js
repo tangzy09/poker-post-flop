@@ -112,3 +112,52 @@ test("course pages carry paired hreflang and self canonical", () => {
     }
   }
 });
+
+/* title/desc 有效宽度锁:SEO 阈值按显示宽度算(CJK×2),生成器若按 .length 截断,
+   中文页必然溢出(实测曾 32 页 title 超长 / 16 页 desc 超长)。
+   ⚠ 量之前先解码 HTML 实体:&amp; 在 SERP 里是 1 个字符,按 5 个算会假超标。 */
+test("生成的 title/desc 落在 SEO 区间(CJK 按 2 计)", () => {
+  const CJK = /[⺀-鿿　-ヿ가-힯＀-￯]/;
+  const effLen = (s) => [...String(s)].reduce((a, c) => a + (CJK.test(c) ? 2 : 1), 0);
+  const decode = (s) => String(s).replace(/&amp;/g, "&").replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#0?39;/g, "'");
+
+  const bad = [];
+  const walk = (dir) => {
+    if (!fs.existsSync(dir)) return;
+    for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, f.name);
+      if (f.isDirectory()) { walk(p); continue; }
+      if (!f.name.endsWith(".html")) continue;
+      const html = fs.readFileSync(p, "utf8");
+      if (/<meta name="robots"[^>]*noindex/i.test(html)) continue;
+      const t = effLen(decode((html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || ""));
+      const d = effLen(decode((html.match(/name="description" content="([^"]*)"/) || [])[1] || ""));
+      if (t > 60 || t < 30 || d > 155 || d < 70) {
+        bad.push(path.relative(root, p).replace(/\\/g, "/") + " (title=" + t + " desc=" + d + ")");
+      }
+    }
+  };
+  walk(path.join(root, "courses"));
+  walk(path.join(root, "terms"));
+  assert.equal(bad.length, 0, "超出 SEO 区间的页:\n  " + bad.slice(0, 10).join("\n  "));
+});
+
+/* 内链一律用目录形式:写 index.html 会让同一页多出一个 URL(/terms/index.html),
+   分走内链权重、并让 hreflang 互指判定失败(实测 6 个 error 全出在这)。 */
+test("生成物内链不含 index.html(会造成重复 URL)", () => {
+  const offenders = [];
+  const walk = (dir) => {
+    if (!fs.existsSync(dir)) return;
+    for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, f.name);
+      if (f.isDirectory()) { walk(p); continue; }
+      if (!f.name.endsWith(".html")) continue;
+      const html = fs.readFileSync(p, "utf8");
+      if (/href="[^"]*index\.html"/.test(html)) offenders.push(path.relative(root, p).replace(/\\/g, "/"));
+    }
+  };
+  walk(path.join(root, "courses"));
+  walk(path.join(root, "terms"));
+  assert.equal(offenders.length, 0, "内链写了 index.html 的页(应改成 ./):\n  " + offenders.slice(0, 8).join("\n  "));
+});
