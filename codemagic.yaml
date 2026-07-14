@@ -28,6 +28,12 @@ workflows:
         XCODE_SCHEME: "App"
         # ↓ App Store Connect 数字 Apple ID(App 记录已建:PostFlop GTO Poker Trainer)
         APP_STORE_APP_ID: "6787552890"
+        # ⚠ 营销版本号(CFBundleShortVersionString)。**发新版必须改这里**——
+        #   ios/ 是云端 `npx cap add ios` 现生成的,营销版本号默认回到 1.0;agvtool new-version 只
+        #   动 build 号。版本号不高于线上已批准的版本,上传直接被苹果打回:90062 "must contain a
+        #   higher version than that of the previously approved version"(2026-07 preflop 实锤:IPA
+        #   都构建成功了,才在 Publishing 阶段炸)。要与 ASC 里那个待提交版本的版本号一字不差。
+        APP_VERSION: "1.1"
       node: 22             # Cap8 CLI 要求 Node ≥22(node:20 实测 cap add ios 直接 fatal;preflop 云端踩过)
       xcode: latest        # 苹果强制新 SDK 才可上传;若某次升级把构建搞挂,钉成上次成功版本
       cocoapods: default
@@ -78,11 +84,14 @@ workflows:
           echo "[代码签名身份]"; security find-identity -v -p codesigning || true
           echo "=============================="
 
-      - name: 递增构建号(取 TestFlight 上最新 +1)
+      - name: 设置营销版本 + 递增构建号(取 TestFlight 上最新 +1)
         script: |
           cd ios/App
+          # 营销版本号必须高于线上已批准的版本,否则上传阶段 90062 被拒(见 env 里 APP_VERSION 的说明)
+          agvtool new-marketing-version "$APP_VERSION"
           LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APP_ID" 2>/dev/null || echo 0)
           agvtool new-version -all $(($LATEST + 1))
+          echo "版本: $APP_VERSION (build $(($LATEST + 1)))"
 
       - name: 构建 IPA
         script: |
